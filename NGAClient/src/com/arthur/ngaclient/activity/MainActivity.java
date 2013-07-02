@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
+	
+	private static final String TAG = "MainActivity";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -49,6 +52,7 @@ public class MainActivity extends FragmentActivity {
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
+		mViewPager.setCurrentItem(1);
 
 	}
 
@@ -78,6 +82,7 @@ public class MainActivity extends FragmentActivity {
 			Bundle args = new Bundle();
 			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 			fragment.setArguments(args);
+			Log.d(TAG, "getItem ================" + position);
 			return fragment;
 		}
 
@@ -117,8 +122,19 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			Log.d(TAG, "onCreate ============== ");
+			int i = getArguments().getInt(ARG_SECTION_NUMBER);
+			Log.d(TAG, "onCreate i ================ " + i);
+		}
+		
+		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			Log.d(TAG, "onCreateView ================ ");
+			int i = getArguments().getInt(ARG_SECTION_NUMBER);
+			Log.d(TAG, "onCreateView i ================ " + i);
 			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
 					container, false);
 			TextView dummyTextView = (TextView) rootView
