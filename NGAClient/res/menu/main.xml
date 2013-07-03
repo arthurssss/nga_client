@@ -7,8 +7,9 @@
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/search"
-        android:actionViewClass="android.widget.SearchView"
-        android:showAsAction="always"
-        android:title="@string/action_search"/>
+        android:icon="@drawable/ica_light_2_action_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_search"
+        android:actionViewClass="android.widget.SearchView"/>
 
 </menu>
