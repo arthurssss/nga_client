@@ -1,28 +1,32 @@
 package com.arthur.ngaclient.activity;
 
+import java.util.List;
 import java.util.Locale;
 
+import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.bean.Plate;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
-	
+
 	private static final String TAG = "MainActivity";
+	public static final String ARG_SECTION_NUMBER = "section_number";
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -75,14 +79,24 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
-			Fragment fragment = new DummySectionFragment();
-			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-			fragment.setArguments(args);
+			Fragment fragment = null;
+
 			Log.d(TAG, "getItem ================" + position);
+			switch (position) {
+			case 0:
+			case 1:
+				fragment = new DummySectionFragment();
+				Bundle args = new Bundle();
+				args.putInt(ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				break;
+			case 2:
+				fragment = new AllBoardsFragment();
+				args = new Bundle();
+				args.putInt(ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				break;
+			}
 			return fragment;
 		}
 
@@ -112,11 +126,8 @@ public class MainActivity extends FragmentActivity {
 	 * displays dummy text.
 	 */
 	public static class DummySectionFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
-		public static final String ARG_SECTION_NUMBER = "section_number";
+
+		private static final String TAG = "DummySectionFragment";
 
 		public DummySectionFragment() {
 		}
@@ -128,7 +139,7 @@ public class MainActivity extends FragmentActivity {
 			int i = getArguments().getInt(ARG_SECTION_NUMBER);
 			Log.d(TAG, "onCreate i ================ " + i);
 		}
-		
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -143,6 +154,77 @@ public class MainActivity extends FragmentActivity {
 					ARG_SECTION_NUMBER)));
 			return rootView;
 		}
+	}
+
+	public static class AllBoardsFragment extends Fragment {
+
+		private static final String TAG = "AllBoardsFragment";
+
+		public AllBoardsFragment() {
+		}
+
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			Log.d(TAG, "onCreate ============== ");
+			int i = getArguments().getInt(ARG_SECTION_NUMBER);
+			Log.d(TAG, "onCreate i ================ " + i);
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			Log.d(TAG, "onCreateView ================ ");
+			int i = getArguments().getInt(ARG_SECTION_NUMBER);
+			Log.d(TAG, "onCreateView i ================ " + i);
+			View rootView = inflater.inflate(R.layout.fragment_main_all_board,
+					container, false);
+			ListView lvAllBoard = (ListView) rootView.findViewById(R.id.main_allboard_listview);
+			List<Plate> plates = ((NGAClientApplication) getActivity().getApplication()).loadDefaultBoard();
+			plates.addAll(plates);
+			plates.addAll(plates);
+			plates.addAll(plates);
+			AllBoardListAdapter allBoardListAdapter = new AllBoardListAdapter(getActivity(), plates);
+			lvAllBoard.setAdapter(allBoardListAdapter);
+			return rootView;
+		}
+	}
+
+	public static class AllBoardListAdapter extends BaseAdapter {
+		
+		private List<Plate> mPlatesData = null;
+		private LayoutInflater mInflater = null;
+
+		public AllBoardListAdapter(Context context, List<Plate> platesData) {
+			mInflater = LayoutInflater.from(context);
+			mPlatesData = platesData;
+		}
+
+		@Override
+		public int getCount() {
+			return mPlatesData.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.item_main_plate, null);
+			}
+			TextView tvPlate = (TextView) convertView.findViewById(R.id.plateName);
+			tvPlate.setText(mPlatesData.get(position).getName());
+			return convertView;
+		}
+
 	}
 
 }
