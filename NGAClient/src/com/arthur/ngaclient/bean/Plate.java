@@ -52,17 +52,17 @@ public class Plate {
 
 	private String name;
 	private List<Board> boardList = new ArrayList<Board>();
-	
-	public Plate(String name){
+
+	public Plate(String name) {
 		this.name = name;
 	}
-	
-	public Plate(String name, List<Board> boardList){
+
+	public Plate(String name, List<Board> boardList) {
 		this.name = name;
 		this.boardList = boardList;
 	}
-	
-	public void add(Board board){
+
+	public void add(Board board) {
 		boardList.add(board);
 	}
 
@@ -81,10 +81,10 @@ public class Plate {
 	public void setBoardList(List<Board> boardList) {
 		this.boardList = boardList;
 	}
-	
-	public static String getPlateName(int i){
+
+	public static String getPlateName(int i) {
 		String name = null;
-		switch (i){
+		switch (i) {
 		case 0:
 			name = "×ÛºÏÌÖÂÛ";
 			break;
@@ -115,5 +115,9 @@ public class Plate {
 		}
 		return name;
 	}
-	
+
+	public int getCount() {
+		return boardList.size();
+	}
+
 }

@@ -5,7 +5,9 @@ import java.util.Locale;
 
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.bean.Board;
 import com.arthur.ngaclient.bean.Plate;
+import com.arthur.ngaclient.widget.CustomGridView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -179,23 +183,25 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "onCreateView i ================ " + i);
 			View rootView = inflater.inflate(R.layout.fragment_main_all_board,
 					container, false);
-			ListView lvAllBoard = (ListView) rootView.findViewById(R.id.main_allboard_listview);
-			List<Plate> plates = ((NGAClientApplication) getActivity().getApplication()).loadDefaultBoard();
-			plates.addAll(plates);
-			plates.addAll(plates);
-			plates.addAll(plates);
-			AllBoardListAdapter allBoardListAdapter = new AllBoardListAdapter(getActivity(), plates);
+			ListView lvAllBoard = (ListView) rootView
+					.findViewById(R.id.main_allboard_listview);
+			List<Plate> plates = ((NGAClientApplication) getActivity()
+					.getApplication()).loadDefaultBoard();
+			AllBoardListAdapter allBoardListAdapter = new AllBoardListAdapter(
+					getActivity(), plates);
 			lvAllBoard.setAdapter(allBoardListAdapter);
 			return rootView;
 		}
 	}
 
 	public static class AllBoardListAdapter extends BaseAdapter {
-		
+
 		private List<Plate> mPlatesData = null;
 		private LayoutInflater mInflater = null;
+		private Context mContext = null;
 
 		public AllBoardListAdapter(Context context, List<Plate> platesData) {
+			mContext = context;
 			mInflater = LayoutInflater.from(context);
 			mPlatesData = platesData;
 		}
@@ -220,8 +226,56 @@ public class MainActivity extends FragmentActivity {
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_main_plate, null);
 			}
-			TextView tvPlate = (TextView) convertView.findViewById(R.id.plateName);
-			tvPlate.setText(mPlatesData.get(position).getName());
+			Plate plate = mPlatesData.get(position);
+			TextView tvPlate = (TextView) convertView
+					.findViewById(R.id.plateName);
+			tvPlate.setText(plate.getName());
+			CustomGridView gvBoardList = (CustomGridView) convertView
+					.findViewById(R.id.main_board_gridview);
+			BoardGridViewAdapter boardAdapter = new BoardGridViewAdapter(mContext, plate);
+			gvBoardList.setAdapter(boardAdapter);
+			
+			return convertView;
+		}
+
+	}
+
+	public static class BoardGridViewAdapter extends BaseAdapter {
+		
+		private LayoutInflater mInflater = null;
+		private Plate mPlate = null;
+		private List<Board> mBoardList = null;
+
+		public BoardGridViewAdapter(Context context, Plate plate) {
+			mInflater = LayoutInflater.from(context);
+			mPlate = plate;
+			mBoardList = plate.getBoardList();
+		}
+
+		@Override
+		public int getCount() {
+			return mPlate.getCount();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.item_main_board, null);
+			}
+			ImageView ivBoardIcon = (ImageView) convertView.findViewById(R.id.main_board_ic);
+			TextView tvBoardName = (TextView) convertView.findViewById(R.id.main_board_name);
+			ivBoardIcon.setImageResource(mBoardList.get(position).getIcon());
+			tvBoardName.setText(mBoardList.get(position).getName());
 			return convertView;
 		}
 
