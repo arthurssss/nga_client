@@ -1,5 +1,6 @@
 package com.arthur.ngaclient.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -7,6 +8,7 @@ import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.Board;
 import com.arthur.ngaclient.bean.Plate;
+import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.widget.CustomGridView;
 
 import android.content.Context;
@@ -22,7 +24,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -199,11 +200,15 @@ public class MainActivity extends FragmentActivity {
 		private List<Plate> mPlatesData = null;
 		private LayoutInflater mInflater = null;
 		private Context mContext = null;
+		private List<BoardGridViewAdapter> adapterList = new ArrayList<BoardGridViewAdapter>();
 
 		public AllBoardListAdapter(Context context, List<Plate> platesData) {
 			mContext = context;
 			mInflater = LayoutInflater.from(context);
 			mPlatesData = platesData;
+			for (Plate plate : platesData) {
+				adapterList.add(new BoardGridViewAdapter(mContext, plate));
+			}
 		}
 
 		@Override
@@ -223,33 +228,44 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder = null;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_main_plate, null);
+				holder = new ViewHolder();
+				holder.tvPlate = (TextView) convertView
+						.findViewById(R.id.plateName);
+				holder.gvBoardList = (CustomGridView) convertView
+						.findViewById(R.id.main_board_gridview);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
 			}
 			Plate plate = mPlatesData.get(position);
-			TextView tvPlate = (TextView) convertView
-					.findViewById(R.id.plateName);
-			tvPlate.setText(plate.getName());
-			CustomGridView gvBoardList = (CustomGridView) convertView
-					.findViewById(R.id.main_board_gridview);
-			BoardGridViewAdapter boardAdapter = new BoardGridViewAdapter(mContext, plate);
-			gvBoardList.setAdapter(boardAdapter);
-			
+			holder.tvPlate.setText(":: " + plate.getName() + " ::");
+			holder.gvBoardList.setAdapter(adapterList.get(position));
+
 			return convertView;
+		}
+
+		private class ViewHolder {
+			public TextView tvPlate;
+			public CustomGridView gvBoardList;
 		}
 
 	}
 
 	public static class BoardGridViewAdapter extends BaseAdapter {
-		
+
 		private LayoutInflater mInflater = null;
 		private Plate mPlate = null;
 		private List<Board> mBoardList = null;
+		private Context mContext = null;
 
 		public BoardGridViewAdapter(Context context, Plate plate) {
 			mInflater = LayoutInflater.from(context);
 			mPlate = plate;
 			mBoardList = plate.getBoardList();
+			mContext = context;
 		}
 
 		@Override
@@ -269,14 +285,48 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder = null;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_main_board, null);
+				holder = new ViewHolder();
+				holder.ivBoardIcon = (ImageView) convertView
+						.findViewById(R.id.main_board_ic);
+				holder.tvBoardName = (TextView) convertView
+						.findViewById(R.id.main_board_name);
+
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
 			}
-			ImageView ivBoardIcon = (ImageView) convertView.findViewById(R.id.main_board_ic);
-			TextView tvBoardName = (TextView) convertView.findViewById(R.id.main_board_name);
-			ivBoardIcon.setImageResource(mBoardList.get(position).getIcon());
-			tvBoardName.setText(mBoardList.get(position).getName());
+
+			holder.ivBoardIcon.setImageResource(mBoardList.get(position)
+					.getIcon());
+			holder.tvBoardName.setText(mBoardList.get(position).getName());
+			convertView
+					.setLayoutParams(new android.widget.AbsListView.LayoutParams(
+							android.widget.AbsListView.LayoutParams.MATCH_PARENT,
+							DensityUtil.dip2px(mContext, 45)));
+
+			if (position == 0) {
+				convertView.setBackgroundResource(R.drawable.main_board_bg);
+				holder.tvBoardName.setTextColor(mContext.getResources().getColor(R.color.white));
+			} else {
+				int numCol = ((CustomGridView) parent).getNumColumns();
+				int raw = position / numCol;
+				int col = position % numCol;
+
+				convertView.setBackgroundColor((raw % 2 == 0 && col % 2 == 0)
+						|| (raw % 2 != 0 && col % 2 != 0) ? mContext
+						.getResources().getColor(R.color.shit1) : mContext
+						.getResources().getColor(R.color.shit2));
+			}
+
 			return convertView;
+		}
+
+		private class ViewHolder {
+			public ImageView ivBoardIcon;
+			public TextView tvBoardName;
 		}
 
 	}
