@@ -1,6 +1,5 @@
 package com.arthur.ngaclient.activity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,7 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
@@ -33,32 +33,18 @@ public class MainActivity extends FragmentActivity {
 	private static final String TAG = "MainActivity";
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
-	/**
-	 * The {@link android.support.v4.view.PagerAdapter} that will provide
-	 * fragments for each of the sections. We use a
-	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
-	 * will keep every loaded fragment in memory. If this becomes too memory
-	 * intensive, it may be best to switch to a
-	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-	 */
-	SectionsPagerAdapter mSectionsPagerAdapter;
+	private SectionsPagerAdapter mSectionsPagerAdapter;
 
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	ViewPager mViewPager;
+	private ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
 
-		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setCurrentItem(1);
@@ -67,15 +53,10 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
-	/**
-	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-	 * one of the sections/tabs/pages.
-	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
@@ -107,7 +88,6 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
 			return 3;
 		}
 
@@ -126,10 +106,6 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	/**
-	 * A dummy fragment representing a section of the app, but that simply
-	 * displays dummy text.
-	 */
 	public static class DummySectionFragment extends Fragment {
 
 		private static final String TAG = "DummySectionFragment";
@@ -184,74 +160,29 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "onCreateView i ================ " + i);
 			View rootView = inflater.inflate(R.layout.fragment_main_all_board,
 					container, false);
-			ListView lvAllBoard = (ListView) rootView
-					.findViewById(R.id.main_allboard_listview);
+			LinearLayout llAllBoard = (LinearLayout) rootView
+					.findViewById(R.id.main_allboard_list);
+
 			List<Plate> plates = ((NGAClientApplication) getActivity()
 					.getApplication()).loadDefaultBoard();
-			AllBoardListAdapter allBoardListAdapter = new AllBoardListAdapter(
-					getActivity(), plates);
-			lvAllBoard.setAdapter(allBoardListAdapter);
+			for (Plate plate : plates) {
+				LayoutInflater inflate = LayoutInflater.from(getActivity());
+				RelativeLayout rlItemPlate = (RelativeLayout) inflate.inflate(
+						R.layout.item_main_plate, null);
+
+				TextView tvPlate = (TextView) rlItemPlate
+						.findViewById(R.id.plateName);
+				CustomGridView gvBoardList = (CustomGridView) rlItemPlate
+						.findViewById(R.id.main_board_gridview);
+
+				tvPlate.setText(":: " + plate.getName() + " ::");
+				gvBoardList.setAdapter(new BoardGridViewAdapter(getActivity(),
+						plate));
+
+				llAllBoard.addView(rlItemPlate);
+			}
 			return rootView;
 		}
-	}
-
-	public static class AllBoardListAdapter extends BaseAdapter {
-
-		private List<Plate> mPlatesData = null;
-		private LayoutInflater mInflater = null;
-		private Context mContext = null;
-		private List<BoardGridViewAdapter> adapterList = new ArrayList<BoardGridViewAdapter>();
-
-		public AllBoardListAdapter(Context context, List<Plate> platesData) {
-			mContext = context;
-			mInflater = LayoutInflater.from(context);
-			mPlatesData = platesData;
-			for (Plate plate : platesData) {
-				adapterList.add(new BoardGridViewAdapter(mContext, plate));
-			}
-		}
-
-		@Override
-		public int getCount() {
-			return mPlatesData.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return null;
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return 0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder = null;
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_main_plate, null);
-				holder = new ViewHolder();
-				holder.tvPlate = (TextView) convertView
-						.findViewById(R.id.plateName);
-				holder.gvBoardList = (CustomGridView) convertView
-						.findViewById(R.id.main_board_gridview);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			Plate plate = mPlatesData.get(position);
-			holder.tvPlate.setText(":: " + plate.getName() + " ::");
-			holder.gvBoardList.setAdapter(adapterList.get(position));
-
-			return convertView;
-		}
-
-		private class ViewHolder {
-			public TextView tvPlate;
-			public CustomGridView gvBoardList;
-		}
-
 	}
 
 	public static class BoardGridViewAdapter extends BaseAdapter {
@@ -309,7 +240,8 @@ public class MainActivity extends FragmentActivity {
 
 			if (position == 0) {
 				convertView.setBackgroundResource(R.drawable.main_board_bg);
-				holder.tvBoardName.setTextColor(mContext.getResources().getColor(R.color.white));
+				holder.tvBoardName.setTextColor(mContext.getResources()
+						.getColor(R.color.white));
 			} else {
 				int numCol = ((CustomGridView) parent).getNumColumns();
 				int raw = position / numCol;
