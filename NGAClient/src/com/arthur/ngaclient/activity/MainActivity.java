@@ -21,12 +21,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 
@@ -187,6 +189,7 @@ public class MainActivity extends FragmentActivity {
 
 	public static class BoardGridViewAdapter extends BaseAdapter {
 
+		private static String TAG = "BoardGridViewAdapter";
 		private LayoutInflater mInflater = null;
 		private Plate mPlate = null;
 		private List<Board> mBoardList = null;
@@ -253,6 +256,16 @@ public class MainActivity extends FragmentActivity {
 						.getResources().getColor(R.color.shit2));
 			}
 
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					TextView tvBoardName = (TextView) v.findViewById(R.id.main_board_name);
+					Toast.makeText(mContext, tvBoardName.getText(), Toast.LENGTH_SHORT).show();
+					Log.d(TAG, "onClick boardName === " + tvBoardName.getText());
+				}
+
+			});
 			return convertView;
 		}
 
