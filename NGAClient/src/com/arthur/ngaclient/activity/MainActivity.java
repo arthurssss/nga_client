@@ -7,6 +7,7 @@ import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.Board;
 import com.arthur.ngaclient.bean.Plate;
+import com.arthur.ngaclient.util.DBManager;
 import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.widget.CustomGridView;
 
@@ -35,9 +36,11 @@ public class MainActivity extends FragmentActivity {
 	private static final String TAG = "MainActivity";
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
-	private SectionsPagerAdapter mSectionsPagerAdapter;
+	protected SectionsPagerAdapter mSectionsPagerAdapter;
 
-	private ViewPager mViewPager;
+	protected ViewPager mViewPager;
+	
+	protected DBManager mDBManager = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setCurrentItem(1);
 
+		mDBManager = new DBManager(this);
+		mDBManager.getBoardList();
 	}
 
 	@Override
@@ -200,6 +205,7 @@ public class MainActivity extends FragmentActivity {
 			mPlate = plate;
 			mBoardList = plate.getBoardList();
 			mContext = context;
+			
 		}
 
 		@Override
@@ -219,6 +225,7 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			final int index = position;
 			ViewHolder holder = null;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_main_board, null);
@@ -260,9 +267,12 @@ public class MainActivity extends FragmentActivity {
 
 				@Override
 				public void onClick(View v) {
-					TextView tvBoardName = (TextView) v.findViewById(R.id.main_board_name);
-					Toast.makeText(mContext, tvBoardName.getText(), Toast.LENGTH_SHORT).show();
+					TextView tvBoardName = (TextView) v
+							.findViewById(R.id.main_board_name);
+					Toast.makeText(mContext, tvBoardName.getText(),
+							Toast.LENGTH_SHORT).show();
 					Log.d(TAG, "onClick boardName === " + tvBoardName.getText());
+					((MainActivity)mContext).mDBManager.insertOrUpdateBoard(mBoardList.get(index));
 				}
 
 			});

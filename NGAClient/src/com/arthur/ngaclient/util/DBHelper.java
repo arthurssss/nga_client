@@ -23,7 +23,8 @@ public class DBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL("create table board(id INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ "name varchar(30), url varchar(20), src INTEGER)");
+				+ "name varchar(30), url varchar(20), src INTEGER,"
+				+ "updatetime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))");
 	}
 
 	@Override
