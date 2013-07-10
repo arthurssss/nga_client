@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +40,10 @@ public class MainActivity extends FragmentActivity {
 	protected SectionsPagerAdapter mSectionsPagerAdapter;
 
 	protected ViewPager mViewPager;
-	
+
 	protected DBManager mDBManager = null;
+
+	protected List<Board> mMyBoardsList = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +58,19 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setCurrentItem(1);
 
 		mDBManager = new DBManager(this);
-		mDBManager.getBoardList();
+		mMyBoardsList = mDBManager.getBoardList();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mDBManager.close();
 	}
 
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -77,9 +86,14 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "getItem ================" + position);
 			switch (position) {
 			case 0:
-			case 1:
 				fragment = new DummySectionFragment();
 				Bundle args = new Bundle();
+				args.putInt(ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				break;
+			case 1:
+				fragment = new MyBoardsFragment();
+				args = new Bundle();
 				args.putInt(ARG_SECTION_NUMBER, position);
 				fragment.setArguments(args);
 				break;
@@ -141,7 +155,7 @@ public class MainActivity extends FragmentActivity {
 			return rootView;
 		}
 	}
-	
+
 	public static class MyBoardsFragment extends Fragment {
 
 		private static final String TAG = "MyBoardsFragment";
@@ -163,8 +177,10 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "onCreateView i ================ " + i);
 			View rootView = inflater.inflate(R.layout.fragment_main_my_board,
 					container, false);
-			Log.i(TAG, "rootView = " + rootView.toString());
-			Log.i(TAG, "container = " + container.toString());
+			ListView lvMyBoards = (ListView) rootView
+					.findViewById(R.id.main_myboards_listview);
+			lvMyBoards.setAdapter(new MyBoardListAdapter(getActivity(),
+					((MainActivity) getActivity()).mMyBoardsList));
 			return rootView;
 		}
 	}
@@ -188,8 +204,7 @@ public class MainActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			Log.d(TAG, "onCreateView ================ ");
-			int i = getArguments().getInt(ARG_SECTION_NUMBER);
-			Log.d(TAG, "onCreateView i ================ " + i);
+			Log.d(TAG, "container  ================ " + container.toString());
 			View rootView = inflater.inflate(R.layout.fragment_main_all_board,
 					container, false);
 			LinearLayout llAllBoard = (LinearLayout) rootView
@@ -215,6 +230,18 @@ public class MainActivity extends FragmentActivity {
 			}
 			return rootView;
 		}
+		
+		@Override
+		public void onPause(){
+			super.onPause();
+			Log.d(TAG, "onPause");
+		}
+		
+		@Override
+		public void onDestroy(){
+			super.onDestroy();
+			Log.d(TAG, "onDestroy");
+		}
 	}
 
 	public static class BoardGridViewAdapter extends BaseAdapter {
@@ -230,7 +257,7 @@ public class MainActivity extends FragmentActivity {
 			mPlate = plate;
 			mBoardList = plate.getBoardList();
 			mContext = context;
-			
+
 		}
 
 		@Override
@@ -253,7 +280,6 @@ public class MainActivity extends FragmentActivity {
 			final int index = position;
 			ViewHolder holder = null;
 			if (convertView == null) {
-				Log.d(TAG, "convertView ================= null");
 				convertView = mInflater.inflate(R.layout.item_main_board, null);
 				holder = new ViewHolder();
 				holder.ivBoardIcon = (ImageView) convertView
@@ -271,17 +297,19 @@ public class MainActivity extends FragmentActivity {
 								.findViewById(R.id.main_board_name);
 						Toast.makeText(mContext, tvBoardName.getText(),
 								Toast.LENGTH_SHORT).show();
-						Log.d(TAG, "onClick boardName === " + tvBoardName.getText());
-						((MainActivity)mContext).mDBManager.insertOrUpdateBoard(mBoardList.get(index));
+						Log.d(TAG,
+								"onClick boardName === "
+										+ tvBoardName.getText());
+						((MainActivity) mContext).mDBManager
+								.insertOrUpdateBoard(mBoardList.get(index));
 					}
 
 				});
 				convertView
-				.setLayoutParams(new android.widget.AbsListView.LayoutParams(
-						android.widget.AbsListView.LayoutParams.MATCH_PARENT,
-						DensityUtil.dip2px(mContext, 45)));
+						.setLayoutParams(new android.widget.AbsListView.LayoutParams(
+								android.widget.AbsListView.LayoutParams.MATCH_PARENT,
+								DensityUtil.dip2px(mContext, 45)));
 			} else {
-				Log.d(TAG, "convertView ================= " + convertView.toString());
 				holder = (ViewHolder) convertView.getTag();
 			}
 
@@ -303,7 +331,7 @@ public class MainActivity extends FragmentActivity {
 						.getResources().getColor(R.color.shit1) : mContext
 						.getResources().getColor(R.color.shit2));
 			}
-			
+
 			return convertView;
 		}
 
@@ -313,6 +341,84 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
-	
+
+	public static class MyBoardListAdapter extends BaseAdapter {
+
+		private static String TAG = "MyBoardListAdapter";
+		private Context mContext = null;
+		private LayoutInflater mInflater = null;
+		private List<Board> mBoardList = null;
+
+		public MyBoardListAdapter(Context context, List<Board> boardList) {
+			mContext = context;
+			mInflater = LayoutInflater.from(context);
+			mBoardList = boardList;
+		}
+
+		@Override
+		public int getCount() {
+			return mBoardList.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return null;
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return 0;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder = null;
+			if (convertView == null) {
+				convertView = mInflater.inflate(R.layout.item_main_board, null);
+				holder = new ViewHolder();
+				holder.ivBoardIcon = (ImageView) convertView
+						.findViewById(R.id.main_board_ic);
+				holder.tvBoardName = (TextView) convertView
+						.findViewById(R.id.main_board_name);
+
+				convertView.setTag(holder);
+				convertView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Log.d(TAG, "onClick =================== ");
+						TextView tvBoardName = (TextView) v
+								.findViewById(R.id.main_board_name);
+						Toast.makeText(mContext, tvBoardName.getText(),
+								Toast.LENGTH_SHORT).show();
+					}
+
+				});
+				convertView
+						.setLayoutParams(new android.widget.AbsListView.LayoutParams(
+								android.widget.AbsListView.LayoutParams.MATCH_PARENT,
+								DensityUtil.dip2px(mContext, 45)));
+
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
+			holder.ivBoardIcon.setImageResource(mBoardList.get(position)
+					.getIcon());
+			holder.tvBoardName.setText(mBoardList.get(position).getName());
+
+			convertView.setBackgroundColor((position % 2 == 0 ? mContext
+					.getResources().getColor(R.color.shit1) : mContext
+					.getResources().getColor(R.color.shit2)));
+
+			return convertView;
+		}
+
+		private class ViewHolder {
+			public ImageView ivBoardIcon;
+			public TextView tvBoardName;
+		}
+
+	}
 
 }

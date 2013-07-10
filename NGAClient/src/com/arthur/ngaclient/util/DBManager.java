@@ -37,14 +37,14 @@ public class DBManager {
 	}
 	
 	public List<Board> getBoardList(){
-		Cursor cursor = mDB.rawQuery("SELECT * from board", null);
+		Cursor cursor = mDB.rawQuery("SELECT * from board order by updatetime desc", null);
 		List<Board> boardList = new ArrayList<Board>();
 		while (cursor.moveToNext()) {
 			String name = cursor.getString(cursor.getColumnIndex("name"));
 			String url = cursor.getString(cursor.getColumnIndex("url"));
 			int src = cursor.getInt(cursor.getColumnIndex("src"));
 			Log.d("getBoardList", "name ============= " + name);
-			boardList.add(new Board(0, name, url, src));
+			boardList.add(new Board(0, url, name, src));
 		}
 		return boardList;
 	}
