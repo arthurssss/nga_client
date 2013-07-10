@@ -124,8 +124,6 @@ public class MainActivity extends FragmentActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			Log.d(TAG, "onCreate ============== ");
-			int i = getArguments().getInt(ARG_SECTION_NUMBER);
-			Log.d(TAG, "onCreate i ================ " + i);
 		}
 
 		@Override
@@ -140,6 +138,31 @@ public class MainActivity extends FragmentActivity {
 					.findViewById(R.id.section_label);
 			dummyTextView.setText(Integer.toString(getArguments().getInt(
 					ARG_SECTION_NUMBER)));
+			return rootView;
+		}
+	}
+	
+	public static class MyBoardsFragment extends Fragment {
+
+		private static final String TAG = "MyBoardsFragment";
+
+		public MyBoardsFragment() {
+		}
+
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			Log.d(TAG, "onCreate ============== ");
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			Log.d(TAG, "onCreateView ================ ");
+			int i = getArguments().getInt(ARG_SECTION_NUMBER);
+			Log.d(TAG, "onCreateView i ================ " + i);
+			View rootView = inflater.inflate(R.layout.fragment_main_my_board,
+					container, false);
 			return rootView;
 		}
 	}
