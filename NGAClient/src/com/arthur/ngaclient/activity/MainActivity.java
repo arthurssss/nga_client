@@ -163,6 +163,8 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "onCreateView i ================ " + i);
 			View rootView = inflater.inflate(R.layout.fragment_main_my_board,
 					container, false);
+			Log.i(TAG, "rootView = " + rootView.toString());
+			Log.i(TAG, "container = " + container.toString());
 			return rootView;
 		}
 	}
@@ -251,6 +253,7 @@ public class MainActivity extends FragmentActivity {
 			final int index = position;
 			ViewHolder holder = null;
 			if (convertView == null) {
+				Log.d(TAG, "convertView ================= null");
 				convertView = mInflater.inflate(R.layout.item_main_board, null);
 				holder = new ViewHolder();
 				holder.ivBoardIcon = (ImageView) convertView
@@ -259,17 +262,32 @@ public class MainActivity extends FragmentActivity {
 						.findViewById(R.id.main_board_name);
 
 				convertView.setTag(holder);
+				convertView.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Log.d(TAG, "onClick =================== ");
+						TextView tvBoardName = (TextView) v
+								.findViewById(R.id.main_board_name);
+						Toast.makeText(mContext, tvBoardName.getText(),
+								Toast.LENGTH_SHORT).show();
+						Log.d(TAG, "onClick boardName === " + tvBoardName.getText());
+						((MainActivity)mContext).mDBManager.insertOrUpdateBoard(mBoardList.get(index));
+					}
+
+				});
+				convertView
+				.setLayoutParams(new android.widget.AbsListView.LayoutParams(
+						android.widget.AbsListView.LayoutParams.MATCH_PARENT,
+						DensityUtil.dip2px(mContext, 45)));
 			} else {
+				Log.d(TAG, "convertView ================= " + convertView.toString());
 				holder = (ViewHolder) convertView.getTag();
 			}
 
 			holder.ivBoardIcon.setImageResource(mBoardList.get(position)
 					.getIcon());
 			holder.tvBoardName.setText(mBoardList.get(position).getName());
-			convertView
-					.setLayoutParams(new android.widget.AbsListView.LayoutParams(
-							android.widget.AbsListView.LayoutParams.MATCH_PARENT,
-							DensityUtil.dip2px(mContext, 45)));
 
 			if (position == 0) {
 				convertView.setBackgroundResource(R.drawable.main_board_bg);
@@ -285,20 +303,7 @@ public class MainActivity extends FragmentActivity {
 						.getResources().getColor(R.color.shit1) : mContext
 						.getResources().getColor(R.color.shit2));
 			}
-
-			convertView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					TextView tvBoardName = (TextView) v
-							.findViewById(R.id.main_board_name);
-					Toast.makeText(mContext, tvBoardName.getText(),
-							Toast.LENGTH_SHORT).show();
-					Log.d(TAG, "onClick boardName === " + tvBoardName.getText());
-					((MainActivity)mContext).mDBManager.insertOrUpdateBoard(mBoardList.get(index));
-				}
-
-			});
+			
 			return convertView;
 		}
 
@@ -308,5 +313,6 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
+	
 
 }
