@@ -20,11 +20,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,6 +80,11 @@ public class MainActivity extends FragmentActivity {
 		mDBManager.close();
 	}
 
+	/**
+	 * 
+	 * 首页ViewPager Adapter
+	 *
+	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
@@ -156,6 +166,11 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * 
+	 * 常用板块Fragment
+	 * 
+	 */
 	public static class MyBoardsFragment extends Fragment {
 
 		private static final String TAG = "MyBoardsFragment";
@@ -177,12 +192,93 @@ public class MainActivity extends FragmentActivity {
 					container, false);
 			ListView lvMyBoards = (ListView) rootView
 					.findViewById(R.id.main_myboards_listview);
+			lvMyBoards.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+			lvMyBoards.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Log.d(TAG, "onClick =================== ");
+					TextView tvBoardName = (TextView) view
+							.findViewById(R.id.main_board_name);
+					Toast.makeText(getActivity(), tvBoardName.getText(),
+							Toast.LENGTH_SHORT).show();
+				}
+
+			});
+			lvMyBoards.setMultiChoiceModeListener(new ModeCallback(lvMyBoards));
 			lvMyBoards.setAdapter(new MyBoardListAdapter(getActivity(),
 					((MainActivity) getActivity()).mMyBoardsList));
 			return rootView;
 		}
+
+		/**
+		 * 
+		 * 常用板块，item长按多选删除listener
+		 * 
+		 */
+		private class ModeCallback implements ListView.MultiChoiceModeListener {
+
+			private static final String TAG = "ModeCallback";
+			private ListView mListView = null;
+
+			public ModeCallback(ListView lv) {
+				mListView = lv;
+			}
+
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				MenuInflater inflater = getActivity().getMenuInflater();
+				inflater.inflate(R.menu.delete, menu);
+				mode.setTitle("Select Items");
+				setSubtitle(mode);
+				return true;
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				return true;
+			}
+
+			@Override
+			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+				Log.d(TAG, "onActionItemClicked");
+				Toast.makeText(getActivity(), "Delete " + mListView.getCheckedItemCount() +
+                        " items", Toast.LENGTH_SHORT).show();
+                mode.finish();
+				return false;
+			}
+
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+			}
+
+			@Override
+			public void onItemCheckedStateChanged(ActionMode mode,
+					int position, long id, boolean checked) {
+				setSubtitle(mode);
+			}
+
+			private void setSubtitle(ActionMode mode) {
+				final int checkedCount = mListView.getCheckedItemCount();
+				switch (checkedCount) {
+				case 0:
+					mode.setSubtitle(null);
+					break;
+				default:
+					mode.setSubtitle("" + checkedCount + " items selected");
+					break;
+				}
+			}
+
+		}
 	}
 
+	/**
+	 * 
+	 * 所有板块Fragment
+	 *
+	 */
 	public static class AllBoardsFragment extends Fragment {
 
 		private static final String TAG = "AllBoardsFragment";
@@ -281,6 +377,11 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * 
+	 * 所有板块GridViewAdapter
+	 *
+	 */
 	public static class BoardGridViewAdapter extends BaseAdapter {
 
 		private static String TAG = "BoardGridViewAdapter";
@@ -378,10 +479,14 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
-
+	
+	/**
+	 * 
+	 * 常用板块Adapter
+	 *
+	 */
 	public static class MyBoardListAdapter extends BaseAdapter {
 
-		private static String TAG = "MyBoardListAdapter";
 		private Context mContext = null;
 		private LayoutInflater mInflater = null;
 		private List<Board> mBoardList = null;
@@ -411,7 +516,8 @@ public class MainActivity extends FragmentActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder = null;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_main_board, null);
+				convertView = mInflater.inflate(R.layout.item_main_myboard,
+						null);
 				holder = new ViewHolder();
 				holder.ivBoardIcon = (ImageView) convertView
 						.findViewById(R.id.main_board_ic);
@@ -419,18 +525,6 @@ public class MainActivity extends FragmentActivity {
 						.findViewById(R.id.main_board_name);
 
 				convertView.setTag(holder);
-				convertView.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						Log.d(TAG, "onClick =================== ");
-						TextView tvBoardName = (TextView) v
-								.findViewById(R.id.main_board_name);
-						Toast.makeText(mContext, tvBoardName.getText(),
-								Toast.LENGTH_SHORT).show();
-					}
-
-				});
 				convertView
 						.setLayoutParams(new android.widget.AbsListView.LayoutParams(
 								android.widget.AbsListView.LayoutParams.MATCH_PARENT,
@@ -444,10 +538,9 @@ public class MainActivity extends FragmentActivity {
 					.getIcon());
 			holder.tvBoardName.setText(mBoardList.get(position).getName());
 
-			convertView.setBackgroundColor((position % 2 == 0 ? mContext
-					.getResources().getColor(R.color.shit1) : mContext
-					.getResources().getColor(R.color.shit2)));
-
+			convertView
+					.setBackgroundResource(position % 2 == 0 ? R.drawable.item_myboard1_style
+							: R.drawable.item_myboard2_style);
 			return convertView;
 		}
 

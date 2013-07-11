@@ -4,6 +4,7 @@
     <string name="app_name">NGAClient</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
+    <string name="action_delete">Delete</string>
     <string name="title_section1">个人中心</string>
     <string name="title_section2">常用板块</string>
     <string name="title_section3">全部板块</string>
