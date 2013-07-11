@@ -11,6 +11,7 @@ import com.arthur.ngaclient.util.DBManager;
 import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.widget.CustomGridView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -54,6 +55,7 @@ public class MainActivity extends FragmentActivity {
 				getSupportFragmentManager());
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
+		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setCurrentItem(1);
 
@@ -83,7 +85,7 @@ public class MainActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			Fragment fragment = null;
 
-			Log.d(TAG, "getItem ================" + position);
+			Log.d(TAG, "getItem ================ " + position);
 			switch (position) {
 			case 0:
 				fragment = new DummySectionFragment();
@@ -137,15 +139,13 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			Log.d(TAG, "onCreate ============== ");
+			Log.d(TAG, "onCreate");
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			Log.d(TAG, "onCreateView ================ ");
-			int i = getArguments().getInt(ARG_SECTION_NUMBER);
-			Log.d(TAG, "onCreateView i ================ " + i);
+			Log.d(TAG, "onCreateView");
 			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
 					container, false);
 			TextView dummyTextView = (TextView) rootView
@@ -166,15 +166,13 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			Log.d(TAG, "onCreate ============== ");
+			Log.d(TAG, "onCreate");
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			Log.d(TAG, "onCreateView ================ ");
-			int i = getArguments().getInt(ARG_SECTION_NUMBER);
-			Log.d(TAG, "onCreateView i ================ " + i);
+			Log.d(TAG, "onCreateView");
 			View rootView = inflater.inflate(R.layout.fragment_main_my_board,
 					container, false);
 			ListView lvMyBoards = (ListView) rootView
@@ -195,16 +193,13 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
-			Log.d(TAG, "onCreate ============== ");
-			int i = getArguments().getInt(ARG_SECTION_NUMBER);
-			Log.d(TAG, "onCreate i ================ " + i);
+			Log.d(TAG, "onCreate");
 		}
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			Log.d(TAG, "onCreateView ================ ");
-			Log.d(TAG, "container  ================ " + container.toString());
+			Log.d(TAG, "onCreateView");
 			View rootView = inflater.inflate(R.layout.fragment_main_all_board,
 					container, false);
 			LinearLayout llAllBoard = (LinearLayout) rootView
@@ -230,17 +225,59 @@ public class MainActivity extends FragmentActivity {
 			}
 			return rootView;
 		}
-		
+
 		@Override
-		public void onPause(){
+		public void onAttach(Activity activity) {
+			super.onAttach(activity);
+			Log.d(TAG, "onAttach");
+		}
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState);
+			Log.d(TAG, "onActivityCreated");
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			Log.d(TAG, "onStart");
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+			Log.d(TAG, "onResume");
+		}
+
+		@Override
+		public void onPause() {
 			super.onPause();
 			Log.d(TAG, "onPause");
 		}
-		
+
 		@Override
-		public void onDestroy(){
+		public void onStop() {
+			super.onStop();
+			Log.d(TAG, "onStop");
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			Log.d(TAG, "onDestroyView");
+		}
+
+		@Override
+		public void onDestroy() {
 			super.onDestroy();
 			Log.d(TAG, "onDestroy");
+		}
+
+		@Override
+		public void onDetach() {
+			super.onDetach();
+			Log.d(TAG, "onDetach");
 		}
 	}
 
