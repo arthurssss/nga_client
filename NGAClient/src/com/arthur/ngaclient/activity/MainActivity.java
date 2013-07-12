@@ -1,7 +1,10 @@
 package com.arthur.ngaclient.activity;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
@@ -11,6 +14,7 @@ import com.arthur.ngaclient.util.DBManager;
 import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.widget.CustomGridView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -49,8 +53,6 @@ public class MainActivity extends FragmentActivity {
 
 	protected DBManager mDBManager = null;
 
-	protected List<Board> mMyBoardsList = null;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +67,7 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setCurrentItem(1);
 
 		mDBManager = new DBManager(this);
-		mMyBoardsList = mDBManager.getBoardList();
+
 	}
 
 	@Override
@@ -83,7 +85,7 @@ public class MainActivity extends FragmentActivity {
 	/**
 	 * 
 	 * 首页ViewPager Adapter
-	 *
+	 * 
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -174,6 +176,8 @@ public class MainActivity extends FragmentActivity {
 	public static class MyBoardsFragment extends Fragment {
 
 		private static final String TAG = "MyBoardsFragment";
+		private MyBoardListAdapter mMyBoardListAdapter;
+		private List<Board> mMyBoardsList = null;
 
 		public MyBoardsFragment() {
 		}
@@ -182,6 +186,8 @@ public class MainActivity extends FragmentActivity {
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			Log.d(TAG, "onCreate");
+			mMyBoardsList = ((MainActivity) getActivity()).mDBManager
+					.getBoardList();
 		}
 
 		@Override
@@ -193,6 +199,11 @@ public class MainActivity extends FragmentActivity {
 			ListView lvMyBoards = (ListView) rootView
 					.findViewById(R.id.main_myboards_listview);
 			lvMyBoards.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+
+			lvMyBoards.setMultiChoiceModeListener(new ModeCallback(lvMyBoards));
+			mMyBoardListAdapter = new MyBoardListAdapter(getActivity(),
+					mMyBoardsList);
+			lvMyBoards.setAdapter(mMyBoardListAdapter);
 			lvMyBoards.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -201,14 +212,12 @@ public class MainActivity extends FragmentActivity {
 					Log.d(TAG, "onClick =================== ");
 					TextView tvBoardName = (TextView) view
 							.findViewById(R.id.main_board_name);
+
 					Toast.makeText(getActivity(), tvBoardName.getText(),
 							Toast.LENGTH_SHORT).show();
 				}
 
 			});
-			lvMyBoards.setMultiChoiceModeListener(new ModeCallback(lvMyBoards));
-			lvMyBoards.setAdapter(new MyBoardListAdapter(getActivity(),
-					((MainActivity) getActivity()).mMyBoardsList));
 			return rootView;
 		}
 
@@ -221,6 +230,8 @@ public class MainActivity extends FragmentActivity {
 
 			private static final String TAG = "ModeCallback";
 			private ListView mListView = null;
+			@SuppressLint("UseSparseArrays")
+			private Map<Integer, Boolean> mItemChecked = new HashMap<Integer, Boolean>();
 
 			public ModeCallback(ListView lv) {
 				mListView = lv;
@@ -243,19 +254,41 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				Log.d(TAG, "onActionItemClicked");
-				Toast.makeText(getActivity(), "Delete " + mListView.getCheckedItemCount() +
-                        " items", Toast.LENGTH_SHORT).show();
-                mode.finish();
+				Toast.makeText(getActivity(),
+						"Delete " + mListView.getCheckedItemCount() + " items",
+						Toast.LENGTH_SHORT).show();
+
+				Iterator<Board> iterator = mMyBoardsList.iterator();
+				int index = 0;
+				while (iterator.hasNext()) {
+					iterator.next();
+					for (Integer position : mItemChecked.keySet()) {
+						if (position == index) {
+							iterator.remove();
+						}
+					}
+					index++;
+				}
+				mItemChecked.clear();
+				mMyBoardListAdapter.notifyDataSetChanged();
+				mode.finish();
 				return false;
 			}
 
 			@Override
 			public void onDestroyActionMode(ActionMode mode) {
+				Log.d(TAG, "onDestroyActionMode");
+				mItemChecked.clear();
 			}
 
 			@Override
 			public void onItemCheckedStateChanged(ActionMode mode,
 					int position, long id, boolean checked) {
+				if (checked) {
+					mItemChecked.put(position, true);
+				} else {
+					mItemChecked.remove(position);
+				}
 				setSubtitle(mode);
 			}
 
@@ -277,7 +310,7 @@ public class MainActivity extends FragmentActivity {
 	/**
 	 * 
 	 * 所有板块Fragment
-	 *
+	 * 
 	 */
 	public static class AllBoardsFragment extends Fragment {
 
@@ -380,7 +413,7 @@ public class MainActivity extends FragmentActivity {
 	/**
 	 * 
 	 * 所有板块GridViewAdapter
-	 *
+	 * 
 	 */
 	public static class BoardGridViewAdapter extends BaseAdapter {
 
@@ -479,11 +512,11 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
-	
+
 	/**
 	 * 
 	 * 常用板块Adapter
-	 *
+	 * 
 	 */
 	public static class MyBoardListAdapter extends BaseAdapter {
 
