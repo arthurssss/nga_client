@@ -1,19 +1,30 @@
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_bg"
-    tools:context=".MainActivity" >
-
-    <android.support.v4.view.PagerTitleStrip
-        android:id="@+id/pager_title_strip"
+    tools:context=".MainActivity"
+    android:orientation="vertical" >
+    
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@color/board_name_bg"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:textColor="@color/white" />
+        android:layout_height="1dp"
+        android:background="@color/tab_line"/>
 
-</android.support.v4.view.ViewPager>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pager_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/board_name_bg"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:textColor="@color/white" />
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

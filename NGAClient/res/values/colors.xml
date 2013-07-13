@@ -5,5 +5,7 @@
     <color name="plate_name">#712d08</color>
     <color name="shit1">#feb</color>
     <color name="shit2">#fff1c9</color>
+    <color name="shit3">#FFE7C5</color>
     <color name="board_name_bg">#551200</color>
+    <color name="tab_line">#965D36</color>
 </resources>

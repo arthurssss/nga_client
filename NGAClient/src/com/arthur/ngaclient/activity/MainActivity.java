@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.ActionMode;
@@ -66,6 +67,9 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setCurrentItem(1);
+		PagerTabStrip pagerTabStrip = (PagerTabStrip)findViewById(R.id.pager_tab_strip);
+
+        pagerTabStrip.setTabIndicatorColor(this.getResources().getColor(R.color.tab_line));
 
 		mDBManager = new DBManager(this);
 
