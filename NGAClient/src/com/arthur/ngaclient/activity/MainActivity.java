@@ -1,5 +1,6 @@
 package com.arthur.ngaclient.activity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -259,17 +260,19 @@ public class MainActivity extends FragmentActivity {
 						Toast.LENGTH_SHORT).show();
 
 				Iterator<Board> iterator = mMyBoardsList.iterator();
+				List<String> urlList = new ArrayList<String>();
 				int index = 0;
 				while (iterator.hasNext()) {
-					iterator.next();
+					Board board = iterator.next();
 					for (Integer position : mItemChecked.keySet()) {
 						if (position == index) {
+							urlList.add(board.getUrl());
 							iterator.remove();
 						}
 					}
 					index++;
 				}
-				mItemChecked.clear();
+				((MainActivity) getActivity()).mDBManager.delete(urlList);
 				mMyBoardListAdapter.notifyDataSetChanged();
 				mode.finish();
 				return false;
@@ -299,7 +302,7 @@ public class MainActivity extends FragmentActivity {
 					mode.setSubtitle(null);
 					break;
 				default:
-					mode.setSubtitle("" + checkedCount + " items selected");
+					mode.setSubtitle(checkedCount + " items selected");
 					break;
 				}
 			}

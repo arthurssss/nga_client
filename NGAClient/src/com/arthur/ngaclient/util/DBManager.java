@@ -1,6 +1,7 @@
 package com.arthur.ngaclient.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.arthur.ngaclient.bean.Board;
@@ -47,6 +48,21 @@ public class DBManager {
 			boardList.add(new Board(0, url, name, src));
 		}
 		return boardList;
+	}
+	
+	public void delete(List<String> list) {
+		Iterator<String> iterator = list.iterator();
+		StringBuffer sb = new StringBuffer();
+		while(iterator.hasNext()){
+			String s = iterator.next();
+			if (iterator.hasNext()) {
+				sb.append("'" + s + "', ");
+			} else {
+				sb.append("'" + s + "'");
+			}
+		}
+		String sql = "delete from board where url in (" + sb.toString() + ")";
+		mDB.execSQL(sql);
 	}
 
 }
