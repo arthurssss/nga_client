@@ -14,7 +14,7 @@ public class NGAClientApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 	}
-
+	
 	public List<Plate> loadDefaultBoard() {
 
 		List<Plate> plates = new ArrayList<Plate>();

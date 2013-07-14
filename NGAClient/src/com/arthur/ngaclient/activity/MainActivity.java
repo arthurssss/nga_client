@@ -18,6 +18,7 @@ import com.arthur.ngaclient.widget.CustomGridView;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -25,8 +26,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,6 +61,61 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// 获取屏幕密度（方法1）
+		int screenWidth = getWindowManager().getDefaultDisplay().getWidth(); // 屏幕宽（像素，如：480px）
+		int screenHeight = getWindowManager().getDefaultDisplay().getHeight(); // 屏幕高（像素，如：800p）
+
+		Log.e(TAG + "  getDefaultDisplay", "screenWidth=" + screenWidth
+				+ "; screenHeight=" + screenHeight);
+		Log.e(TAG + "  getDefaultDisplay", "screenWidthDp=" + DensityUtil.px2dip(this, screenWidth)
+				+ "; screenHeightDp=" + DensityUtil.px2dip(this, screenHeight));
+		Log.i(TAG, "------------------------------------------");
+		// 获取屏幕密度（方法2）
+		DisplayMetrics dm = new DisplayMetrics();
+		dm = getResources().getDisplayMetrics();
+
+		float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+		int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
+		float xdpi = dm.xdpi;
+		float ydpi = dm.ydpi;
+
+		Log.e(TAG + "  DisplayMetrics", "xdpi=" + xdpi + "; ydpi=" + ydpi);
+		Log.e(TAG + "  DisplayMetrics", "density=" + density + "; densityDPI="
+				+ densityDPI);
+
+		screenWidth = dm.widthPixels; // 屏幕宽（像素，如：480px）
+		screenHeight = dm.heightPixels; // 屏幕高（像素，如：800px）
+
+		Log.e(TAG + "  DisplayMetrics(111)", "screenWidth=" + screenWidth
+				+ "; screenHeight=" + screenHeight);
+		Log.i(TAG, "------------------------------------------");
+
+		// 获取屏幕密度（方法3）
+		dm = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+		density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+		densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
+		xdpi = dm.xdpi;
+		ydpi = dm.ydpi;
+
+		Log.e(TAG + "  DisplayMetrics", "xdpi=" + xdpi + "; ydpi=" + ydpi);
+		Log.e(TAG + "  DisplayMetrics", "density=" + density + "; densityDPI="
+				+ densityDPI);
+
+		int screenWidthDip = dm.widthPixels; // 屏幕宽（dip，如：320dip）
+		int screenHeightDip = dm.heightPixels; // 屏幕宽（dip，如：533dip）
+
+		Log.e(TAG + "  DisplayMetrics(222)", "screenWidthDip=" + screenWidthDip
+				+ "; screenHeightDip=" + screenHeightDip);
+
+		screenWidth = (int) (dm.widthPixels * density + 0.5f); // 屏幕宽（px，如：480px）
+		screenHeight = (int) (dm.heightPixels * density + 0.5f); // 屏幕高（px，如：800px）
+
+		Log.e(TAG + "  DisplayMetrics(222)", "screenWidth=" + screenWidth
+				+ "; screenHeight=" + screenHeight);
+		Log.i(TAG, "------------------------------------------");
+
 		setContentView(R.layout.activity_main);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
@@ -67,12 +125,31 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
 		mViewPager.setCurrentItem(1);
-		PagerTabStrip pagerTabStrip = (PagerTabStrip)findViewById(R.id.pager_tab_strip);
+		PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
 
-        pagerTabStrip.setTabIndicatorColor(this.getResources().getColor(R.color.tab_line));
+		pagerTabStrip.setTabIndicatorColor(this.getResources().getColor(
+				R.color.tab_line));
 
 		mDBManager = new DBManager(this);
 
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "onConfigurationChanged");
+		// 检测屏幕的方向：纵向或横向
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			// 当前为横屏， 在此处添加额外的处理代码
+		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			// 当前为竖屏， 在此处添加额外的处理代码
+		}
+		// 检测实体键盘的状态：推出或者合上
+		if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
+			// 实体键盘处于推出状态，在此处添加额外的处理代码
+		} else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
+			// 实体键盘处于合上状态，在此处添加额外的处理代码
+		}
 	}
 
 	@Override
@@ -82,8 +159,33 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.d(TAG, "onPause");
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume");
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		Log.d(TAG, "onStart");
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Log.d(TAG, "onStop");
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Log.d(TAG, "onDestroy");
 		mDBManager.close();
 	}
 
@@ -143,6 +245,12 @@ public class MainActivity extends FragmentActivity {
 				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;
+		}
+
+		@Override
+		public float getPageWidth(int position) {
+			return position == 0 ? getResources().getInteger(
+					R.integer.personal_center_width) / 100f : 1.0f;
 		}
 	}
 
@@ -224,6 +332,60 @@ public class MainActivity extends FragmentActivity {
 
 			});
 			return rootView;
+		}
+
+		@Override
+		public void onAttach(Activity activity) {
+			super.onAttach(activity);
+			Log.d(TAG, "onAttach");
+		}
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState);
+			Log.d(TAG, "onActivityCreated");
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			Log.d(TAG, "onStart");
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+			Log.d(TAG, "onResume");
+		}
+
+		@Override
+		public void onPause() {
+			super.onPause();
+			Log.d(TAG, "onPause");
+		}
+
+		@Override
+		public void onStop() {
+			super.onStop();
+			Log.d(TAG, "onStop");
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			Log.d(TAG, "onDestroyView");
+		}
+
+		@Override
+		public void onDestroy() {
+			super.onDestroy();
+			Log.d(TAG, "onDestroy");
+		}
+
+		@Override
+		public void onDetach() {
+			super.onDetach();
+			Log.d(TAG, "onDetach");
 		}
 
 		/**

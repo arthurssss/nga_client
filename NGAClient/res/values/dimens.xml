@@ -7,4 +7,5 @@
     <dimen name="plate_name_size">16sp</dimen>
     <dimen name="board_name_size">12sp</dimen>
 
+    <integer name="personal_center_width">100</integer>
 </resources>
