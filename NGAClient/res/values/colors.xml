@@ -8,4 +8,6 @@
     <color name="shit3">#FFE7C5</color>
     <color name="board_name_bg">#551200</color>
     <color name="tab_line">#965D36</color>
+    <color name="setting_title">#444</color>
+    <color name="divider">#33000000</color>
 </resources>

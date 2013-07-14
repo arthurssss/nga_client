@@ -29,7 +29,6 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,18 +60,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// 获取屏幕密度（方法1）
-		int screenWidth = getWindowManager().getDefaultDisplay().getWidth(); // 屏幕宽（像素，如：480px）
-		int screenHeight = getWindowManager().getDefaultDisplay().getHeight(); // 屏幕高（像素，如：800p）
-
-		Log.e(TAG + "  getDefaultDisplay", "screenWidth=" + screenWidth
-				+ "; screenHeight=" + screenHeight);
-		Log.e(TAG + "  getDefaultDisplay", "screenWidthDp=" + DensityUtil.px2dip(this, screenWidth)
-				+ "; screenHeightDp=" + DensityUtil.px2dip(this, screenHeight));
-		Log.i(TAG, "------------------------------------------");
-		// 获取屏幕密度（方法2）
 		DisplayMetrics dm = new DisplayMetrics();
-		dm = getResources().getDisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 		float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
 		int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
@@ -83,37 +72,14 @@ public class MainActivity extends FragmentActivity {
 		Log.e(TAG + "  DisplayMetrics", "density=" + density + "; densityDPI="
 				+ densityDPI);
 
-		screenWidth = dm.widthPixels; // 屏幕宽（像素，如：480px）
-		screenHeight = dm.heightPixels; // 屏幕高（像素，如：800px）
-
-		Log.e(TAG + "  DisplayMetrics(111)", "screenWidth=" + screenWidth
-				+ "; screenHeight=" + screenHeight);
-		Log.i(TAG, "------------------------------------------");
-
-		// 获取屏幕密度（方法3）
-		dm = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-		density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
-		densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）
-		xdpi = dm.xdpi;
-		ydpi = dm.ydpi;
-
-		Log.e(TAG + "  DisplayMetrics", "xdpi=" + xdpi + "; ydpi=" + ydpi);
-		Log.e(TAG + "  DisplayMetrics", "density=" + density + "; densityDPI="
-				+ densityDPI);
-
-		int screenWidthDip = dm.widthPixels; // 屏幕宽（dip，如：320dip）
-		int screenHeightDip = dm.heightPixels; // 屏幕宽（dip，如：533dip）
-
-		Log.e(TAG + "  DisplayMetrics(222)", "screenWidthDip=" + screenWidthDip
-				+ "; screenHeightDip=" + screenHeightDip);
-
-		screenWidth = (int) (dm.widthPixels * density + 0.5f); // 屏幕宽（px，如：480px）
-		screenHeight = (int) (dm.heightPixels * density + 0.5f); // 屏幕高（px，如：800px）
+		int screenWidth = dm.widthPixels; // 屏幕宽（dip，如：320dip）
+		int screenHeight = dm.heightPixels; // 屏幕宽（dip，如：533dip）
 
 		Log.e(TAG + "  DisplayMetrics(222)", "screenWidth=" + screenWidth
 				+ "; screenHeight=" + screenHeight);
+
+		Log.e(TAG + "  DisplayMetrics(222)", "screenWidthDp=" + DensityUtil.px2dip(this, screenWidth)
+				+ "; screenHeightDp=" + DensityUtil.px2dip(this, screenHeight));
 		Log.i(TAG, "------------------------------------------");
 
 		setContentView(R.layout.activity_main);
@@ -207,7 +173,7 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "getItem ================ " + position);
 			switch (position) {
 			case 0:
-				fragment = new DummySectionFragment();
+				fragment = new PersonalCenterFragment();
 				Bundle args = new Bundle();
 				args.putInt(ARG_SECTION_NUMBER, position);
 				fragment.setArguments(args);
@@ -254,11 +220,11 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	public static class DummySectionFragment extends Fragment {
+	public static class PersonalCenterFragment extends Fragment {
 
 		private static final String TAG = "DummySectionFragment";
 
-		public DummySectionFragment() {
+		public PersonalCenterFragment() {
 		}
 
 		@Override
@@ -271,12 +237,8 @@ public class MainActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			Log.d(TAG, "onCreateView");
-			View rootView = inflater.inflate(R.layout.fragment_main_dummy,
+			View rootView = inflater.inflate(R.layout.fragment_main_personal_center,
 					container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
 			return rootView;
 		}
 	}
