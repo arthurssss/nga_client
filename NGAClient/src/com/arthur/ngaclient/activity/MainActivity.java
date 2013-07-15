@@ -78,8 +78,10 @@ public class MainActivity extends FragmentActivity {
 		Log.e(TAG + "  DisplayMetrics(222)", "screenWidth=" + screenWidth
 				+ "; screenHeight=" + screenHeight);
 
-		Log.e(TAG + "  DisplayMetrics(222)", "screenWidthDp=" + DensityUtil.px2dip(this, screenWidth)
-				+ "; screenHeightDp=" + DensityUtil.px2dip(this, screenHeight));
+		Log.e(TAG + "  DisplayMetrics(222)",
+				"screenWidthDp=" + DensityUtil.px2dip(this, screenWidth)
+						+ "; screenHeightDp="
+						+ DensityUtil.px2dip(this, screenHeight));
 		Log.i(TAG, "------------------------------------------");
 
 		setContentView(R.layout.activity_main);
@@ -237,8 +239,8 @@ public class MainActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 			Log.d(TAG, "onCreateView");
-			View rootView = inflater.inflate(R.layout.fragment_main_personal_center,
-					container, false);
+			View rootView = inflater.inflate(
+					R.layout.fragment_main_personal_center, container, false);
 			return rootView;
 		}
 	}
@@ -580,16 +582,8 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final int index = position;
-			ViewHolder holder = null;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_main_board, null);
-				holder = new ViewHolder();
-				holder.ivBoardIcon = (ImageView) convertView
-						.findViewById(R.id.main_board_ic);
-				holder.tvBoardName = (TextView) convertView
-						.findViewById(R.id.main_board_name);
-
-				convertView.setTag(holder);
 				convertView.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -611,17 +605,18 @@ public class MainActivity extends FragmentActivity {
 						.setLayoutParams(new android.widget.AbsListView.LayoutParams(
 								android.widget.AbsListView.LayoutParams.MATCH_PARENT,
 								DensityUtil.dip2px(mContext, 45)));
-			} else {
-				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.ivBoardIcon.setImageResource(mBoardList.get(position)
-					.getIcon());
-			holder.tvBoardName.setText(mBoardList.get(position).getName());
+			((TextView) convertView).setCompoundDrawablesWithIntrinsicBounds(
+					mContext.getResources().getDrawable(
+							mBoardList.get(position).getIcon()), null, null,
+					null);
+			((TextView) convertView)
+					.setText(mBoardList.get(position).getName());
 
 			if (position == 0) {
 				convertView.setBackgroundResource(R.drawable.main_board_bg);
-				holder.tvBoardName.setTextColor(mContext.getResources()
+				((TextView) convertView).setTextColor(mContext.getResources()
 						.getColor(R.color.white));
 			} else {
 				int numCol = ((CustomGridView) parent).getNumColumns();
@@ -635,11 +630,6 @@ public class MainActivity extends FragmentActivity {
 			}
 
 			return convertView;
-		}
-
-		private class ViewHolder {
-			public ImageView ivBoardIcon;
-			public TextView tvBoardName;
 		}
 
 	}
