@@ -12,5 +12,8 @@
     <string name="setting_myfav">我的收藏</string>
     <string name="setting_mytopic">我的主题</string>
     <string name="setting_myreply">我的回复</string>
+    <string name="login_user">用户名</string>
+    <string name="login_pwd">密码</string>
+    <string name="login_btn">登录</string>
 
 </resources>

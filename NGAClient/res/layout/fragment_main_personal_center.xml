@@ -11,6 +11,7 @@
         android:background="@color/tab_line" />
 
     <Button
+        android:id="@+id/setting_login_btn"
         android:layout_width="80dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
