@@ -4,20 +4,22 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
-        android:allowBackup="true"
         android:name=".NGAClientApplication"
+        android:allowBackup="true"
         android:icon="@drawable/nga_bg"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.arthur.ngaclient.activity.MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|keyboardHidden|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +28,8 @@
         </activity>
         <activity
             android:name="com.arthur.ngaclient.activity.LoginActivity"
-            android:label="@string/login_btn"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/login_btn"
             android:windowSoftInputMode="stateVisible" >
         </activity>
     </application>

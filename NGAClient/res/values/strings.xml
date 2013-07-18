@@ -15,5 +15,7 @@
     <string name="login_user">用户名</string>
     <string name="login_pwd">密码</string>
     <string name="login_btn">登录</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_fail">登录失败</string>
 
 </resources>

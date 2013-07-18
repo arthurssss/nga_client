@@ -10,6 +10,8 @@ import android.app.Application;
 
 public class NGAClientApplication extends Application {
 
+	public static final String USER_AGENT = "AndroidNga/460";
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
