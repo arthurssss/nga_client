@@ -611,6 +611,10 @@ public class MainActivity extends FragmentActivity {
 										+ tvBoardName.getText());
 						((MainActivity) mContext).mDBManager
 								.insertOrUpdateBoard(mBoardList.get(index));
+						Intent intent = new Intent();
+						intent.setClass((MainActivity) mContext, TopicListActivity.class);
+						intent.putExtra("title", tvBoardName.getText());
+						mContext.startActivity(intent);
 					}
 
 				});
