@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ActionMode;
@@ -56,6 +58,7 @@ public class MainActivity extends FragmentActivity {
 	protected SectionsPagerAdapter mSectionsPagerAdapter;
 
 	protected ViewPager mViewPager;
+	protected int mCurPagerIndex = 1;
 
 	protected DBManager mDBManager = null;
 
@@ -94,7 +97,29 @@ public class MainActivity extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setOffscreenPageLimit(2);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager.setCurrentItem(1);
+		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+			}
+
+			@Override
+			public void onPageSelected(int arg0) {
+				mCurPagerIndex = arg0;
+				Log.d(TAG, "onPageSelected mCurPagerIndex = " + mCurPagerIndex);
+			}
+
+		});
+		mCurPagerIndex = ((NGAClientApplication) getApplication()).getConfig()
+				.getInt("curPagerIndex", 1);
+		Log.d(TAG, "mCurPagerIndex = " + mCurPagerIndex);
+		mViewPager.setCurrentItem(mCurPagerIndex);
 		PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
 
 		pagerTabStrip.setTabIndicatorColor(this.getResources().getColor(
@@ -102,6 +127,20 @@ public class MainActivity extends FragmentActivity {
 
 		mDBManager = new DBManager(this);
 
+	}
+
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		mCurPagerIndex = savedInstanceState.getInt("viewPagerIndex", 1);
+		Log.d(TAG, "onRestoreInstanceState mCurPagerIndex = " + mCurPagerIndex);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+		Log.d(TAG, "onSaveInstanceState mCurPagerIndex = " + mCurPagerIndex);
+		savedInstanceState.putInt("viewPagerIndex", mCurPagerIndex);
 	}
 
 	@Override
@@ -132,6 +171,10 @@ public class MainActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		Log.d(TAG, "onPause");
+		Editor editor = ((NGAClientApplication) getApplication()).getConfig()
+				.edit();
+		editor.putInt("curPagerIndex", mCurPagerIndex);
+		editor.commit();
 	}
 
 	@Override
@@ -243,8 +286,9 @@ public class MainActivity extends FragmentActivity {
 			Log.d(TAG, "onCreateView");
 			View rootView = inflater.inflate(
 					R.layout.fragment_main_personal_center, container, false);
-			Button loginBtn = (Button) rootView.findViewById(R.id.setting_login_btn);
-			loginBtn.setOnClickListener(new OnClickListener(){
+			Button loginBtn = (Button) rootView
+					.findViewById(R.id.setting_login_btn);
+			loginBtn.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -252,7 +296,7 @@ public class MainActivity extends FragmentActivity {
 					intent.setClass(getActivity(), LoginActivity.class);
 					getActivity().startActivity(intent);
 				}
-				
+
 			});
 			return rootView;
 		}
@@ -302,9 +346,15 @@ public class MainActivity extends FragmentActivity {
 					Log.d(TAG, "onClick =================== ");
 					TextView tvBoardName = (TextView) view
 							.findViewById(R.id.main_board_name);
+					
 
-					Toast.makeText(getActivity(), tvBoardName.getText(),
-							Toast.LENGTH_SHORT).show();
+					((MainActivity) getActivity()).mDBManager
+							.insertOrUpdateBoard(mMyBoardsList.get(position));
+					Intent intent = new Intent();
+					intent.setClass((MainActivity) getActivity(),
+							TopicListActivity.class);
+					intent.putExtra("title", tvBoardName.getText());
+					getActivity().startActivity(intent);
 				}
 
 			});
@@ -604,15 +654,14 @@ public class MainActivity extends FragmentActivity {
 						Log.d(TAG, "onClick =================== ");
 						TextView tvBoardName = (TextView) v
 								.findViewById(R.id.main_board_name);
-						Toast.makeText(mContext, tvBoardName.getText(),
-								Toast.LENGTH_SHORT).show();
 						Log.d(TAG,
 								"onClick boardName === "
 										+ tvBoardName.getText());
 						((MainActivity) mContext).mDBManager
 								.insertOrUpdateBoard(mBoardList.get(index));
 						Intent intent = new Intent();
-						intent.setClass((MainActivity) mContext, TopicListActivity.class);
+						intent.setClass((MainActivity) mContext,
+								TopicListActivity.class);
 						intent.putExtra("title", tvBoardName.getText());
 						mContext.startActivity(intent);
 					}

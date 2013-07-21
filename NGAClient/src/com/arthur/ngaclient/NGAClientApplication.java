@@ -7,16 +7,31 @@ import com.arthur.ngaclient.bean.Board;
 import com.arthur.ngaclient.bean.Plate;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class NGAClientApplication extends Application {
 
 	public static final String USER_AGENT = "AndroidNga/460";
-	
+	private SharedPreferences mSharedPreferences;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		if (mSharedPreferences == null) {
+			mSharedPreferences = getSharedPreferences("config",
+					Context.MODE_PRIVATE);
+		}
 	}
 	
+	public SharedPreferences getConfig() {
+		if (mSharedPreferences == null) {
+			mSharedPreferences = getSharedPreferences("config",
+					Context.MODE_PRIVATE);
+		}
+		return mSharedPreferences;
+	}
+
 	public List<Plate> loadDefaultBoard() {
 
 		List<Plate> plates = new ArrayList<Plate>();
