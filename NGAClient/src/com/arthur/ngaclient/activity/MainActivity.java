@@ -11,6 +11,7 @@ import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.Board;
 import com.arthur.ngaclient.bean.Plate;
+import com.arthur.ngaclient.task.TopicListTask;
 import com.arthur.ngaclient.util.DBManager;
 import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.widget.CustomGridView;
@@ -659,11 +660,12 @@ public class MainActivity extends FragmentActivity {
 										+ tvBoardName.getText());
 						((MainActivity) mContext).mDBManager
 								.insertOrUpdateBoard(mBoardList.get(index));
-						Intent intent = new Intent();
-						intent.setClass((MainActivity) mContext,
-								TopicListActivity.class);
-						intent.putExtra("title", tvBoardName.getText());
-						mContext.startActivity(intent);
+//						Intent intent = new Intent();
+//						intent.setClass((MainActivity) mContext,
+//								TopicListActivity.class);
+//						intent.putExtra("title", tvBoardName.getText());
+//						mContext.startActivity(intent);
+						new TopicListTask(mContext).execute("7", "1");
 					}
 
 				});

@@ -31,11 +31,11 @@ public class TopicListFragment extends Fragment {
 	
 	private class TopicListAdapter extends BaseAdapter{
 		
-		private Context mContext = null;
+//		private Context mContext = null;
 		private LayoutInflater mInflater = null;
 		
 		public TopicListAdapter(Context context){
-			mContext = context;
+//			mContext = context;
 			mInflater = LayoutInflater.from(context);
 		}
 
@@ -61,9 +61,9 @@ public class TopicListFragment extends Fragment {
 				convertView = mInflater.inflate(R.layout.item_board_topic, null);
 				holder = new ViewHolder();
 				holder.tvReplyCount = (TextView) convertView.findViewById(R.id.board_reply_count);
-				holder.tvTopicTitle = (TextView) convertView.findViewById(R.id.board_topic_title);
-				holder.tvTopicAuthor = (TextView) convertView.findViewById(R.id.board_topic_author);
-				holder.tvTopicPoster = (TextView) convertView.findViewById(R.id.board_topic_poster);
+//				holder.tvTopicTitle = (TextView) convertView.findViewById(R.id.board_topic_title);
+//				holder.tvTopicAuthor = (TextView) convertView.findViewById(R.id.board_topic_author);
+//				holder.tvTopicPoster = (TextView) convertView.findViewById(R.id.board_topic_poster);
 				holder.llTopicTitleBg = (LinearLayout) convertView.findViewById(R.id.board_title_bg);
 				convertView.setTag(holder);
 			} else {
@@ -81,9 +81,9 @@ public class TopicListFragment extends Fragment {
 		
 		private class ViewHolder {
 			public TextView tvReplyCount;
-			public TextView tvTopicTitle;
-			public TextView tvTopicAuthor;
-			public TextView tvTopicPoster;
+//			public TextView tvTopicTitle;
+//			public TextView tvTopicAuthor;
+//			public TextView tvTopicPoster;
 			public LinearLayout llTopicTitleBg;
 		}
 		

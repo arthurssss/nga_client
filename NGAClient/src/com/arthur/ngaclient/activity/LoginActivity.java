@@ -18,6 +18,7 @@ import org.apache.http.protocol.HttpContext;
 
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.util.Config;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -145,9 +146,9 @@ public class LoginActivity extends FragmentActivity {
 					location = header2[0].getValue();
 					if (cid != "" && uid != ""
 							&& location.indexOf("login_success&error=0") != -1) {
-						// this.uid = uid;
-						// this.cid = cid;
-						Log.i(TAG, "uid =" + uid + ",csid=" + cid);
+						Config.set(LoginActivity.this, "uid", uid);
+						Config.set(LoginActivity.this, "cid", cid);
+						Log.i(TAG, "uid =" + uid + ",cid=" + cid);
 						return true;
 					}
 				}
