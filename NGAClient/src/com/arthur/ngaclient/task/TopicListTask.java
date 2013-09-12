@@ -70,10 +70,13 @@ public class TopicListTask extends AsyncTask<String, Integer, Boolean> {
 
 				Log.d(TAG, strResult);
 
-				JSONObject jsonObject = JSON.parseObject(strResult).getJSONObject("data");
+				JSONObject jsonObject = JSON.parseObject(strResult)
+						.getJSONObject("data");
 
 				SubForumListData subForumListData = new SubForumListData();
+
 				JSONObject __F = jsonObject.getJSONObject("__F");
+
 				subForumListData.set__SELECTED_FORUM((String) __F
 						.get("__SELECTED_FORUM"));
 				subForumListData.set__UNION_FORUM((String) __F
@@ -84,15 +87,19 @@ public class TopicListTask extends AsyncTask<String, Integer, Boolean> {
 						.get("topped_topic"));
 				subForumListData.setFid((Integer) __F.get("fid"));
 				String __UNION_FORUM = subForumListData.get__UNION_FORUM();
-				String[] subForumIDs = __UNION_FORUM.split(",");
-				int subForumListCount = subForumIDs.length;
-				List<SubForumData> subForumList = new ArrayList<SubForumData>();
-				JSONObject subForumListJson = jsonObject.getJSONObject("__F")
-						.getJSONObject("sub_forums");
-				for (int i = 0; i < subForumListCount; i++) {
-					subForumList.add((SubForumData) JSONObject.toJavaObject(
-							subForumListJson.getJSONObject(i + ""),
-							SubForumData.class));
+
+				if(__UNION_FORUM != null && !"".equals(__UNION_FORUM)){
+					String[] subForumIDs = __UNION_FORUM.split(",");
+					int subForumListCount = subForumIDs.length;
+					List<SubForumData> subForumList = new ArrayList<SubForumData>();
+					JSONObject subForumListJson = jsonObject.getJSONObject("__F")
+							.getJSONObject("sub_forums");
+					for (int i = 0; i < subForumListCount; i++) {
+						subForumList.add((SubForumData) JSONObject.toJavaObject(
+								subForumListJson.getJSONObject(i + ""),
+								SubForumData.class));
+					}
+					subForumListData.setSub_forums(subForumList);
 				}
 				TopicListData topicListData = new TopicListData();
 				topicListData.set__F(subForumListData);
