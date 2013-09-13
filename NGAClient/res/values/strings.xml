@@ -18,4 +18,7 @@
     <string name="login_success">登录成功</string>
     <string name="login_fail">登录失败</string>
 
+    <string name="request_timeout">网络不给力</string>
+    <string name="request_dataerror">数据错误</string>
+    <string name="request_neterror">网络错误</string>
 </resources>
