@@ -1,6 +1,7 @@
 package com.arthur.ngaclient.fragment;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.task.TopicListTask;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ public class TopicListFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_board_list, container, false);
 		TopicListAdapter adapter = new TopicListAdapter(getActivity());
 		((ListView) rootView).setAdapter(adapter);
+		String fid = this.getActivity().getIntent().getStringExtra("fid");
+		new TopicListTask(this.getActivity()).execute(fid, "1");
 		return rootView;
 	}
 	
