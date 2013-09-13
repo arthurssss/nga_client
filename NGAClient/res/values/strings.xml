@@ -21,4 +21,6 @@
     <string name="request_timeout">网络不给力</string>
     <string name="request_dataerror">数据错误</string>
     <string name="request_neterror">网络错误</string>
+    <string name="request_servererror">二哥玩坏了</string>
+    <string name="request_othererror">请求错误</string>
 </resources>

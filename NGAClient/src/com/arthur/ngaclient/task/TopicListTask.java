@@ -48,6 +48,8 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 	private final static Integer TIMEOUT = 1;
 	private final static Integer DATAERROR = 2;
 	private final static Integer NETERROR = 3;
+	private final static Integer SERVERERROR = 4;
+	private final static Integer OTHERERROR = 5;
 
 	public TopicListTask(Context context) {
 		mContext = context;
@@ -66,19 +68,19 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 		httpGet.addHeader("Accept-Charset", "GBK");
 		httpGet.addHeader("Accept-Encoding", "gzip,deflate");
 		httpGet.addHeader("Cookie", HttpUtil.getCookie(mContext));
-		
+
 		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
 		HttpConnectionParams.setSoTimeout(httpParams, 15000);
-		
+
 		DefaultHttpClient httpclient = new DefaultHttpClient(httpParams);
 
 		// 使不自动重定向
 		httpclient.setRedirectHandler(new RedirectHandler() {
 
 			@Override
-			public URI getLocationURI(HttpResponse response,
-					HttpContext context) throws ProtocolException {
+			public URI getLocationURI(HttpResponse response, HttpContext context)
+					throws ProtocolException {
 				return null;
 			}
 
@@ -153,7 +155,10 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 				topicListData.setTopicList(topicDataList);
 				mTopicListData = topicListData;
 				return SUCCESS;
+			} else if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+				return SERVERERROR;
 			}
+			return OTHERERROR;
 		} catch (ConnectTimeoutException e) {
 			e.printStackTrace();
 			return TIMEOUT;
@@ -170,25 +175,41 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 			// 关闭连接,释放资源
 			httpclient.getConnectionManager().shutdown();
 		}
-		return null;
 	}
 
 	@Override
 	protected void onPostExecute(Integer status) {
 		if (status == SUCCESS) {
 
-		} else if (status == TIMEOUT){
-			Toast.makeText(mContext.getApplicationContext(),
+		} else if (status == TIMEOUT) {
+			Toast.makeText(
+					mContext.getApplicationContext(),
 					mContext.getResources().getString(R.string.request_timeout),
 					Toast.LENGTH_SHORT).show();
 		} else if (status == DATAERROR) {
-			Toast.makeText(mContext.getApplicationContext(),
-					mContext.getResources().getString(R.string.request_dataerror),
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(
+					mContext.getApplicationContext(),
+					mContext.getResources().getString(
+							R.string.request_dataerror), Toast.LENGTH_SHORT)
+					.show();
 		} else if (status == NETERROR) {
-			Toast.makeText(mContext.getApplicationContext(),
-					mContext.getResources().getString(R.string.request_neterror),
+			Toast.makeText(
+					mContext.getApplicationContext(),
+					mContext.getResources()
+							.getString(R.string.request_neterror),
 					Toast.LENGTH_SHORT).show();
+		} else if (status == SERVERERROR) {
+			Toast.makeText(
+					mContext.getApplicationContext(),
+					mContext.getResources().getString(
+							R.string.request_servererror), Toast.LENGTH_SHORT)
+					.show();
+		} else if (status == OTHERERROR) {
+			Toast.makeText(
+					mContext.getApplicationContext(),
+					mContext.getResources().getString(
+							R.string.request_othererror), Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 
