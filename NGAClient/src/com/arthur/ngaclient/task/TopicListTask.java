@@ -1,7 +1,9 @@
 package com.arthur.ngaclient.task;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -30,8 +32,8 @@ import com.arthur.ngaclient.bean.SubForumData;
 import com.arthur.ngaclient.bean.SubForumListData;
 import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
+import com.arthur.ngaclient.interfaces.ITopicDataLoadedListener;
 import com.arthur.ngaclient.util.HttpUtil;
-import com.arthur.ngaclient.util.IOUtil;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -42,6 +44,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 	public final static String TAG = "TopicListTask";
 	private Context mContext = null;
+	private ITopicDataLoadedListener mDataListener = null;
 	private TopicListData mTopicListData = null;
 
 	private final static Integer SUCCESS = 0;
@@ -51,15 +54,16 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 	private final static Integer SERVERERROR = 4;
 	private final static Integer OTHERERROR = 5;
 
-	public TopicListTask(Context context) {
+	public TopicListTask(Context context, ITopicDataLoadedListener dataListener) {
 		mContext = context;
+		mDataListener = dataListener;
 	}
 
 	@Override
 	protected Integer doInBackground(String... params) {
 		String fid = params[0];
 		String page = params[1];
-		String url = Global.SERVER + "c/thread.php?lite=js&noprefix&fid=" + fid
+		String url = Global.SERVER + "/thread.php?lite=js&noprefix&fid=" + fid
 				+ "&page=" + page;
 
 		HttpGet httpGet = new HttpGet(url);
@@ -100,8 +104,17 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 				InputStream is = response.getEntity().getContent();
 
-				is = new GZIPInputStream(is);
-				String strResult = IOUtil.inputStreamToString(is, "GBK");
+				if ("gzip".equals(response.getHeaders("Content-Encoding"))) {
+					is = new GZIPInputStream(is);
+				}
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						is, "GBK"));
+				String data = "";
+				StringBuffer sb = new StringBuffer();
+				while ((data = br.readLine()) != null) {
+					sb.append(data);
+				}
+				String strResult = sb.toString();
 
 				Log.d(TAG, strResult);
 
@@ -114,10 +127,10 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 				subForumListData.set__SELECTED_FORUM((String) __F
 						.get("__SELECTED_FORUM"));
-				subForumListData.set__UNION_FORUM((String) __F
-						.get("__UNION_FORUM"));
-				subForumListData.set__UNION_FORUM_DEFAULT((String) __F
-						.get("__UNION_FORUM_DEFAULT"));
+				subForumListData
+						.set__UNION_FORUM(__F.get("__UNION_FORUM") + "");
+				subForumListData.set__UNION_FORUM_DEFAULT(__F
+						.get("__UNION_FORUM_DEFAULT") + "");
 				subForumListData.setTopped_topic((Integer) __F
 						.get("topped_topic"));
 				subForumListData.setFid((Integer) __F.get("fid"));
@@ -180,7 +193,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 	@Override
 	protected void onPostExecute(Integer status) {
 		if (status == SUCCESS) {
-
+			mDataListener.onPostFinished(mTopicListData);
 		} else if (status == TIMEOUT) {
 			Toast.makeText(
 					mContext.getApplicationContext(),

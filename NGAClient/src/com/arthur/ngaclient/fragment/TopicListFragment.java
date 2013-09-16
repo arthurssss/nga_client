@@ -1,6 +1,9 @@
 package com.arthur.ngaclient.fragment;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.bean.TopicData;
+import com.arthur.ngaclient.bean.TopicListData;
+import com.arthur.ngaclient.interfaces.ITopicDataLoadedListener;
 import com.arthur.ngaclient.task.TopicListTask;
 
 import android.content.Context;
@@ -24,22 +27,31 @@ public class TopicListFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_board_list, container, false);
-		TopicListAdapter adapter = new TopicListAdapter(getActivity());
-		((ListView) rootView).setAdapter(adapter);
+		final View rootView = inflater.inflate(R.layout.fragment_board_list,
+				container, false);
 		String fid = this.getActivity().getIntent().getStringExtra("fid");
-		new TopicListTask(this.getActivity()).execute(fid, "1");
+		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
+
+			@Override
+			public void onPostFinished(TopicListData topicListData) {
+				TopicListAdapter adapter = new TopicListAdapter(getActivity(), topicListData);
+				((ListView) rootView).setAdapter(adapter);
+			}
+
+		}).execute(fid, "1");
 		return rootView;
 	}
-	
-	private class TopicListAdapter extends BaseAdapter{
-		
-//		private Context mContext = null;
+
+	private class TopicListAdapter extends BaseAdapter {
+
+		// private Context mContext = null;
 		private LayoutInflater mInflater = null;
+		private TopicListData mTopicListData = null;
 		
-		public TopicListAdapter(Context context){
-//			mContext = context;
+		public TopicListAdapter(Context context, TopicListData topicListData) {
+			// mContext = context;
 			mInflater = LayoutInflater.from(context);
+			mTopicListData = topicListData;
 		}
 
 		@Override
@@ -61,13 +73,19 @@ public class TopicListFragment extends Fragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder = null;
 			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_board_topic, null);
+				convertView = mInflater
+						.inflate(R.layout.item_board_topic, null);
 				holder = new ViewHolder();
-				holder.tvReplyCount = (TextView) convertView.findViewById(R.id.board_reply_count);
-//				holder.tvTopicTitle = (TextView) convertView.findViewById(R.id.board_topic_title);
-//				holder.tvTopicAuthor = (TextView) convertView.findViewById(R.id.board_topic_author);
-//				holder.tvTopicPoster = (TextView) convertView.findViewById(R.id.board_topic_poster);
-				holder.llTopicTitleBg = (LinearLayout) convertView.findViewById(R.id.board_title_bg);
+				holder.tvReplyCount = (TextView) convertView
+						.findViewById(R.id.board_reply_count);
+				holder.tvTopicTitle = (TextView)
+				convertView.findViewById(R.id.board_topic_title);
+				holder.tvTopicAuthor = (TextView)
+				convertView.findViewById(R.id.board_topic_author);
+				holder.tvTopicPoster = (TextView)
+				convertView.findViewById(R.id.board_topic_poster);
+				holder.llTopicTitleBg = (LinearLayout) convertView
+						.findViewById(R.id.board_title_bg);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -79,17 +97,24 @@ public class TopicListFragment extends Fragment {
 				holder.tvReplyCount.setBackgroundResource(R.color.shit2);
 				holder.llTopicTitleBg.setBackgroundResource(R.color.shit3);
 			}
+			TopicData topicData = mTopicListData.getTopicList().get(position);
+			if (topicData != null) {
+				holder.tvTopicTitle.setText(topicData.getSubject());
+				holder.tvTopicAuthor.setText(topicData.getAuthor());
+				holder.tvTopicPoster.setText(topicData.getLastposter());
+				holder.tvReplyCount.setText(topicData.getReplies() + "");
+			}
 			return convertView;
 		}
-		
+
 		private class ViewHolder {
 			public TextView tvReplyCount;
-//			public TextView tvTopicTitle;
-//			public TextView tvTopicAuthor;
-//			public TextView tvTopicPoster;
+			public TextView tvTopicTitle;
+			public TextView tvTopicAuthor;
+			public TextView tvTopicPoster;
 			public LinearLayout llTopicTitleBg;
 		}
-		
+
 	}
 
 }
