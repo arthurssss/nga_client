@@ -34,7 +34,8 @@ public class TopicListFragment extends Fragment {
 
 			@Override
 			public void onPostFinished(TopicListData topicListData) {
-				TopicListAdapter adapter = new TopicListAdapter(getActivity(), topicListData);
+				TopicListAdapter adapter = new TopicListAdapter(getActivity(),
+						topicListData);
 				((ListView) rootView).setAdapter(adapter);
 			}
 
@@ -47,7 +48,7 @@ public class TopicListFragment extends Fragment {
 		// private Context mContext = null;
 		private LayoutInflater mInflater = null;
 		private TopicListData mTopicListData = null;
-		
+
 		public TopicListAdapter(Context context, TopicListData topicListData) {
 			// mContext = context;
 			mInflater = LayoutInflater.from(context);
@@ -78,14 +79,16 @@ public class TopicListFragment extends Fragment {
 				holder = new ViewHolder();
 				holder.tvReplyCount = (TextView) convertView
 						.findViewById(R.id.board_reply_count);
-				holder.tvTopicTitle = (TextView)
-				convertView.findViewById(R.id.board_topic_title);
-				holder.tvTopicAuthor = (TextView)
-				convertView.findViewById(R.id.board_topic_author);
-				holder.tvTopicPoster = (TextView)
-				convertView.findViewById(R.id.board_topic_poster);
+				holder.tvTopicTitle = (TextView) convertView
+						.findViewById(R.id.board_topic_title);
+				holder.tvTopicAuthor = (TextView) convertView
+						.findViewById(R.id.board_topic_author);
+				holder.tvTopicPoster = (TextView) convertView
+						.findViewById(R.id.board_topic_poster);
 				holder.llTopicTitleBg = (LinearLayout) convertView
 						.findViewById(R.id.board_title_bg);
+				holder.tvTopicReplyTime = (TextView) convertView
+						.findViewById(R.id.board_topic_replytime);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -103,6 +106,7 @@ public class TopicListFragment extends Fragment {
 				holder.tvTopicAuthor.setText(topicData.getAuthor());
 				holder.tvTopicPoster.setText(topicData.getLastposter());
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
+				holder.tvTopicReplyTime.setText(topicData.getLastpost() + "");
 			}
 			return convertView;
 		}
@@ -112,6 +116,7 @@ public class TopicListFragment extends Fragment {
 			public TextView tvTopicTitle;
 			public TextView tvTopicAuthor;
 			public TextView tvTopicPoster;
+			public TextView tvTopicReplyTime;
 			public LinearLayout llTopicTitleBg;
 		}
 

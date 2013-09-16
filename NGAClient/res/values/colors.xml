@@ -13,5 +13,6 @@
     <color name="divider">#33000000</color>
     <color name="boardlist_author">#1D2A63</color>
     <color name="boardlist_poster">#4F587E</color>
+    <color name="boardlist_replytime">#888</color>
 
 </resources>

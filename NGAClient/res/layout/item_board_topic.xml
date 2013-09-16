@@ -27,6 +27,15 @@
         android:background="@color/shit2"
         android:orientation="vertical"
         android:padding="10dp" >
+        
+        <TextView
+            android:id="@+id/board_topic_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我怎能不变态"
+            android:textColor="@color/boardlist_author"
+            android:layout_marginRight="20dp"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/board_topic_title"
@@ -34,9 +43,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
+            android:paddingTop="5dp"
             android:minHeight="30dp"
             android:text="关于腾讯新闻弹框等等了设计费拉卡机了"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,13 +54,13 @@
             android:paddingTop="10dp" >
 
             <TextView
-                android:id="@+id/board_topic_author"
+                android:id="@+id/board_topic_replytime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:maxWidth="100dp"
-                android:text="我怎能不变态"
-                android:textColor="@color/boardlist_author"
+                android:text="2013-9-16"
+                android:textColor="@color/boardlist_replytime"
                 android:textSize="12sp" />
 
             <TextView
