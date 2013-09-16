@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
@@ -104,7 +105,12 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 				InputStream is = response.getEntity().getContent();
 
-				if ("gzip".equals(response.getHeaders("Content-Encoding"))) {
+				Header[] headers = response.getHeaders("Content-Encoding");
+				String contentEncoding = "";
+				if (headers.length > 0) {
+					contentEncoding = headers[0].getValue();
+				}
+				if ("gzip".equals(contentEncoding)) {
 					is = new GZIPInputStream(is);
 				}
 				BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -140,15 +146,18 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 					String[] subForumIDs = __UNION_FORUM.split(",");
 					int subForumListCount = subForumIDs.length;
 					List<SubForumData> subForumList = new ArrayList<SubForumData>();
-					JSONObject subForumListJson = jsonObject.getJSONObject(
-							"__F").getJSONObject("sub_forums");
-					for (int i = 0; i < subForumListCount; i++) {
-						subForumList.add((SubForumData) JSONObject
-								.toJavaObject(
-										subForumListJson.getJSONObject(i + ""),
-										SubForumData.class));
+					Object subForumObj =  __F.get("sub_forums");
+					if (subForumObj instanceof JSONObject) {
+						JSONObject subForumListJson = (JSONObject) subForumObj;
+						for (int i = 0; i < subForumListCount; i++) {
+							subForumList.add((SubForumData) JSONObject
+									.toJavaObject(
+											subForumListJson.getJSONObject(i + ""),
+											SubForumData.class));
+						}
+						subForumListData.setSub_forums(subForumList);
 					}
-					subForumListData.setSub_forums(subForumList);
+					
 				}
 				TopicListData topicListData = new TopicListData();
 				topicListData.set__F(subForumListData);
