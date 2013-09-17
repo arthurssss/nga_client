@@ -13,14 +13,14 @@ public class TopicData {
     private int ifmark; 
     private int type;//主题类型bit 
     private int type_2; 
-    private int postdate;//发帖时间 
-    private int lastpost;//最后回复时间 
+    private long postdate;//发帖时间 
+    private long lastpost;//最后回复时间 
     private String lastposter;//最后回复人 
     private int replies;//回复数量 (回复页数=回复数量/__R__ROWS_PAGE 
     private int locked; 
     private int digest; 
     private int ifupload; 
-    private int lastmodify;//最后修改时间 
+    private long lastmodify;//最后修改时间 
     private int recommend; 
     private int admin_ui;//用户是否对此主题有权限bit 
     private String tpcurl;//主题地址 
@@ -122,19 +122,19 @@ public class TopicData {
 		this.type_2 = type_2;
 	}
 
-	public int getPostdate() {
+	public long getPostdate() {
 		return postdate;
 	}
 
-	public void setPostdate(int postdate) {
+	public void setPostdate(long postdate) {
 		this.postdate = postdate;
 	}
 
-	public int getLastpost() {
+	public long getLastpost() {
 		return lastpost;
 	}
 
-	public void setLastpost(int lastpost) {
+	public void setLastpost(long lastpost) {
 		this.lastpost = lastpost;
 	}
 
@@ -178,11 +178,11 @@ public class TopicData {
 		this.ifupload = ifupload;
 	}
 
-	public int getLastmodify() {
+	public long getLastmodify() {
 		return lastmodify;
 	}
 
-	public void setLastmodify(int lastmodify) {
+	public void setLastmodify(long lastmodify) {
 		this.lastmodify = lastmodify;
 	}
 

@@ -33,6 +33,11 @@ public class TopicListData {
 	 * 数据的总行数
 	 */
 	private int __ROWS;
+	
+	/**
+	 * 当前时间
+	 */
+	private long time;
 
 	/**
 	 * 获取数据的总行数
@@ -116,6 +121,20 @@ public class TopicListData {
 	 */
 	public void set__F(SubForumListData __F) {
 		this.__F = __F;
+	}
+
+	/**
+	 * 获取当前时间
+	 */
+	public long getTime() {
+		return time;
+	}
+	
+	/**
+	 * 设置当前时间
+	 */
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 }

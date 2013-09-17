@@ -5,6 +5,7 @@ import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
 import com.arthur.ngaclient.interfaces.ITopicDataLoadedListener;
 import com.arthur.ngaclient.task.TopicListTask;
+import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -106,7 +107,7 @@ public class TopicListFragment extends Fragment {
 				holder.tvTopicAuthor.setText(topicData.getAuthor());
 				holder.tvTopicPoster.setText(topicData.getLastposter());
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
-				holder.tvTopicReplyTime.setText(topicData.getLastpost() + "");
+				holder.tvTopicReplyTime.setText(Utils.timeFormat(topicData.getLastpost(), mTopicListData.getTime()));
 			}
 			return convertView;
 		}
