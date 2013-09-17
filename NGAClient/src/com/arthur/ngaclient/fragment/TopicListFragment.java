@@ -1,5 +1,8 @@
 package com.arthur.ngaclient.fragment;
 
+import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
+
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
@@ -8,6 +11,7 @@ import com.arthur.ngaclient.task.TopicListTask;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,10 +20,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class TopicListFragment extends Fragment {
+public class TopicListFragment extends Fragment implements PullToRefreshAttacher.OnRefreshListener {
 
+	private PullToRefreshAttacher mPullToRefreshAttacher;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,6 +37,20 @@ public class TopicListFragment extends Fragment {
 			Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.fragment_board_list,
 				container, false);
+
+        ListView lvTopicList = (ListView) rootView.findViewById(R.id.topic_list);
+
+        mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
+
+        mPullToRefreshAttacher.addRefreshableView(lvTopicList, this);
+        
+        DefaultHeaderTransformer ht = (DefaultHeaderTransformer) mPullToRefreshAttacher
+                .getHeaderTransformer();
+
+        ht.setPullText("下拉刷新");
+        ht.setRefreshingText("正在加载");
+		
+		
 		String fid = this.getActivity().getIntent().getStringExtra("fid");
 		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
 
@@ -123,4 +144,30 @@ public class TopicListFragment extends Fragment {
 
 	}
 
+	@Override
+	public void onRefreshStarted(View view) {
+		new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+
+                // Notify PullToRefreshAttacher that the refresh has finished
+                mPullToRefreshAttacher.setRefreshComplete();
+            }
+        }.execute();
+		
+	}
+
+	
 }
