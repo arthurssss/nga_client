@@ -58,7 +58,7 @@ public class TopicListFragment extends Fragment {
 
 		@Override
 		public int getCount() {
-			return 20;
+			return mTopicListData.get__T__ROWS();
 		}
 
 		@Override
