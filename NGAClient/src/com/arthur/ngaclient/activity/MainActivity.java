@@ -353,6 +353,7 @@ public class MainActivity extends FragmentActivity {
 					intent.setClass((MainActivity) getActivity(),
 							TopicListActivity.class);
 					intent.putExtra("title", tvBoardName.getText());
+					intent.putExtra("fid", mMyBoardsList.get(position).getUrl());
 					getActivity().startActivity(intent);
 				}
 

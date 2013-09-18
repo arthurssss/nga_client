@@ -138,7 +138,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 				subForumListData.set__UNION_FORUM_DEFAULT(__F
 						.getString("__UNION_FORUM_DEFAULT"));
 				subForumListData
-						.setTopped_topic(__F.getInteger("topped_topic"));
+						.setTopped_topic(__F.getString("topped_topic"));
 				subForumListData.setFid(__F.getInteger("fid"));
 				String __UNION_FORUM = subForumListData.get__UNION_FORUM();
 

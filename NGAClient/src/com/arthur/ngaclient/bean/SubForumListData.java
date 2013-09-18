@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SubForumListData {
 	private int fid; // 当前版面id (搜索用户发帖等情况是没有当前版面id
-	private int topped_topic; // 置顶贴的ID 可能有多个 逗号分隔
+	private String topped_topic; // 置顶贴的ID 可能有多个 逗号分隔
 	private List<SubForumData> sub_forums; // 当前版面的子论坛或者联合版面等 版面图标在公共变量文件里
 	private String __UNION_FORUM; // 联合版面中默认设置的版面ID 逗号分隔
 	private String __UNION_FORUM_DEFAULT; // 联合版面中默认显示的版面ID 逗号分隔
@@ -19,11 +19,11 @@ public class SubForumListData {
 		this.fid = fid;
 	}
 
-	public int getTopped_topic() {
+	public String getTopped_topic() {
 		return topped_topic;
 	}
 
-	public void setTopped_topic(int topped_topic) {
+	public void setTopped_topic(String topped_topic) {
 		this.topped_topic = topped_topic;
 	}
 
