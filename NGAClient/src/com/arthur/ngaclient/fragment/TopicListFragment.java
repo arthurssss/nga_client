@@ -1,6 +1,5 @@
 package com.arthur.ngaclient.fragment;
 
-import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
 import com.arthur.ngaclient.R;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class TopicListFragment extends Fragment implements PullToRefreshAttacher.OnRefreshListener {
@@ -44,13 +42,6 @@ public class TopicListFragment extends Fragment implements PullToRefreshAttacher
 
         mPullToRefreshAttacher.addRefreshableView(lvTopicList, this);
         
-        DefaultHeaderTransformer ht = (DefaultHeaderTransformer) mPullToRefreshAttacher
-                .getHeaderTransformer();
-
-        ht.setPullText("下拉刷新");
-        ht.setRefreshingText("正在加载");
-		
-		
 		String fid = this.getActivity().getIntent().getStringExtra("fid");
 		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
 
