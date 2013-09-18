@@ -644,24 +644,30 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final int index = position;
+			ViewHolder holder = null;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_main_board, null);
-				convertView.setOnClickListener(new OnClickListener() {
+				holder = new ViewHolder();
+				holder.tvBoardName = (TextView) convertView
+						.findViewById(R.id.main_board_name);
+				holder.vClick = convertView
+						.findViewById(R.id.main_board_item_click);
+				convertView.setTag(holder);
+				holder.vClick.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						Log.d(TAG, "onClick =================== ");
-						TextView tvBoardName = (TextView) v
-								.findViewById(R.id.main_board_name);
 						Log.d(TAG,
 								"onClick boardName === "
-										+ tvBoardName.getText());
+										+ mBoardList.get(index).getName());
 						((MainActivity) mContext).mDBManager
 								.insertOrUpdateBoard(mBoardList.get(index));
 						Intent intent = new Intent();
 						intent.setClass((MainActivity) mContext,
 								TopicListActivity.class);
-						intent.putExtra("title", tvBoardName.getText());
+						intent.putExtra("title", mBoardList.get(index)
+								.getName());
 						intent.putExtra("fid", mBoardList.get(index).getUrl());
 						mContext.startActivity(intent);
 					}
@@ -671,31 +677,40 @@ public class MainActivity extends FragmentActivity {
 						.setLayoutParams(new android.widget.AbsListView.LayoutParams(
 								android.widget.AbsListView.LayoutParams.MATCH_PARENT,
 								DensityUtil.dip2px(mContext, 45)));
+			} else {
+				holder = (ViewHolder) convertView.getTag();
 			}
 
-			((TextView) convertView).setCompoundDrawablesWithIntrinsicBounds(
+			holder.tvBoardName.setCompoundDrawablesWithIntrinsicBounds(
 					mContext.getResources().getDrawable(
 							mBoardList.get(position).getIcon()), null, null,
 					null);
-			((TextView) convertView)
-					.setText(mBoardList.get(position).getName());
+			holder.tvBoardName.setText(mBoardList.get(position).getName());
 
 			if (position == 0) {
-				convertView.setBackgroundResource(R.drawable.main_board_bg);
-				((TextView) convertView).setTextColor(mContext.getResources()
+				holder.tvBoardName
+						.setBackgroundResource(R.drawable.main_board_bg);
+				holder.tvBoardName.setTextColor(mContext.getResources()
 						.getColor(R.color.white));
 			} else {
 				int numCol = ((CustomGridView) parent).getNumColumns();
 				int raw = position / numCol;
 				int col = position % numCol;
 
-				convertView.setBackgroundColor((raw % 2 == 0 && col % 2 == 0)
-						|| (raw % 2 != 0 && col % 2 != 0) ? mContext
-						.getResources().getColor(R.color.shit1) : mContext
-						.getResources().getColor(R.color.shit2));
+				holder.tvBoardName
+						.setBackgroundColor((raw % 2 == 0 && col % 2 == 0)
+								|| (raw % 2 != 0 && col % 2 != 0) ? mContext
+								.getResources().getColor(R.color.shit1)
+								: mContext.getResources().getColor(
+										R.color.shit2));
 			}
 
 			return convertView;
+		}
+
+		private class ViewHolder {
+			public TextView tvBoardName;
+			public View vClick;
 		}
 
 	}

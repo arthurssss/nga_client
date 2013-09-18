@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_board_name"
-    android:layout_width="wrap_content"
-    android:layout_height="50dp"
-    android:layout_gravity="center_vertical"
-    android:padding="5dp"
-    android:drawablePadding="5dp"
-    android:gravity="center_vertical"
-    android:textColor="@color/board_name_bg"
-    android:textSize="@dimen/board_name_size" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp" >
+
+    <TextView
+        android:id="@+id/main_board_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:drawablePadding="5dp"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:textColor="@color/board_name_bg"
+        android:textSize="@dimen/board_name_size" />
+
+    <View
+        android:id="@+id/main_board_item_click"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_board_bg1_select_style" />
+
+</FrameLayout>
