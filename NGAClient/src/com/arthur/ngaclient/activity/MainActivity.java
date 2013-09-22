@@ -435,7 +435,7 @@ public class MainActivity extends FragmentActivity {
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 				MenuInflater inflater = getActivity().getMenuInflater();
 				inflater.inflate(R.menu.delete, menu);
-				mode.setTitle("Select Items");
+				mode.setTitle("选择要删除的板块");
 				setSubtitle(mode);
 				return true;
 			}
@@ -449,7 +449,7 @@ public class MainActivity extends FragmentActivity {
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				Log.d(TAG, "onActionItemClicked");
 				Toast.makeText(getActivity(),
-						"Delete " + mListView.getCheckedItemCount() + " items",
+						"删除了" + mListView.getCheckedItemCount() + "个板块",
 						Toast.LENGTH_SHORT).show();
 
 				Iterator<Board> iterator = mMyBoardsList.iterator();
@@ -495,7 +495,7 @@ public class MainActivity extends FragmentActivity {
 					mode.setSubtitle(null);
 					break;
 				default:
-					mode.setSubtitle(checkedCount + " items selected");
+					mode.setSubtitle(checkedCount + "个板块被选择");
 					break;
 				}
 			}
