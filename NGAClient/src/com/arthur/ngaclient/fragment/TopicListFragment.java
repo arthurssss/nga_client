@@ -10,7 +10,6 @@ import com.arthur.ngaclient.task.TopicListTask;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,10 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class TopicListFragment extends Fragment implements PullToRefreshAttacher.OnRefreshListener {
+public class TopicListFragment extends Fragment implements
+		PullToRefreshAttacher.OnRefreshListener {
 
 	private PullToRefreshAttacher mPullToRefreshAttacher;
-	
+	private View mRootView = null;
+	private TopicListAdapter mTopicListAdapter = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,27 +35,28 @@ public class TopicListFragment extends Fragment implements PullToRefreshAttacher
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		final View rootView = inflater.inflate(R.layout.fragment_board_list,
-				container, false);
+		mRootView = inflater.inflate(R.layout.fragment_board_list, container,
+				false);
 
-        ListView lvTopicList = (ListView) rootView.findViewById(R.id.topic_list);
+		ListView lvTopicList = (ListView) mRootView
+				.findViewById(R.id.topic_list);
 
-        mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
+		mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
 
-        mPullToRefreshAttacher.addRefreshableView(lvTopicList, this);
-        
-		String fid = this.getActivity().getIntent().getStringExtra("fid");
-		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
+		mPullToRefreshAttacher.addRefreshableView(lvTopicList, this);
+
+		String fid = getActivity().getIntent().getStringExtra("fid");
+		new TopicListTask(getActivity(), new ITopicDataLoadedListener() {
 
 			@Override
 			public void onPostFinished(TopicListData topicListData) {
-				TopicListAdapter adapter = new TopicListAdapter(getActivity(),
+				mTopicListAdapter = new TopicListAdapter(getActivity(),
 						topicListData);
-				((ListView) rootView).setAdapter(adapter);
+				((ListView) mRootView).setAdapter(mTopicListAdapter);
 			}
 
 		}).execute(fid, "1");
-		return rootView;
+		return mRootView;
 	}
 
 	private class TopicListAdapter extends BaseAdapter {
@@ -66,6 +69,11 @@ public class TopicListFragment extends Fragment implements PullToRefreshAttacher
 			// mContext = context;
 			mInflater = LayoutInflater.from(context);
 			mTopicListData = topicListData;
+		}
+
+		public void refresh(TopicListData topicListData) {
+			mTopicListData = topicListData;
+			notifyDataSetChanged();
 		}
 
 		@Override
@@ -119,7 +127,8 @@ public class TopicListFragment extends Fragment implements PullToRefreshAttacher
 				holder.tvTopicAuthor.setText(topicData.getAuthor());
 				holder.tvTopicPoster.setText(topicData.getLastposter());
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
-				holder.tvTopicReplyTime.setText(Utils.timeFormat(topicData.getLastpost(), mTopicListData.getTime()));
+				holder.tvTopicReplyTime.setText(Utils.timeFormat(
+						topicData.getLastpost(), mTopicListData.getTime()));
 			}
 			return convertView;
 		}
@@ -137,28 +146,17 @@ public class TopicListFragment extends Fragment implements PullToRefreshAttacher
 
 	@Override
 	public void onRefreshStarted(View view) {
-		new AsyncTask<Void, Void, Void>() {
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
+		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
 
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
+			@Override
+			public void onPostFinished(TopicListData topicListData) {
+				mTopicListAdapter.refresh(topicListData);
+				mPullToRefreshAttacher.setRefreshComplete();
+			}
 
-                // Notify PullToRefreshAttacher that the refresh has finished
-                mPullToRefreshAttacher.setRefreshComplete();
-            }
-        }.execute();
-		
+		}).execute(getActivity().getIntent().getStringExtra("fid"), "1");
+
 	}
 
-	
 }
