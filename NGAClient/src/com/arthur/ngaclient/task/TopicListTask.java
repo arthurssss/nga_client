@@ -53,7 +53,8 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 	private final static Integer DATAERROR = 2;
 	private final static Integer NETERROR = 3;
 	private final static Integer SERVERERROR = 4;
-	private final static Integer OTHERERROR = 5;
+	private final static Integer FORBIDDEN = 5;
+	private final static Integer OTHERERROR = 6;
 
 	public TopicListTask(Context context, ITopicDataLoadedListener dataListener) {
 		mContext = context;
@@ -137,8 +138,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 						.getString("__UNION_FORUM"));
 				subForumListData.set__UNION_FORUM_DEFAULT(__F
 						.getString("__UNION_FORUM_DEFAULT"));
-				subForumListData
-						.setTopped_topic(__F.getString("topped_topic"));
+				subForumListData.setTopped_topic(__F.getString("topped_topic"));
 				subForumListData.setFid(__F.getInteger("fid"));
 				String __UNION_FORUM = subForumListData.get__UNION_FORUM();
 
@@ -179,6 +179,8 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 				return SUCCESS;
 			} else if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
 				return SERVERERROR;
+			} else if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+				return FORBIDDEN;
 			}
 			return OTHERERROR;
 		} catch (ConnectTimeoutException e) {
@@ -203,35 +205,45 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 	protected void onPostExecute(Integer status) {
 		if (status == SUCCESS) {
 			mDataListener.onPostFinished(mTopicListData);
-		} else if (status == TIMEOUT) {
-			Toast.makeText(
-					mContext.getApplicationContext(),
-					mContext.getResources().getString(R.string.request_timeout),
-					Toast.LENGTH_SHORT).show();
-		} else if (status == DATAERROR) {
-			Toast.makeText(
-					mContext.getApplicationContext(),
-					mContext.getResources().getString(
-							R.string.request_dataerror), Toast.LENGTH_SHORT)
-					.show();
-		} else if (status == NETERROR) {
-			Toast.makeText(
-					mContext.getApplicationContext(),
-					mContext.getResources()
-							.getString(R.string.request_neterror),
-					Toast.LENGTH_SHORT).show();
-		} else if (status == SERVERERROR) {
-			Toast.makeText(
-					mContext.getApplicationContext(),
-					mContext.getResources().getString(
-							R.string.request_servererror), Toast.LENGTH_SHORT)
-					.show();
-		} else if (status == OTHERERROR) {
-			Toast.makeText(
-					mContext.getApplicationContext(),
-					mContext.getResources().getString(
-							R.string.request_othererror), Toast.LENGTH_SHORT)
-					.show();
+		} else {
+			mDataListener.onPostError(status);
+			if (status == TIMEOUT) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_timeout), Toast.LENGTH_SHORT)
+						.show();
+			} else if (status == DATAERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_dataerror), Toast.LENGTH_SHORT)
+						.show();
+			} else if (status == NETERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_neterror), Toast.LENGTH_SHORT)
+						.show();
+			} else if (status == SERVERERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_servererror),
+						Toast.LENGTH_SHORT).show();
+			} else if (status == FORBIDDEN) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_forbiddenerror),
+						Toast.LENGTH_SHORT).show();
+			} else if (status == OTHERERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_othererror),
+						Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

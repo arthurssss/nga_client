@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TopicListFragment extends Fragment implements
@@ -26,6 +27,8 @@ public class TopicListFragment extends Fragment implements
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private View mRootView = null;
 	private TopicListAdapter mTopicListAdapter = null;
+	private ListView mTopicListView = null;
+	private ProgressBar mLoading = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,21 +41,31 @@ public class TopicListFragment extends Fragment implements
 		mRootView = inflater.inflate(R.layout.fragment_board_list, container,
 				false);
 
-		ListView lvTopicList = (ListView) mRootView
+		mTopicListView = (ListView) mRootView
 				.findViewById(R.id.topic_list);
+		mLoading = (ProgressBar) mRootView.findViewById(R.id.fullscreen_loading);
 
 		mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
 
-		mPullToRefreshAttacher.addRefreshableView(lvTopicList, this);
+		mPullToRefreshAttacher.addRefreshableView(mTopicListView, this);
 
 		String fid = getActivity().getIntent().getStringExtra("fid");
+		mTopicListView.setVisibility(View.GONE);
+		mLoading.setVisibility(View.VISIBLE);
 		new TopicListTask(getActivity(), new ITopicDataLoadedListener() {
 
 			@Override
 			public void onPostFinished(TopicListData topicListData) {
 				mTopicListAdapter = new TopicListAdapter(getActivity(),
 						topicListData);
-				((ListView) mRootView).setAdapter(mTopicListAdapter);
+				mTopicListView.setAdapter(mTopicListAdapter);
+				mTopicListView.setVisibility(View.VISIBLE);
+				mLoading.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onPostError(Integer status) {
+				mLoading.setVisibility(View.GONE);
 			}
 
 		}).execute(fid, "1");
@@ -147,12 +160,19 @@ public class TopicListFragment extends Fragment implements
 	@Override
 	public void onRefreshStarted(View view) {
 
+		mTopicListView.setVisibility(View.GONE);
+		mLoading.setVisibility(View.VISIBLE);
 		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
 
 			@Override
 			public void onPostFinished(TopicListData topicListData) {
 				mTopicListAdapter.refresh(topicListData);
 				mPullToRefreshAttacher.setRefreshComplete();
+			}
+
+			@Override
+			public void onPostError(Integer status) {
+				mLoading.setVisibility(View.GONE);
 			}
 
 		}).execute(getActivity().getIntent().getStringExtra("fid"), "1");
