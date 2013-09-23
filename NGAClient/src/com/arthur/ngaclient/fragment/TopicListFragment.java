@@ -29,6 +29,7 @@ public class TopicListFragment extends Fragment implements
 	private TopicListAdapter mTopicListAdapter = null;
 	private ListView mTopicListView = null;
 	private ProgressBar mLoading = null;
+	private LinearLayout mFooterView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,11 @@ public class TopicListFragment extends Fragment implements
 		mRootView = inflater.inflate(R.layout.fragment_board_list, container,
 				false);
 
+		mFooterView = (LinearLayout) inflater.inflate(
+				R.layout.view_listview_footer, null);
 		mTopicListView = (ListView) mRootView
 				.findViewById(R.id.topic_list);
+		mTopicListView.addFooterView(mFooterView);
 		mLoading = (ProgressBar) mRootView.findViewById(R.id.fullscreen_loading);
 
 		mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
