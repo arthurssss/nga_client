@@ -1,5 +1,7 @@
 package com.arthur.ngaclient.fragment;
 
+import java.util.List;
+
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
 import com.arthur.ngaclient.R;
@@ -67,6 +69,7 @@ public class TopicListFragment extends Fragment implements
 		String fid = getActivity().getIntent().getStringExtra("fid");
 		mTopicListView.setVisibility(View.GONE);
 		mLoading.setVisibility(View.VISIBLE);
+		mCurPageIndex = 1;
 		new TopicListTask(getActivity(), new ITopicDataLoadedListener() {
 
 			@Override
@@ -99,7 +102,31 @@ public class TopicListFragment extends Fragment implements
 		Log.i(TAG, "scrollState=" + scrollState);
 		if (mLastItemIndex == mTopicListAdapter.getCount()
 				&& scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-			mFooterView.setVisibility(View.VISIBLE);
+
+			if (mFooterView.getVisibility() != View.VISIBLE) {
+				new TopicListTask(getActivity(),
+						new ITopicDataLoadedListener() {
+
+							@Override
+							public void onPostFinished(
+									TopicListData topicListData) {
+
+								mTopicListAdapter
+										.addTopicAndRefresh(topicListData
+												.getTopicList());
+								mFooterView.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onPostError(Integer status) {
+								mFooterView.setVisibility(View.GONE);
+							}
+
+						}).execute(
+						getActivity().getIntent().getStringExtra("fid"),
+						++mCurPageIndex + "");
+				mFooterView.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
@@ -117,6 +144,12 @@ public class TopicListFragment extends Fragment implements
 
 		public void refresh(TopicListData topicListData) {
 			mTopicListData = topicListData;
+			notifyDataSetChanged();
+		}
+
+		public void addTopicAndRefresh(List<TopicData> toplicList) {
+			mTopicListData.getTopicList().addAll(toplicList);
+			mTopicListData.set__T__ROWS(mTopicListData.get__T__ROWS() + toplicList.size());
 			notifyDataSetChanged();
 		}
 
@@ -191,8 +224,7 @@ public class TopicListFragment extends Fragment implements
 	@Override
 	public void onRefreshStarted(View view) {
 
-		mTopicListView.setVisibility(View.GONE);
-		mLoading.setVisibility(View.VISIBLE);
+		mCurPageIndex = 1;
 		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
 
 			@Override
