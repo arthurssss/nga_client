@@ -35,6 +35,7 @@ public class TopicListFragment extends Fragment implements
 	private ProgressBar mLoading = null;
 	private LinearLayout mFooterView = null;
 
+	private int mCurPageIndex = 1;
 	private int mLastItemIndex;
 
 	@Override
@@ -45,14 +46,16 @@ public class TopicListFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mRootView = inflater.inflate(R.layout.fragment_topiclist_list, container,
-				false);
+		mRootView = inflater.inflate(R.layout.fragment_topiclist_list,
+				container, false);
 
-		mFooterView = (LinearLayout) inflater.inflate(
+		LinearLayout llFooterRootView = (LinearLayout) inflater.inflate(
 				R.layout.view_listview_footer, null);
-		mFooterView.setVisibility(View.GONE);
 		mTopicListView = (ListView) mRootView.findViewById(R.id.topic_list);
-		mTopicListView.addFooterView(mFooterView);
+		mFooterView = (LinearLayout) llFooterRootView
+				.findViewById(R.id.listview_footer_layout);
+		mTopicListView.addFooterView(llFooterRootView);
+		mFooterView.setVisibility(View.GONE);
 		mTopicListView.setOnScrollListener(this);
 		mLoading = (ProgressBar) mRootView
 				.findViewById(R.id.fullscreen_loading);
@@ -80,7 +83,7 @@ public class TopicListFragment extends Fragment implements
 				mLoading.setVisibility(View.GONE);
 			}
 
-		}).execute(fid, "1");
+		}).execute(fid, mCurPageIndex + "");
 		return mRootView;
 	}
 
@@ -88,21 +91,14 @@ public class TopicListFragment extends Fragment implements
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 
-		Log.i(TAG, "firstVisibleItem=" + firstVisibleItem
-				+ "\nvisibleItemCount=" + visibleItemCount + "\ntotalItemCount"
-				+ totalItemCount);
-
-		mLastItemIndex = firstVisibleItem + visibleItemCount - 1; // 减1是因为上面加了个addFooterView
-
+		mLastItemIndex = firstVisibleItem + visibleItemCount - 1;
 	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		Log.i(TAG, "scrollState=" + scrollState);
-		// 下拉到空闲是，且最后一个item的数等于数据的总数时，进行更新
 		if (mLastItemIndex == mTopicListAdapter.getCount()
 				&& scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-			Log.i(TAG, "拉到最底部");
 			mFooterView.setVisibility(View.VISIBLE);
 		}
 	}
@@ -143,8 +139,8 @@ public class TopicListFragment extends Fragment implements
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder = null;
 			if (convertView == null) {
-				convertView = mInflater
-						.inflate(R.layout.item_topiclist_topic, null);
+				convertView = mInflater.inflate(R.layout.item_topiclist_topic,
+						null);
 				holder = new ViewHolder();
 				holder.tvReplyCount = (TextView) convertView
 						.findViewById(R.id.board_reply_count);
@@ -210,7 +206,8 @@ public class TopicListFragment extends Fragment implements
 				mLoading.setVisibility(View.GONE);
 			}
 
-		}).execute(getActivity().getIntent().getStringExtra("fid"), "1");
+		}).execute(getActivity().getIntent().getStringExtra("fid"),
+				mCurPageIndex + "");
 
 	}
 
