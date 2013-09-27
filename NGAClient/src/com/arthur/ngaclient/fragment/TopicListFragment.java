@@ -12,9 +12,12 @@ import com.arthur.ngaclient.util.Utils;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,14 +25,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TopicListFragment extends Fragment implements
-		PullToRefreshAttacher.OnRefreshListener {
+		PullToRefreshAttacher.OnRefreshListener, OnScrollListener {
 
+	private static final String TAG = TopicListFragment.class.getSimpleName();
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private View mRootView = null;
 	private TopicListAdapter mTopicListAdapter = null;
 	private ListView mTopicListView = null;
 	private ProgressBar mLoading = null;
 	private LinearLayout mFooterView = null;
+
+	private int mLastItemIndex;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,15 +45,17 @@ public class TopicListFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mRootView = inflater.inflate(R.layout.fragment_board_list, container,
+		mRootView = inflater.inflate(R.layout.fragment_topiclist_list, container,
 				false);
 
 		mFooterView = (LinearLayout) inflater.inflate(
 				R.layout.view_listview_footer, null);
-		mTopicListView = (ListView) mRootView
-				.findViewById(R.id.topic_list);
+		mFooterView.setVisibility(View.GONE);
+		mTopicListView = (ListView) mRootView.findViewById(R.id.topic_list);
 		mTopicListView.addFooterView(mFooterView);
-		mLoading = (ProgressBar) mRootView.findViewById(R.id.fullscreen_loading);
+		mTopicListView.setOnScrollListener(this);
+		mLoading = (ProgressBar) mRootView
+				.findViewById(R.id.fullscreen_loading);
 
 		mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
 
@@ -74,6 +82,29 @@ public class TopicListFragment extends Fragment implements
 
 		}).execute(fid, "1");
 		return mRootView;
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+
+		Log.i(TAG, "firstVisibleItem=" + firstVisibleItem
+				+ "\nvisibleItemCount=" + visibleItemCount + "\ntotalItemCount"
+				+ totalItemCount);
+
+		mLastItemIndex = firstVisibleItem + visibleItemCount - 1; // 减1是因为上面加了个addFooterView
+
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		Log.i(TAG, "scrollState=" + scrollState);
+		// 下拉到空闲是，且最后一个item的数等于数据的总数时，进行更新
+		if (mLastItemIndex == mTopicListAdapter.getCount()
+				&& scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+			Log.i(TAG, "拉到最底部");
+			mFooterView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private class TopicListAdapter extends BaseAdapter {
@@ -113,7 +144,7 @@ public class TopicListFragment extends Fragment implements
 			ViewHolder holder = null;
 			if (convertView == null) {
 				convertView = mInflater
-						.inflate(R.layout.item_board_topic, null);
+						.inflate(R.layout.item_topiclist_topic, null);
 				holder = new ViewHolder();
 				holder.tvReplyCount = (TextView) convertView
 						.findViewById(R.id.board_reply_count);

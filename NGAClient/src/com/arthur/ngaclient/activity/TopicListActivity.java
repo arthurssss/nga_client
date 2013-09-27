@@ -14,7 +14,7 @@ public class TopicListActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_board);
+		setContentView(R.layout.activity_topiclist);
 		String title = getIntent().getStringExtra("title");
 		ActionBar actionBar = getActionBar();
 		actionBar.setTitle(title);
