@@ -2,6 +2,7 @@ package com.arthur.ngaclient.fragment;
 
 import java.util.List;
 
+import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
 import com.arthur.ngaclient.R;
@@ -65,6 +66,9 @@ public class TopicListFragment extends Fragment implements
 		mPullToRefreshAttacher = PullToRefreshAttacher.get(getActivity());
 
 		mPullToRefreshAttacher.addRefreshableView(mTopicListView, this);
+		((DefaultHeaderTransformer) (mPullToRefreshAttacher
+				.getHeaderTransformer())).setProgressBarColor(getActivity()
+				.getResources().getColor(R.color.plate_name));
 
 		String fid = getActivity().getIntent().getStringExtra("fid");
 		mTopicListView.setVisibility(View.GONE);
@@ -149,7 +153,8 @@ public class TopicListFragment extends Fragment implements
 
 		public void addTopicAndRefresh(List<TopicData> toplicList) {
 			mTopicListData.getTopicList().addAll(toplicList);
-			mTopicListData.set__T__ROWS(mTopicListData.get__T__ROWS() + toplicList.size());
+			mTopicListData.set__T__ROWS(mTopicListData.get__T__ROWS()
+					+ toplicList.size());
 			notifyDataSetChanged();
 		}
 

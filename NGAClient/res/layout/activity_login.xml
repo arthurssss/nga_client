@@ -5,34 +5,45 @@
     android:layout_height="match_parent"
     android:background="@color/shit_bg"
     android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin"
     tools:context=".activity.LoginActivity" >
 
-    <EditText
-        android:id="@+id/login_edit_user"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/login_user" >
+        android:layout_height="2dp"
+        android:background="@color/tab_line" />
 
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/login_edit_pwd"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/login_pwd"
-        android:inputType="textPassword" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin" >
 
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:text="@string/login_btn" />
+        <EditText
+            android:id="@+id/login_edit_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/login_user" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/login_edit_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/login_pwd"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:text="@string/login_btn" />
+    </LinearLayout>
 
 </LinearLayout>
