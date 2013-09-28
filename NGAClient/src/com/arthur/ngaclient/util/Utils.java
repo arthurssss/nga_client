@@ -38,17 +38,16 @@ public class Utils {
 				Date date = new Date(sec * 1000);
 				Long todayMs = sdf.parse(
 						new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-								.format(new Date(curSec))).getTime();
-				String time = new SimpleDateFormat("hh:mm", Locale.getDefault())
+								.format(new Date(curSec * 1000))).getTime();
+				String time = new SimpleDateFormat("HH:mm", Locale.getDefault())
 						.format(date);
-				if (sec * 1000 > todayMs
-						&& sec * 1000 <= todayMs - 24 * 60 * 60000) {
+				if (sec * 1000 >= todayMs) {
 					return "今天 " + time;
-				} else if (sec * 1000 > todayMs - 24 * 60 * 60000
-						&& sec * 1000 <= todayMs - 48 * 60 * 60000) {
+				} else if (sec * 1000 >= todayMs - 24 * 60 * 60000
+						&& sec * 1000 < todayMs) {
 					return "昨天 " + time;
-				} else if (sec * 1000 > todayMs - 48 * 60 * 60000
-						&& sec * 1000 <= todayMs - 72 * 60 * 60000) {
+				} else if (sec * 1000 >= todayMs - 48 * 60 * 60000
+						&& sec * 1000 < todayMs - 24 * 60 * 60000) {
 					return "前天 " + time;
 				} else {
 					Calendar c = Calendar.getInstance();
