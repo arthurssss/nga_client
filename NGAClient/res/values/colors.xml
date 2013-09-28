@@ -15,6 +15,6 @@
     <color name="boardlist_author">#1D2A63</color>
     <color name="boardlist_poster">#4F587E</color>
     <color name="boardlist_replytime">#888</color>
-    <color name="select_fg">#66965D36</color>
+    <color name="select_fg">#66ff8800</color>
 
 </resources>
