@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 
@@ -37,14 +38,17 @@ public class TopicListActivity extends FragmentActivity {
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			Intent intent = new Intent();
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.setClass(this, MainActivity.class);
-			this.startActivity(intent);
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			if (!fragmentManager.popBackStackImmediate()) {
+				Intent intent = new Intent();
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setClass(this, MainActivity.class);
+				this.startActivity(intent);
+			}
 		}
-		return super.onKeyDown(keyCode, event);
+		return true;// super.onKeyUp(keyCode, event);
 	}
 
 }

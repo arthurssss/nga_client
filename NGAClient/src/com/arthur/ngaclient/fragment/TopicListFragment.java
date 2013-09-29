@@ -13,11 +13,15 @@ import com.arthur.ngaclient.task.TopicListTask;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -176,6 +180,7 @@ public class TopicListFragment extends Fragment implements
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder = null;
+			final int index = position;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_topiclist_topic,
 						null);
@@ -192,6 +197,8 @@ public class TopicListFragment extends Fragment implements
 						.findViewById(R.id.board_title_bg);
 				holder.tvTopicReplyTime = (TextView) convertView
 						.findViewById(R.id.board_topic_replytime);
+				holder.vTopicListClickItem = convertView
+						.findViewById(R.id.topiclist_item_click);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -211,6 +218,41 @@ public class TopicListFragment extends Fragment implements
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
 				holder.tvTopicReplyTime.setText(Utils.timeFormat(
 						topicData.getLastpost(), mTopicListData.getTime()));
+				holder.vTopicListClickItem
+						.setOnClickListener(new OnClickListener() {
+
+							@Override
+							public void onClick(View v) {
+								Log.d(TAG, "onItemClick =================== ");
+
+								Fragment fragment = new ReplyListFragment();
+
+								// 从列表页面传递需要的参数到详情页面
+								Bundle bundle = new Bundle();
+								bundle.putInt("itemIndex", index);
+								fragment.setArguments(bundle);
+
+								FragmentManager fragmentManager = getActivity()
+										.getSupportFragmentManager();
+								FragmentTransaction fragmentTransaction = fragmentManager
+										.beginTransaction();
+
+								// 判断手机的横竖屏
+								Configuration configuration = getActivity()
+										.getResources().getConfiguration();
+								int ori = configuration.orientation;
+
+								fragmentTransaction.replace(
+										R.id.topiclist_replyview, fragment);
+
+								if (ori == Configuration.ORIENTATION_PORTRAIT) {
+									fragmentTransaction.addToBackStack(null);
+								}
+
+								fragmentTransaction.commit();
+							}
+
+						});
 			}
 			return convertView;
 		}
@@ -222,6 +264,7 @@ public class TopicListFragment extends Fragment implements
 			public TextView tvTopicPoster;
 			public TextView tvTopicReplyTime;
 			public LinearLayout llTopicTitleBg;
+			public View vTopicListClickItem;
 		}
 
 	}
