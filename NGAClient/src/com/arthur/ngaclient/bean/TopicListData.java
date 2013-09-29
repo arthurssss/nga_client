@@ -5,133 +5,133 @@ import java.util.List;
 public class TopicListData {
 
 	/**
-	 * Ö÷ÌâÁĞ±í
+	 * ä¸»é¢˜åˆ—è¡¨
 	 */
 	private List<TopicData> topicList;
 
 	/**
-	 * ×Ó°æÃæĞÅÏ¢
+	 * å­ç‰ˆé¢ä¿¡æ¯
 	 */
 	private SubForumListData __F;
 
 	/**
-	 * ±¾Ò³µÄÖ÷ÌâÊıÁ¿
+	 * æœ¬é¡µçš„ä¸»é¢˜æ•°é‡
 	 */
 	private int __T__ROWS;
 
 	/**
-	 * Ö÷ÌâÁĞ±íÃ¿Ò³µÄÖ÷ÌâÊı
+	 * ä¸»é¢˜åˆ—è¡¨æ¯é¡µçš„ä¸»é¢˜æ•°
 	 */
 	private int __T__ROWS_PAGE;
 
 	/**
-	 * ÔÄ¶ÁÖ÷ÌâÊ±Ã¿Ò³µÄ»Ø¸´Êı
+	 * é˜…è¯»ä¸»é¢˜æ—¶æ¯é¡µçš„å›å¤æ•°
 	 */
 	private int __R__ROWS_PAGE;
 
 	/**
-	 * Êı¾İµÄ×ÜĞĞÊı
+	 * æ•°æ®çš„æ€»è¡Œæ•°
 	 */
 	private int __ROWS;
 	
 	/**
-	 * µ±Ç°Ê±¼ä
+	 * å½“å‰æ—¶é—´
 	 */
 	private long time;
 
 	/**
-	 * »ñÈ¡Êı¾İµÄ×ÜĞĞÊı
+	 * è·å–æ•°æ®çš„æ€»è¡Œæ•°
 	 */
 	public int get__ROWS() {
 		return __ROWS;
 	}
 
 	/**
-	 * ÉèÖÃÊı¾İµÄ×ÜĞĞÊı
+	 * è®¾ç½®æ•°æ®çš„æ€»è¡Œæ•°
 	 */
 	public void set__ROWS(int __ROWS) {
 		this.__ROWS = __ROWS;
 	}
 
 	/**
-	 * »ñÈ¡±¾Ò³µÄÖ÷ÌâÊıÁ¿
+	 * è·å–æœ¬é¡µçš„ä¸»é¢˜æ•°é‡
 	 */
 	public int get__T__ROWS() {
 		return __T__ROWS;
 	}
 
 	/**
-	 * ÉèÖÃ±¾Ò³µÄÖ÷ÌâÊıÁ¿
+	 * è®¾ç½®æœ¬é¡µçš„ä¸»é¢˜æ•°é‡
 	 */
 	public void set__T__ROWS(int __T__ROWS) {
 		this.__T__ROWS = __T__ROWS;
 	}
 
 	/**
-	 * »ñÈ¡Ö÷ÌâÁĞ±íÃ¿Ò³µÄÖ÷ÌâÊı
+	 * è·å–ä¸»é¢˜åˆ—è¡¨æ¯é¡µçš„ä¸»é¢˜æ•°
 	 */
 	public int get__T__ROWS_PAGE() {
 		return __T__ROWS_PAGE;
 	}
 
 	/**
-	 * ÉèÖÃÖ÷ÌâÁĞ±íÃ¿Ò³µÄÖ÷ÌâÊı
+	 * è®¾ç½®ä¸»é¢˜åˆ—è¡¨æ¯é¡µçš„ä¸»é¢˜æ•°
 	 */
 	public void set__T__ROWS_PAGE(int __T__ROWS_PAGE) {
 		this.__T__ROWS_PAGE = __T__ROWS_PAGE;
 	}
 
 	/**
-	 * »ñÈ¡ÔÄ¶ÁÖ÷ÌâÊ±Ã¿Ò³µÄ»Ø¸´Êı
+	 * è·å–é˜…è¯»ä¸»é¢˜æ—¶æ¯é¡µçš„å›å¤æ•°
 	 */
 	public int get__R__ROWS_PAGE() {
 		return __R__ROWS_PAGE;
 	}
 
 	/**
-	 * ÉèÖÃÔÄ¶ÁÖ÷ÌâÊ±Ã¿Ò³µÄ»Ø¸´Êı
+	 * è®¾ç½®é˜…è¯»ä¸»é¢˜æ—¶æ¯é¡µçš„å›å¤æ•°
 	 */
 	public void set__R__ROWS_PAGE(int __R__ROWS_PAGE) {
 		this.__R__ROWS_PAGE = __R__ROWS_PAGE;
 	}
 
 	/**
-	 * »ñÈ¡Ö÷ÌâÁĞ±í
+	 * è·å–ä¸»é¢˜åˆ—è¡¨
 	 */
 	public List<TopicData> getTopicList() {
 		return topicList;
 	}
 
 	/**
-	 * ÉèÖÃÖ÷ÌâÁĞ±í
+	 * è®¾ç½®ä¸»é¢˜åˆ—è¡¨
 	 */
 	public void setTopicList(List<TopicData> topicList) {
 		this.topicList = topicList;
 	}
 
 	/**
-	 * »ñÈ¡×Ó°æÃæĞÅÏ¢
+	 * è·å–å­ç‰ˆé¢ä¿¡æ¯
 	 */
 	public SubForumListData get__F() {
 		return __F;
 	}
 
 	/**
-	 * ÉèÖÃ×Ó°æÃæĞÅÏ¢
+	 * è®¾ç½®å­ç‰ˆé¢ä¿¡æ¯
 	 */
 	public void set__F(SubForumListData __F) {
 		this.__F = __F;
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°Ê±¼ä
+	 * è·å–å½“å‰æ—¶é—´
 	 */
 	public long getTime() {
 		return time;
 	}
 	
 	/**
-	 * ÉèÖÃµ±Ç°Ê±¼ä
+	 * è®¾ç½®å½“å‰æ—¶é—´
 	 */
 	public void setTime(long time) {
 		this.time = time;

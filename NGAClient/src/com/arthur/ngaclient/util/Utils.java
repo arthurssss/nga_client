@@ -11,26 +11,26 @@ public class Utils {
 	public static String timeFormat(Long sec, Long curSec) {
 		Long spentSec = curSec - sec;
 		if (spentSec <= 60) {
-			return "¸Õ²Å";
+			return "åˆšæ‰";
 		}
 		if (spentSec > 60 && spentSec <= 300) {
-			return "5·ÖÖÓÇ°";
+			return "5åˆ†é’Ÿå‰";
 		} else if (spentSec > 300 && spentSec <= 600) {
-			return "10·ÖÖÓÇ°";
+			return "10åˆ†é’Ÿå‰";
 		} else if (spentSec > 600 && spentSec <= 900) {
-			return "15·ÖÖÓÇ°";
+			return "15åˆ†é’Ÿå‰";
 		} else if (spentSec > 900 && spentSec <= 1200) {
-			return "20·ÖÖÓÇ°";
+			return "20åˆ†é’Ÿå‰";
 		} else if (spentSec > 1200 && spentSec <= 1500) {
-			return "25·ÖÖÓÇ°";
+			return "25åˆ†é’Ÿå‰";
 		} else if (spentSec > 1500 && spentSec <= 1800) {
-			return "30·ÖÖÓÇ°";
+			return "30åˆ†é’Ÿå‰";
 		} else if (spentSec > 1800 && spentSec <= 2400) {
-			return "40·ÖÖÓÇ°";
+			return "40åˆ†é’Ÿå‰";
 		} else if (spentSec > 2400 && spentSec <= 3000) {
-			return "50·ÖÖÓÇ°";
+			return "50åˆ†é’Ÿå‰";
 		} else if (spentSec > 3000 && spentSec <= 3600) {
-			return "1Ð¡Ê±Ç°";
+			return "1å°æ—¶å‰";
 		} else if (spentSec > 3600) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
 					Locale.getDefault());
@@ -42,13 +42,13 @@ public class Utils {
 				String time = new SimpleDateFormat("HH:mm", Locale.getDefault())
 						.format(date);
 				if (sec * 1000 >= todayMs) {
-					return "½ñÌì " + time;
+					return "ä»Šå¤© " + time;
 				} else if (sec * 1000 >= todayMs - 24 * 60 * 60000
 						&& sec * 1000 < todayMs) {
-					return "×òÌì " + time;
+					return "æ˜¨å¤© " + time;
 				} else if (sec * 1000 >= todayMs - 48 * 60 * 60000
 						&& sec * 1000 < todayMs - 24 * 60 * 60000) {
-					return "Ç°Ìì " + time;
+					return "å‰å¤© " + time;
 				} else {
 					Calendar c = Calendar.getInstance();
 					c.setTime(new Date(sec * 1000));

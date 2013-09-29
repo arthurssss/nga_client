@@ -1,29 +1,29 @@
 package com.arthur.ngaclient.bean;
 
 public class TopicData {
-	private int tid; //Ö÷Ìâid 
-    private int fid; //Ö÷ÌâËùÔÚ°æÃæid 
-    private int quote_from;//ÒıÓÃ×ÔÖ÷Ìâ 
-    private String quote_to;//´ËÖ÷ÌâÒıÓÃµ½Ö÷Ìâ 
-    private int icon;//Í¼±ê 
-    private String titlefont;//±êÌâÑùÊ½ 
-    private String author;//×÷Õß 
-    private int authorid;//×÷Õßuid 
-    private String subject;//±êÌâ 
+	private int tid; //ä¸»é¢˜id 
+    private int fid; //ä¸»é¢˜æ‰€åœ¨ç‰ˆé¢id 
+    private int quote_from;//å¼•ç”¨è‡ªä¸»é¢˜ 
+    private String quote_to;//æ­¤ä¸»é¢˜å¼•ç”¨åˆ°ä¸»é¢˜ 
+    private int icon;//å›¾æ ‡ 
+    private String titlefont;//æ ‡é¢˜æ ·å¼ 
+    private String author;//ä½œè€… 
+    private int authorid;//ä½œè€…uid 
+    private String subject;//æ ‡é¢˜ 
     private int ifmark; 
-    private int type;//Ö÷ÌâÀàĞÍbit 
+    private int type;//ä¸»é¢˜ç±»å‹bit 
     private int type_2; 
-    private long postdate;//·¢ÌûÊ±¼ä 
-    private long lastpost;//×îºó»Ø¸´Ê±¼ä 
-    private String lastposter;//×îºó»Ø¸´ÈË 
-    private int replies;//»Ø¸´ÊıÁ¿ (»Ø¸´Ò³Êı=»Ø¸´ÊıÁ¿/__R__ROWS_PAGE 
+    private long postdate;//å‘å¸–æ—¶é—´ 
+    private long lastpost;//æœ€åå›å¤æ—¶é—´ 
+    private String lastposter;//æœ€åå›å¤äºº 
+    private int replies;//å›å¤æ•°é‡ (å›å¤é¡µæ•°=å›å¤æ•°é‡/__R__ROWS_PAGE 
     private int locked; 
     private int digest; 
     private int ifupload; 
-    private long lastmodify;//×îºóĞŞ¸ÄÊ±¼ä 
+    private long lastmodify;//æœ€åä¿®æ”¹æ—¶é—´ 
     private int recommend; 
-    private int admin_ui;//ÓÃ»§ÊÇ·ñ¶Ô´ËÖ÷ÌâÓĞÈ¨ÏŞbit 
-    private String tpcurl;//Ö÷ÌâµØÖ· 
+    private int admin_ui;//ç”¨æˆ·æ˜¯å¦å¯¹æ­¤ä¸»é¢˜æœ‰æƒé™bit 
+    private String tpcurl;//ä¸»é¢˜åœ°å€ 
 	private String ispage;
 
 	public int getTid() {

@@ -6,47 +6,47 @@ import java.util.List;
 public class Plate {
 
 	/**
-	 * ×ÛºÏÌÖÂÛÇø
+	 * ç»¼åˆè®¨è®ºåŒº
 	 */
 	public static final int ZHTL = 0;
 
 	/**
-	 * Ö°ÒµÌÖÂÛÇø
+	 * èŒä¸šè®¨è®ºåŒº
 	 */
 	public static final int ZYTL = 1;
 
 	/**
-	 * Ã°ÏÕĞÄµÃ
+	 * å†’é™©å¿ƒå¾—
 	 */
 	public static final int MXXD = 2;
 
 	/**
-	 * ÂóµÏÎÄÖ®Ëş
+	 * éº¦è¿ªæ–‡ä¹‹å¡”
 	 */
 	public static final int MDWZT = 3;
 
 	/**
-	 * °µºÚÆÆ»µÉñ
+	 * æš—é»‘ç ´åç¥
 	 */
 	public static final int AHPHS = 4;
 
 	/**
-	 * Ó¢ĞÛÁªÃË
+	 * è‹±é›„è”ç›Ÿ
 	 */
 	public static final int YXLM = 5;
 
 	/**
-	 * ÆäËûÓÎÏ·
+	 * å…¶ä»–æ¸¸æˆ
 	 */
 	public static final int QTYX = 6;
 
 	/**
-	 * ÍÆ¼ö×¨Çø
+	 * æ¨èä¸“åŒº
 	 */
 	public static final int TJZQ = 7;
 
 	/**
-	 * ÆäËû°æÃæ
+	 * å…¶ä»–ç‰ˆé¢
 	 */
 	public static final int QTBM = 8;
 
@@ -86,31 +86,31 @@ public class Plate {
 		String name = null;
 		switch (i) {
 		case 0:
-			name = "×ÛºÏÌÖÂÛ";
+			name = "ç»¼åˆè®¨è®º";
 			break;
 		case 1:
-			name = "Ö°ÒµÌÖÂÛÇø";
+			name = "èŒä¸šè®¨è®ºåŒº";
 			break;
 		case 2:
-			name = "Ã°ÏÕĞÄµÃ";
+			name = "å†’é™©å¿ƒå¾—";
 			break;
 		case 3:
-			name = "ÂóµÏÎÄÖ®Ëş";
+			name = "éº¦è¿ªæ–‡ä¹‹å¡”";
 			break;
 		case 4:
-			name = "°µºÚÆÆ»µÉñ";
+			name = "æš—é»‘ç ´åç¥";
 			break;
 		case 5:
-			name = "Ó¢ĞÛÁªÃË";
+			name = "è‹±é›„è”ç›Ÿ";
 			break;
 		case 6:
-			name = "ÆäËûÓÎÏ·";
+			name = "å…¶ä»–æ¸¸æˆ";
 			break;
 		case 7:
-			name = "ÍÆ¼ö×¨Çø";
+			name = "æ¨èä¸“åŒº";
 			break;
 		case 8:
-			name = "ÆäËû°æÃæ";
+			name = "å…¶ä»–ç‰ˆé¢";
 			break;
 		}
 		return name;

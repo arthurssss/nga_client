@@ -27,10 +27,10 @@ public class FileUtils {
 			+ "/";
 
 	/**
-	 * »ñÈ¡ÎÄ¼şµÄ´óĞ¡
+	 * è·å–æ–‡ä»¶çš„å¤§å°
 	 * 
-	 * @param ÎÄ¼şÈ«Â·¾¶
-	 * @return ÎÄ¼ş´óĞ¡
+	 * @param æ–‡ä»¶å…¨è·¯å¾„
+	 * @return æ–‡ä»¶å¤§å°
 	 */
 	public static long getFileSize(String fileNameWithPath) {
 		File file = new File(fileNameWithPath);
@@ -42,10 +42,10 @@ public class FileUtils {
 	}
 
 	/**
-	 * ÔÚSD¿¨ÉÏ´´½¨ÎÄ¼ş
+	 * åœ¨SDå¡ä¸Šåˆ›å»ºæ–‡ä»¶
 	 * 
-	 * @param ÎÄ¼şÈ«Â·¾¶
-	 * @return ´´½¨³É¹¦µÄÎÄ¼ş
+	 * @param æ–‡ä»¶å…¨è·¯å¾„
+	 * @return åˆ›å»ºæˆåŠŸçš„æ–‡ä»¶
 	 * @throws IOException
 	 */
 	public static File createFile(String fileNameWithPath) throws IOException {
@@ -55,11 +55,11 @@ public class FileUtils {
 	}
 
 	/**
-	 * ÔÚSD¿¨ÉÏ´´½¨Ä¿Â¼
+	 * åœ¨SDå¡ä¸Šåˆ›å»ºç›®å½•
 	 * 
 	 * @param dirNameWithPath
-	 *            ÎÄ¼ş¼ĞÈ«Â·¾¶
-	 * @return ´´½¨³É¹¦µÄÎÄ¼ş¼Ğ
+	 *            æ–‡ä»¶å¤¹å…¨è·¯å¾„
+	 * @return åˆ›å»ºæˆåŠŸçš„æ–‡ä»¶å¤¹
 	 */
 	public static File createDir(String dirNameWithPath) {
 		File dir = new File(dirNameWithPath);
@@ -68,10 +68,10 @@ public class FileUtils {
 	}
 
 	/**
-	 * ÅĞ¶ÏSD¿¨ÉÏµÄÎÄ¼ş¼ĞÊÇ·ñ´æÔÚ
+	 * åˆ¤æ–­SDå¡ä¸Šçš„æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨
 	 * 
 	 * @param fileNameWithPath
-	 * @return ÊÇ·ñ´æÔÚ
+	 * @return æ˜¯å¦å­˜åœ¨
 	 */
 	public static boolean isFileExist(String fileNameWithPath) {
 		File file = new File(fileNameWithPath);
@@ -79,15 +79,15 @@ public class FileUtils {
 	}
 
 	/**
-	 * »ñÈ¡ÁÙÊ±ÎÄ¼şµÄ´óĞ¡
+	 * è·å–ä¸´æ—¶æ–‡ä»¶çš„å¤§å°
 	 * 
 	 * @param urlStr
-	 *            ÎÄ¼şÍøÂçÂ·¾¶
+	 *            æ–‡ä»¶ç½‘ç»œè·¯å¾„
 	 * @param path
-	 *            ÎÄ¼şÂ·¾¶
+	 *            æ–‡ä»¶è·¯å¾„
 	 * @param index
-	 *            µÚ¼¸¸öÁÙÊ±ÎÄ¼ş
-	 * @return ÎÄ¼ş´óĞ¡
+	 *            ç¬¬å‡ ä¸ªä¸´æ—¶æ–‡ä»¶
+	 * @return æ–‡ä»¶å¤§å°
 	 */
 	public static int getTmpFileLength(String orgNameWithPath, int index) {
 		int length = (int) FileUtils.getFileSize(orgNameWithPath + ".tmp"
@@ -96,10 +96,10 @@ public class FileUtils {
 	}
 
 	/**
-	 * ºÏ²¢ÎÄ¼ş
+	 * åˆå¹¶æ–‡ä»¶
 	 * 
-	 * @param ËùÉú³ÉµÄÎÄ¼şÄ¿Â¼
-	 * @param ËùĞèºÏ²¢µÄÎÄ¼ş
+	 * @param æ‰€ç”Ÿæˆçš„æ–‡ä»¶ç›®å½•
+	 * @param æ‰€éœ€åˆå¹¶çš„æ–‡ä»¶
 	 */
 	public static void mergeFiles(String outFile, String[] files) {
 		FileChannel outChannel = null;
@@ -129,9 +129,9 @@ public class FileUtils {
 	}
 
 	/**
-	 * ÅúÁ¿É¾³ıÎÄ¼ş
+	 * æ‰¹é‡åˆ é™¤æ–‡ä»¶
 	 * 
-	 * @param ÎÄ¼şÂ·¾¶
+	 * @param æ–‡ä»¶è·¯å¾„
 	 */
 	public static boolean deleteFiles(String[] files) {
 		boolean flag = true;
@@ -144,16 +144,16 @@ public class FileUtils {
 	}
 
 	/**
-	 * É¾³ıµ¥¸öÎÄ¼ş
+	 * åˆ é™¤å•ä¸ªæ–‡ä»¶
 	 * 
 	 * @param sPath
-	 *            ±»É¾³ıÎÄ¼şµÄÎÄ¼şÃû
-	 * @return µ¥¸öÎÄ¼şÉ¾³ı³É¹¦·µ»Øtrue£¬·ñÔò·µ»Øfalse
+	 *            è¢«åˆ é™¤æ–‡ä»¶çš„æ–‡ä»¶å
+	 * @return å•ä¸ªæ–‡ä»¶åˆ é™¤æˆåŠŸè¿”å›trueï¼Œå¦åˆ™è¿”å›false
 	 */
 	public static boolean deleteFile(String sPath) {
 		boolean flag = false;
 		File file = new File(sPath);
-		// Â·¾¶ÎªÎÄ¼şÇÒ²»Îª¿ÕÔò½øĞĞÉ¾³ı
+		// è·¯å¾„ä¸ºæ–‡ä»¶ä¸”ä¸ä¸ºç©ºåˆ™è¿›è¡Œåˆ é™¤
 		if (file.isFile() && file.exists()) {
 			file.delete();
 			flag = true;
@@ -162,12 +162,12 @@ public class FileUtils {
 	}
 
 	/**
-	 * ¶ÔÎÄ¼ş½øĞĞ¼ÓÃÜ
+	 * å¯¹æ–‡ä»¶è¿›è¡ŒåŠ å¯†
 	 * 
 	 * @param String
-	 *            oldFile Ô­Ê¼Òª¼ÓÃÜµÄÎÄ¼ş
+	 *            oldFile åŸå§‹è¦åŠ å¯†çš„æ–‡ä»¶
 	 * @param String
-	 *            newFile ¼ÓÃÜºóµÄÎÄ¼ş
+	 *            newFile åŠ å¯†åçš„æ–‡ä»¶
 	 * @return
 	 */
 	public static void encryptFile(String oldFile, String newFile)
@@ -195,12 +195,12 @@ public class FileUtils {
 	}
 
 	/**
-	 * ¶ÔÎÄ¼ş½øĞĞ½âÃÜ
+	 * å¯¹æ–‡ä»¶è¿›è¡Œè§£å¯†
 	 * 
 	 * @param String
-	 *            oldFile Ô­Ê¼Òª½âÃÜµÄÎÄ¼ş
+	 *            oldFile åŸå§‹è¦è§£å¯†çš„æ–‡ä»¶
 	 * @param String
-	 *            newFile ½âÃÜºóµÄÎÄ¼ş
+	 *            newFile è§£å¯†åçš„æ–‡ä»¶
 	 * @return
 	 */
 	public static void decryptFile(String oldFile, String newFile)
@@ -228,13 +228,13 @@ public class FileUtils {
 	}
 
 	/**
-	 * ¶ÁÈ¡ÎÄ¼şÎªÒ»¸öÄÚ´æ×Ö·û´®,±£³ÖÎÄ¼şÔ­ÓĞµÄ»»ĞĞ¸ñÊ½
+	 * è¯»å–æ–‡ä»¶ä¸ºä¸€ä¸ªå†…å­˜å­—ç¬¦ä¸²,ä¿æŒæ–‡ä»¶åŸæœ‰çš„æ¢è¡Œæ ¼å¼
 	 * 
 	 * @param filePath
-	 *            ÎÄ¼şÂ·¾¶
+	 *            æ–‡ä»¶è·¯å¾„
 	 * @param charset
-	 *            ÎÄ¼ş×Ö·û¼¯±àÂë
-	 * @return ÎÄ¼şÄÚÈİµÄ×Ö·û´®
+	 *            æ–‡ä»¶å­—ç¬¦é›†ç¼–ç 
+	 * @return æ–‡ä»¶å†…å®¹çš„å­—ç¬¦ä¸²
 	 */
 	public static String file2String(String filePath, String charset) {
 		File file = new File(filePath);
@@ -248,24 +248,24 @@ public class FileUtils {
 				sb.append(line).append(System.getProperty("line.separator"));
 			}
 		} catch (UnsupportedEncodingException e) {
-			Log.e("", "¶ÁÈ¡ÎÄ¼şÎªÒ»¸öÄÚ´æ×Ö·û´®Ê§°Ü£¬Ê§°ÜÔ­ÒòÊÇÊ¹ÓÃÁË²»Ö§³ÖµÄ×Ö·û±àÂë" + charset + "  "
+			Log.e("", "è¯»å–æ–‡ä»¶ä¸ºä¸€ä¸ªå†…å­˜å­—ç¬¦ä¸²å¤±è´¥ï¼Œå¤±è´¥åŸå› æ˜¯ä½¿ç”¨äº†ä¸æ”¯æŒçš„å­—ç¬¦ç¼–ç " + charset + "  "
 					+ e.toString());
 		} catch (FileNotFoundException e) {
-			Log.e("", "¶ÁÈ¡ÎÄ¼şÎªÒ»¸öÄÚ´æ×Ö·û´®Ê§°Ü£¬Ê§°ÜÔ­ÒòËù¸øµÄÎÄ¼ş" + file + "²»´æÔÚ£¡    " + e.toString());
+			Log.e("", "è¯»å–æ–‡ä»¶ä¸ºä¸€ä¸ªå†…å­˜å­—ç¬¦ä¸²å¤±è´¥ï¼Œå¤±è´¥åŸå› æ‰€ç»™çš„æ–‡ä»¶" + file + "ä¸å­˜åœ¨ï¼    " + e.toString());
 		} catch (IOException e) {
-			Log.e("", "¶ÁÈ¡ÎÄ¼şÎªÒ»¸öÄÚ´æ×Ö·û´®Ê§°Ü£¬Ê§°ÜÔ­ÒòÊÇ¶ÁÈ¡ÎÄ¼şÒì³££¡    " + e.toString());
+			Log.e("", "è¯»å–æ–‡ä»¶ä¸ºä¸€ä¸ªå†…å­˜å­—ç¬¦ä¸²å¤±è´¥ï¼Œå¤±è´¥åŸå› æ˜¯è¯»å–æ–‡ä»¶å¼‚å¸¸ï¼    " + e.toString());
 		}
 		return sb.toString();
 	}
 
 	/**
-	 * ½«×Ö·û´®´æ´¢ÎªÒ»¸öÎÄ¼ş£¬µ±ÎÄ¼ş²»´æÔÚÊ±ºò£¬×Ô¶¯´´½¨¸ÃÎÄ¼ş£¬µ±ÎÄ¼şÒÑ´æÔÚÊ±ºò£¬ÖØĞ´ÎÄ¼şµÄÄÚÈİ£¬ÌØ¶¨Çé¿öÏÂ£¬»¹Óë²Ù×÷ÏµÍ³µÄÈ¨ÏŞÓĞ¹Ø¡£
+	 * å°†å­—ç¬¦ä¸²å­˜å‚¨ä¸ºä¸€ä¸ªæ–‡ä»¶ï¼Œå½“æ–‡ä»¶ä¸å­˜åœ¨æ—¶å€™ï¼Œè‡ªåŠ¨åˆ›å»ºè¯¥æ–‡ä»¶ï¼Œå½“æ–‡ä»¶å·²å­˜åœ¨æ—¶å€™ï¼Œé‡å†™æ–‡ä»¶çš„å†…å®¹ï¼Œç‰¹å®šæƒ…å†µä¸‹ï¼Œè¿˜ä¸æ“ä½œç³»ç»Ÿçš„æƒé™æœ‰å…³ã€‚
 	 * 
 	 * @param text
-	 *            ×Ö·û´®
+	 *            å­—ç¬¦ä¸²
 	 * @param distFile
-	 *            ´æ´¢µÄÄ¿±êÎÄ¼ş
-	 * @return µ±´æ´¢ÕıÈ·ÎŞÎóÊ±·µ»Øtrue£¬·ñÔò·µ»Øfalse
+	 *            å­˜å‚¨çš„ç›®æ ‡æ–‡ä»¶
+	 * @return å½“å­˜å‚¨æ­£ç¡®æ— è¯¯æ—¶è¿”å›trueï¼Œå¦åˆ™è¿”å›false
 	 */
 	public static boolean string2File(String text, File distFile) {
 		if (!distFile.getParentFile().exists())
@@ -276,7 +276,7 @@ public class FileUtils {
 		try {
 			br = new BufferedReader(new StringReader(text));
 			bw = new BufferedWriter(new FileWriter(distFile));
-			char buf[] = new char[1024 * 64]; // ×Ö·û»º³åÇø
+			char buf[] = new char[1024 * 64]; // å­—ç¬¦ç¼“å†²åŒº
 			int len;
 			while ((len = br.read(buf)) != -1) {
 				bw.write(buf, 0, len);
@@ -286,18 +286,18 @@ public class FileUtils {
 			bw.close();
 		} catch (IOException e) {
 			flag = false;
-			Log.e("", "½«×Ö·û´®Ğ´ÈëÎÄ¼ş·¢ÉúÒì³££¡   " + e.toString());
+			Log.e("", "å°†å­—ç¬¦ä¸²å†™å…¥æ–‡ä»¶å‘ç”Ÿå¼‚å¸¸ï¼   " + e.toString());
 		}
 		return flag;
 	}
 
 	/**
-	 * ĞŞ¸ÄÎÄ¼şÃû
+	 * ä¿®æ”¹æ–‡ä»¶å
 	 * 
 	 * @param oldFileName
-	 *            £ºĞèÒªĞŞ¸ÄµÄÎÄ¼şÃû£¨º¬Â·¾¶£©
+	 *            ï¼šéœ€è¦ä¿®æ”¹çš„æ–‡ä»¶åï¼ˆå«è·¯å¾„ï¼‰
 	 * @param newFileName
-	 *            £º Ä¿±êÎÄ¼şÃû£¨º¬Â·¾¶£©
+	 *            ï¼š ç›®æ ‡æ–‡ä»¶åï¼ˆå«è·¯å¾„ï¼‰
 	 * @return
 	 */
 	public static boolean renameFile(String oldFileName, String newFileName) {
@@ -309,24 +309,24 @@ public class FileUtils {
 	}
 
 	/**
-	 * É¾³ıÖ¸¶¨ÎÄ¼ş¼Ğ£º²½Öè£ºÏÈÉ¾³ıÎÄ¼ş¼ĞÏÂËùÓĞÎÄ¼ş£¬ÔÙÉ¾³ıÎÄ¼ş¼Ğ
+	 * åˆ é™¤æŒ‡å®šæ–‡ä»¶å¤¹ï¼šæ­¥éª¤ï¼šå…ˆåˆ é™¤æ–‡ä»¶å¤¹ä¸‹æ‰€æœ‰æ–‡ä»¶ï¼Œå†åˆ é™¤æ–‡ä»¶å¤¹
 	 * 
 	 * @param folderPath
 	 */
 	public static void delFolder(String folderPath) {
 		try {
-			delAllFile(folderPath); // É¾³ıÍêÀïÃæËùÓĞÄÚÈİ
+			delAllFile(folderPath); // åˆ é™¤å®Œé‡Œé¢æ‰€æœ‰å†…å®¹
 			String filePath = folderPath;
 			filePath = filePath.toString();
 			java.io.File myFilePath = new java.io.File(filePath);
-			myFilePath.delete(); // É¾³ı¿ÕÎÄ¼ş¼Ğ
+			myFilePath.delete(); // åˆ é™¤ç©ºæ–‡ä»¶å¤¹
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * É¾³ıÖ¸¶¨ÎÄ¼ş¼ĞÏÂËùÓĞµÄÎÄ¼ş
+	 * åˆ é™¤æŒ‡å®šæ–‡ä»¶å¤¹ä¸‹æ‰€æœ‰çš„æ–‡ä»¶
 	 * 
 	 * @param path
 	 * @return
@@ -352,8 +352,8 @@ public class FileUtils {
 				temp.delete();
 			}
 			if (temp.isDirectory()) {
-				delAllFile(path + "/" + tempList[i]);// ÏÈÉ¾³ıÎÄ¼ş¼ĞÀïÃæµÄÎÄ¼ş
-				delFolder(path + "/" + tempList[i]);// ÔÙÉ¾³ı¿ÕÎÄ¼ş¼Ğ
+				delAllFile(path + "/" + tempList[i]);// å…ˆåˆ é™¤æ–‡ä»¶å¤¹é‡Œé¢çš„æ–‡ä»¶
+				delFolder(path + "/" + tempList[i]);// å†åˆ é™¤ç©ºæ–‡ä»¶å¤¹
 				flag = true;
 			}
 		}

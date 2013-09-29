@@ -3,13 +3,13 @@ package com.arthur.ngaclient.bean;
 import java.util.List;
 
 public class SubForumListData {
-	private int fid; // µ±Ç°°æÃæid (ËÑË÷ÓÃ»§·¢ÌûµÈÇé¿öÊÇÃ»ÓĞµ±Ç°°æÃæid
-	private String topped_topic; // ÖÃ¶¥ÌùµÄID ¿ÉÄÜÓĞ¶à¸ö ¶ººÅ·Ö¸ô
-	private List<SubForumData> sub_forums; // µ±Ç°°æÃæµÄ×ÓÂÛÌ³»òÕßÁªºÏ°æÃæµÈ °æÃæÍ¼±êÔÚ¹«¹²±äÁ¿ÎÄ¼şÀï
-	private String __UNION_FORUM; // ÁªºÏ°æÃæÖĞÄ¬ÈÏÉèÖÃµÄ°æÃæID ¶ººÅ·Ö¸ô
-	private String __UNION_FORUM_DEFAULT; // ÁªºÏ°æÃæÖĞÄ¬ÈÏÏÔÊ¾µÄ°æÃæID ¶ººÅ·Ö¸ô
-	private String __SELECTED_FORUM; // ÁªºÏ°æÃæÖĞÓÃ»§Ñ¡ÔñÏÔÊ¾µÄ°æÃæid ¶ººÅ·Ö¸ô
-										// (ÈçÑ¡ÔñÁËÒ»¸öÒÔÉÏ»á°üÀ¨ÁªºÏ°æÃæ±¾ÉíµÄid)
+	private int fid; // å½“å‰ç‰ˆé¢id (æœç´¢ç”¨æˆ·å‘å¸–ç­‰æƒ…å†µæ˜¯æ²¡æœ‰å½“å‰ç‰ˆé¢id
+	private String topped_topic; // ç½®é¡¶è´´çš„ID å¯èƒ½æœ‰å¤šä¸ª é€—å·åˆ†éš”
+	private List<SubForumData> sub_forums; // å½“å‰ç‰ˆé¢çš„å­è®ºå›æˆ–è€…è”åˆç‰ˆé¢ç­‰ ç‰ˆé¢å›¾æ ‡åœ¨å…¬å…±å˜é‡æ–‡ä»¶é‡Œ
+	private String __UNION_FORUM; // è”åˆç‰ˆé¢ä¸­é»˜è®¤è®¾ç½®çš„ç‰ˆé¢ID é€—å·åˆ†éš”
+	private String __UNION_FORUM_DEFAULT; // è”åˆç‰ˆé¢ä¸­é»˜è®¤æ˜¾ç¤ºçš„ç‰ˆé¢ID é€—å·åˆ†éš”
+	private String __SELECTED_FORUM; // è”åˆç‰ˆé¢ä¸­ç”¨æˆ·é€‰æ‹©æ˜¾ç¤ºçš„ç‰ˆé¢id é€—å·åˆ†éš”
+										// (å¦‚é€‰æ‹©äº†ä¸€ä¸ªä»¥ä¸Šä¼šåŒ…æ‹¬è”åˆç‰ˆé¢æœ¬èº«çš„id)
 
 	public int getFid() {
 		return fid;

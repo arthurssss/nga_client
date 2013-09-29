@@ -97,7 +97,7 @@ public class LoginActivity extends FragmentActivity {
 			Log.d(TAG, "url ==== " + url);
 			Log.d(TAG, "param ==== " + param);
 			DefaultHttpClient httpclient = new DefaultHttpClient();
-			// Ê¹²»×Ô¶¯ÖØ¶¨Ïò
+			// ä½¿ä¸è‡ªåŠ¨é‡å®šå‘
 			httpclient.setRedirectHandler(new RedirectHandler() {
 
 				@Override
@@ -160,7 +160,7 @@ public class LoginActivity extends FragmentActivity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				// ¹Ø±ÕÁ¬½Ó,ÊÍ·Å×ÊÔ´
+				// å…³é—­è¿æ¥,é‡Šæ”¾èµ„æº
 				httpclient.getConnectionManager().shutdown();
 			}
 			return false;

@@ -81,7 +81,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 		DefaultHttpClient httpclient = new DefaultHttpClient(httpParams);
 
-		// Ê¹²»×Ô¶¯ÖØ¶¨Ïò
+		// ä½¿ä¸è‡ªåŠ¨é‡å®šå‘
 		httpclient.setRedirectHandler(new RedirectHandler() {
 
 			@Override
@@ -196,7 +196,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 			e.printStackTrace();
 			return DATAERROR;
 		} finally {
-			// ¹Ø±ÕÁ¬½Ó,ÊÍ·Å×ÊÔ´
+			// å…³é—­è¿æ¥,é‡Šæ”¾èµ„æº
 			httpclient.getConnectionManager().shutdown();
 		}
 	}

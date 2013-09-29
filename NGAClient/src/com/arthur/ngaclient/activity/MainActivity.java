@@ -68,8 +68,8 @@ public class MainActivity extends FragmentActivity {
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-		float density = dm.density; // ÆÁÄ»ÃÜ¶È£¨ÏñËØ±ÈÀı£º0.75/1.0/1.5/2.0£©
-		int densityDPI = dm.densityDpi; // ÆÁÄ»ÃÜ¶È£¨Ã¿´çÏñËØ£º120/160/240/320£©
+		float density = dm.density; // å±å¹•å¯†åº¦ï¼ˆåƒç´ æ¯”ä¾‹ï¼š0.75/1.0/1.5/2.0ï¼‰
+		int densityDPI = dm.densityDpi; // å±å¹•å¯†åº¦ï¼ˆæ¯å¯¸åƒç´ ï¼š120/160/240/320ï¼‰
 		float xdpi = dm.xdpi;
 		float ydpi = dm.ydpi;
 
@@ -77,8 +77,8 @@ public class MainActivity extends FragmentActivity {
 		Log.e(TAG + "  DisplayMetrics", "density=" + density + "; densityDPI="
 				+ densityDPI);
 
-		int screenWidth = dm.widthPixels; // ÆÁÄ»¿í£¨dip£¬Èç£º320dip£©
-		int screenHeight = dm.heightPixels; // ÆÁÄ»¿í£¨dip£¬Èç£º533dip£©
+		int screenWidth = dm.widthPixels; // å±å¹•å®½ï¼ˆdipï¼Œå¦‚ï¼š320dipï¼‰
+		int screenHeight = dm.heightPixels; // å±å¹•å®½ï¼ˆdipï¼Œå¦‚ï¼š533dipï¼‰
 
 		Log.e(TAG + "  DisplayMetrics(222)", "screenWidth=" + screenWidth
 				+ "; screenHeight=" + screenHeight);
@@ -147,17 +147,17 @@ public class MainActivity extends FragmentActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		Log.d(TAG, "onConfigurationChanged");
-		// ¼ì²âÆÁÄ»µÄ·½Ïò£º×İÏò»òºáÏò
+		// æ£€æµ‹å±å¹•çš„æ–¹å‘ï¼šçºµå‘æˆ–æ¨ªå‘
 		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			// µ±Ç°ÎªºáÆÁ£¬ ÔÚ´Ë´¦Ìí¼Ó¶îÍâµÄ´¦Àí´úÂë
+			// å½“å‰ä¸ºæ¨ªå±ï¼Œ åœ¨æ­¤å¤„æ·»åŠ é¢å¤–çš„å¤„ç†ä»£ç 
 		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			// µ±Ç°ÎªÊúÆÁ£¬ ÔÚ´Ë´¦Ìí¼Ó¶îÍâµÄ´¦Àí´úÂë
+			// å½“å‰ä¸ºç«–å±ï¼Œ åœ¨æ­¤å¤„æ·»åŠ é¢å¤–çš„å¤„ç†ä»£ç 
 		}
-		// ¼ì²âÊµÌå¼üÅÌµÄ×´Ì¬£ºÍÆ³ö»òÕßºÏÉÏ
+		// æ£€æµ‹å®ä½“é”®ç›˜çš„çŠ¶æ€ï¼šæ¨å‡ºæˆ–è€…åˆä¸Š
 		if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
-			// ÊµÌå¼üÅÌ´¦ÓÚÍÆ³ö×´Ì¬£¬ÔÚ´Ë´¦Ìí¼Ó¶îÍâµÄ´¦Àí´úÂë
+			// å®ä½“é”®ç›˜å¤„äºæ¨å‡ºçŠ¶æ€ï¼Œåœ¨æ­¤å¤„æ·»åŠ é¢å¤–çš„å¤„ç†ä»£ç 
 		} else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
-			// ÊµÌå¼üÅÌ´¦ÓÚºÏÉÏ×´Ì¬£¬ÔÚ´Ë´¦Ìí¼Ó¶îÍâµÄ´¦Àí´úÂë
+			// å®ä½“é”®ç›˜å¤„äºåˆä¸ŠçŠ¶æ€ï¼Œåœ¨æ­¤å¤„æ·»åŠ é¢å¤–çš„å¤„ç†ä»£ç 
 		}
 	}
 
@@ -204,7 +204,7 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * 
-	 * Ê×Ò³ViewPager Adapter
+	 * é¦–é¡µViewPager Adapter
 	 * 
 	 */
 	public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -304,7 +304,7 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * 
-	 * ³£ÓÃ°å¿éFragment
+	 * å¸¸ç”¨æ¿å—Fragment
 	 * 
 	 */
 	public static class MyBoardsFragment extends Fragment {
@@ -417,7 +417,7 @@ public class MainActivity extends FragmentActivity {
 
 		/**
 		 * 
-		 * ³£ÓÃ°å¿é£¬item³¤°´¶àÑ¡É¾³ılistener
+		 * å¸¸ç”¨æ¿å—ï¼Œitemé•¿æŒ‰å¤šé€‰åˆ é™¤listener
 		 * 
 		 */
 		private class ModeCallback implements ListView.MultiChoiceModeListener {
@@ -435,7 +435,7 @@ public class MainActivity extends FragmentActivity {
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 				MenuInflater inflater = getActivity().getMenuInflater();
 				inflater.inflate(R.menu.delete, menu);
-				mode.setTitle("Ñ¡ÔñÒªÉ¾³ıµÄ°å¿é");
+				mode.setTitle("é€‰æ‹©è¦åˆ é™¤çš„æ¿å—");
 				setSubtitle(mode);
 				return true;
 			}
@@ -449,7 +449,7 @@ public class MainActivity extends FragmentActivity {
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				Log.d(TAG, "onActionItemClicked");
 				Toast.makeText(getActivity(),
-						"É¾³ıÁË" + mListView.getCheckedItemCount() + "¸ö°å¿é",
+						"åˆ é™¤äº†" + mListView.getCheckedItemCount() + "ä¸ªæ¿å—",
 						Toast.LENGTH_SHORT).show();
 
 				Iterator<Board> iterator = mMyBoardsList.iterator();
@@ -495,7 +495,7 @@ public class MainActivity extends FragmentActivity {
 					mode.setSubtitle(null);
 					break;
 				default:
-					mode.setSubtitle(checkedCount + "¸ö°å¿é±»Ñ¡Ôñ");
+					mode.setSubtitle(checkedCount + "ä¸ªæ¿å—è¢«é€‰æ‹©");
 					break;
 				}
 			}
@@ -505,7 +505,7 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * 
-	 * ËùÓĞ°å¿éFragment
+	 * æ‰€æœ‰æ¿å—Fragment
 	 * 
 	 */
 	public static class AllBoardsFragment extends Fragment {
@@ -608,7 +608,7 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * 
-	 * ËùÓĞ°å¿éGridViewAdapter
+	 * æ‰€æœ‰æ¿å—GridViewAdapter
 	 * 
 	 */
 	public static class BoardGridViewAdapter extends BaseAdapter {
@@ -718,7 +718,7 @@ public class MainActivity extends FragmentActivity {
 
 	/**
 	 * 
-	 * ³£ÓÃ°å¿éAdapter
+	 * å¸¸ç”¨æ¿å—Adapter
 	 * 
 	 */
 	public static class MyBoardListAdapter extends BaseAdapter {
