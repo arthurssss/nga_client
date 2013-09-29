@@ -10,6 +10,7 @@ import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
 import com.arthur.ngaclient.interfaces.ITopicDataLoadedListener;
 import com.arthur.ngaclient.task.TopicListTask;
+import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -227,7 +229,6 @@ public class TopicListFragment extends Fragment implements
 
 								Fragment fragment = new ReplyListFragment();
 
-								// 从列表页面传递需要的参数到详情页面
 								Bundle bundle = new Bundle();
 								bundle.putInt("itemIndex", index);
 								fragment.setArguments(bundle);
@@ -237,7 +238,6 @@ public class TopicListFragment extends Fragment implements
 								FragmentTransaction fragmentTransaction = fragmentManager
 										.beginTransaction();
 
-								// 判断手机的横竖屏
 								Configuration configuration = getActivity()
 										.getResources().getConfiguration();
 								int ori = configuration.orientation;
@@ -245,7 +245,17 @@ public class TopicListFragment extends Fragment implements
 								fragmentTransaction.replace(
 										R.id.topiclist_replyview, fragment);
 
-								if (ori == Configuration.ORIENTATION_PORTRAIT) {
+								DisplayMetrics dm = new DisplayMetrics();
+								getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+								int screenWidth = dm.widthPixels; // 屏幕宽（dip，如：320dip）
+								int screenHeight = dm.heightPixels; // 屏幕宽（dip，如：533dip）
+								
+								int widthDip = DensityUtil.px2dip(getActivity(), screenWidth);
+								int heightDip = DensityUtil.px2dip(getActivity(), screenHeight);
+								
+								int minDip = Math.min(widthDip, heightDip);
+								
+								if (ori == Configuration.ORIENTATION_PORTRAIT || minDip < 600) {
 									fragmentTransaction.addToBackStack(null);
 								}
 
