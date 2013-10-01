@@ -1,7 +1,13 @@
 package com.arthur.ngaclient.task;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.util.zip.GZIPInputStream;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
 import org.apache.http.client.RedirectHandler;
@@ -21,7 +27,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
-	
+
 	public static final String TAG = TopicReadTask.class.getSimpleName();
 	private Context mContext = null;
 
@@ -66,6 +72,35 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 
 		});
 		Log.d(TAG, url);
+		try {
+			HttpResponse response = httpclient.execute(httpGet);
+			response.getStatusLine();
+			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+
+				InputStream is = response.getEntity().getContent();
+
+				Header[] headers = response.getHeaders("Content-Encoding");
+				String contentEncoding = "";
+				if (headers.length > 0) {
+					contentEncoding = headers[0].getValue();
+				}
+				if ("gzip".equals(contentEncoding)) {
+					is = new GZIPInputStream(is);
+				}
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						is, "GBK"));
+				String data = "";
+				StringBuffer sb = new StringBuffer();
+				while ((data = br.readLine()) != null) {
+					sb.append(data);
+				}
+				String strResult = sb.toString();
+
+				Log.d(TAG, strResult);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
