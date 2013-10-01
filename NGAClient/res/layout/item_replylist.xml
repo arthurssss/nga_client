@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/shit1"
+    android:minHeight="100dp"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/reply_user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nga_bg" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/reply_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="夏木水田"
+                    android:textColor="@color/reply_user_name" />
+
+                <TextView
+                    android:id="@+id/reply_floor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/item_replylist_floor_bg"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:minWidth="60dp"
+                    android:padding="3dp"
+                    android:text="183楼"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/replylist_floor" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/reply_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="right"
+                android:text="2013-10-1 12:34"
+                android:textColor="@color/reply_date" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/reply_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="骚尼没人权啊，过年回老家(三线城市但是好歹也是首府啊)不知道怎么脑子一热就想给骚尼配个壳，结果去手机市场掏出手机来，柜台小妹愣了一下问我：你这是什么牌子……尼玛那么大个骚尼啊！然后我说骚尼，她说对不起，这个牌子的手机壳我们没有…………
+以上都是废话，使用感良好…… "
+        android:textColor="@color/reply_content" />
+
+</LinearLayout>

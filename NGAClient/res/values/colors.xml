@@ -16,5 +16,8 @@
     <color name="boardlist_poster">#4F587E</color>
     <color name="boardlist_replytime">#888</color>
     <color name="select_fg">#66ff8800</color>
+    <color name="reply_date">#555</color>
+    <color name="reply_user_name">#1D2A63</color>
+    <color name="reply_content">#121C46</color>
 
 </resources>
