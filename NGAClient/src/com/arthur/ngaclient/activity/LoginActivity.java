@@ -18,7 +18,6 @@ import org.apache.http.protocol.HttpContext;
 
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
-import com.arthur.ngaclient.task.TopicReadTask;
 import com.arthur.ngaclient.util.Config;
 
 import android.app.ActionBar;
@@ -36,13 +35,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends FragmentActivity {
-	
-	private Context mContext = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mContext = this;
 		setContentView(R.layout.activity_login);
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -75,7 +71,6 @@ public class LoginActivity extends FragmentActivity {
 					e.printStackTrace();
 				}
 				new LoginTask().execute(postUrl, bodyBuffer.toString());
-				new TopicReadTask(mContext).execute("6406100", "1");
 			}
 		});
 	}

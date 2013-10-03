@@ -1,17 +1,21 @@
 package com.arthur.ngaclient.task;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.RedirectHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -19,20 +23,33 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 
 import com.arthur.ngaclient.NGAClientApplication;
+import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.Global;
+import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.util.HttpUtil;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 
 	public static final String TAG = TopicReadTask.class.getSimpleName();
 	private Context mContext = null;
+	private IDataLoadedListener mDataListener = null;
 
-	public TopicReadTask(Context context) {
+	private final static Integer SUCCESS = 0;
+	private final static Integer TIMEOUT = 1;
+	private final static Integer DATAERROR = 2;
+	private final static Integer NETERROR = 3;
+	private final static Integer SERVERERROR = 4;
+	private final static Integer FORBIDDEN = 5;
+	private final static Integer OTHERERROR = 6;
+
+	public TopicReadTask(Context context, IDataLoadedListener listener) {
 		mContext = context;
+		mDataListener = listener;
 	}
 
 	@Override
@@ -97,11 +114,74 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 				String strResult = sb.toString();
 
 				Log.d(TAG, strResult);
+				return SUCCESS;
+			} else if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
+				return SERVERERROR;
+			} else if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
+				return FORBIDDEN;
 			}
-		} catch (Exception e) {
+			return OTHERERROR;
+		} catch (ConnectTimeoutException e) {
 			e.printStackTrace();
+			return TIMEOUT;
+		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
+			return TIMEOUT;
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			return NETERROR;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return DATAERROR;
+		} finally {
+			httpclient.getConnectionManager().shutdown();
 		}
-		return null;
+	}
+
+	@Override
+	protected void onPostExecute(Integer status) {
+		if (status == SUCCESS) {
+			mDataListener.onPostFinished(null);
+		} else {
+			mDataListener.onPostError(status);
+			if (status == TIMEOUT) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_timeout), Toast.LENGTH_SHORT)
+						.show();
+			} else if (status == DATAERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_dataerror), Toast.LENGTH_SHORT)
+						.show();
+			} else if (status == NETERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_neterror), Toast.LENGTH_SHORT)
+						.show();
+			} else if (status == SERVERERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_servererror),
+						Toast.LENGTH_SHORT).show();
+			} else if (status == FORBIDDEN) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_forbiddenerror),
+						Toast.LENGTH_SHORT).show();
+			} else if (status == OTHERERROR) {
+				Toast.makeText(
+						mContext.getApplicationContext(),
+						mContext.getResources().getString(
+								R.string.request_othererror),
+						Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 }

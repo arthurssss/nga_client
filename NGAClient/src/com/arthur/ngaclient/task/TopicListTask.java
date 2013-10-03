@@ -33,7 +33,7 @@ import com.arthur.ngaclient.bean.SubForumData;
 import com.arthur.ngaclient.bean.SubForumListData;
 import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
-import com.arthur.ngaclient.interfaces.ITopicDataLoadedListener;
+import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.util.HttpUtil;
 
 import android.content.Context;
@@ -45,7 +45,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 	public final static String TAG = "TopicListTask";
 	private Context mContext = null;
-	private ITopicDataLoadedListener mDataListener = null;
+	private IDataLoadedListener mDataListener = null;
 	private TopicListData mTopicListData = null;
 
 	private final static Integer SUCCESS = 0;
@@ -56,7 +56,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 	private final static Integer FORBIDDEN = 5;
 	private final static Integer OTHERERROR = 6;
 
-	public TopicListTask(Context context, ITopicDataLoadedListener dataListener) {
+	public TopicListTask(Context context, IDataLoadedListener dataListener) {
 		mContext = context;
 		mDataListener = dataListener;
 	}

@@ -8,7 +8,7 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
-import com.arthur.ngaclient.interfaces.ITopicDataLoadedListener;
+import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.task.TopicListTask;
 import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.util.Utils;
@@ -80,12 +80,12 @@ public class TopicListFragment extends Fragment implements
 		mTopicListView.setVisibility(View.GONE);
 		mLoading.setVisibility(View.VISIBLE);
 		mCurPageIndex = 1;
-		new TopicListTask(getActivity(), new ITopicDataLoadedListener() {
+		new TopicListTask(getActivity(), new IDataLoadedListener() {
 
 			@Override
-			public void onPostFinished(TopicListData topicListData) {
+			public void onPostFinished(Object obj) {
 				mTopicListAdapter = new TopicListAdapter(getActivity(),
-						topicListData);
+						(TopicListData) obj);
 				mTopicListView.setAdapter(mTopicListAdapter);
 				mTopicListView.setVisibility(View.VISIBLE);
 				mLoading.setVisibility(View.GONE);
@@ -114,26 +114,23 @@ public class TopicListFragment extends Fragment implements
 				&& scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
 
 			if (mFooterView.getVisibility() != View.VISIBLE) {
-				new TopicListTask(getActivity(),
-						new ITopicDataLoadedListener() {
+				new TopicListTask(getActivity(), new IDataLoadedListener() {
 
-							@Override
-							public void onPostFinished(
-									TopicListData topicListData) {
+					@Override
+					public void onPostFinished(Object obj) {
 
-								mTopicListAdapter
-										.addTopicAndRefresh(topicListData
-												.getTopicList());
-								mFooterView.setVisibility(View.GONE);
-							}
+						mTopicListAdapter
+								.addTopicAndRefresh(((TopicListData) obj)
+										.getTopicList());
+						mFooterView.setVisibility(View.GONE);
+					}
 
-							@Override
-							public void onPostError(Integer status) {
-								mFooterView.setVisibility(View.GONE);
-							}
+					@Override
+					public void onPostError(Integer status) {
+						mFooterView.setVisibility(View.GONE);
+					}
 
-						}).execute(
-						getActivity().getIntent().getStringExtra("fid"),
+				}).execute(getActivity().getIntent().getStringExtra("fid"),
 						++mCurPageIndex + "");
 				mFooterView.setVisibility(View.VISIBLE);
 			}
@@ -246,16 +243,20 @@ public class TopicListFragment extends Fragment implements
 										R.id.topiclist_replyview, fragment);
 
 								DisplayMetrics dm = new DisplayMetrics();
-								getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+								getActivity().getWindowManager()
+										.getDefaultDisplay().getMetrics(dm);
 								int screenWidth = dm.widthPixels; // 屏幕宽（dip，如：320dip）
 								int screenHeight = dm.heightPixels; // 屏幕宽（dip，如：533dip）
-								
-								int widthDip = DensityUtil.px2dip(getActivity(), screenWidth);
-								int heightDip = DensityUtil.px2dip(getActivity(), screenHeight);
-								
+
+								int widthDip = DensityUtil.px2dip(
+										getActivity(), screenWidth);
+								int heightDip = DensityUtil.px2dip(
+										getActivity(), screenHeight);
+
 								int minDip = Math.min(widthDip, heightDip);
-								
-								if (ori == Configuration.ORIENTATION_PORTRAIT || minDip < 600) {
+
+								if (ori == Configuration.ORIENTATION_PORTRAIT
+										|| minDip < 600) {
 									fragmentTransaction.addToBackStack(null);
 								}
 
@@ -283,11 +284,11 @@ public class TopicListFragment extends Fragment implements
 	public void onRefreshStarted(View view) {
 
 		mCurPageIndex = 1;
-		new TopicListTask(this.getActivity(), new ITopicDataLoadedListener() {
+		new TopicListTask(this.getActivity(), new IDataLoadedListener() {
 
 			@Override
-			public void onPostFinished(TopicListData topicListData) {
-				mTopicListAdapter.refresh(topicListData);
+			public void onPostFinished(Object obj) {
+				mTopicListAdapter.refresh((TopicListData) obj);
 				mPullToRefreshAttacher.setRefreshComplete();
 			}
 
