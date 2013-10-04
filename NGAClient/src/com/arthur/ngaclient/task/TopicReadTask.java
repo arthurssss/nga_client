@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
@@ -22,9 +24,14 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.Global;
+import com.arthur.ngaclient.bean.ReplyData;
+import com.arthur.ngaclient.bean.ReplyListData;
+import com.arthur.ngaclient.bean.UserInfoData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.util.HttpUtil;
 
@@ -38,6 +45,7 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 	public static final String TAG = TopicReadTask.class.getSimpleName();
 	private Context mContext = null;
 	private IDataLoadedListener mDataListener = null;
+	private ReplyListData mReplyListData = null;
 
 	private final static Integer SUCCESS = 0;
 	private final static Integer TIMEOUT = 1;
@@ -114,6 +122,36 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 				String strResult = sb.toString();
 
 				Log.d(TAG, strResult);
+
+				JSONObject jsonRoot = JSON.parseObject(strResult);
+				JSONObject dataObject = jsonRoot.getJSONObject("data");
+
+				JSONObject __U = dataObject.getJSONObject("__U");
+
+				mReplyListData = new ReplyListData();
+				Map<String, UserInfoData> userMap = new HashMap<String, UserInfoData>();
+				for (String key : __U.keySet()) {
+					UserInfoData userInfoData = __U.getObject(key,
+							UserInfoData.class);
+					userMap.put(key, userInfoData);
+				}
+				mReplyListData.set__U(userMap);
+
+				JSONObject __R = dataObject.getJSONObject("__R");
+
+				Map<String, ReplyData> replyDataMap = new HashMap<String, ReplyData>();
+				for (String key : __R.keySet()) {
+					ReplyData replyData = __R.getObject(key, ReplyData.class);
+					replyDataMap.put(key, replyData);
+				}
+				mReplyListData.set__R(replyDataMap);
+
+				mReplyListData.set__R__ROWS(dataObject.getIntValue("__R__ROWS"));
+				mReplyListData.set__R__ROWS_PAGE(dataObject
+						.getIntValue("__R__ROWS_PAGE"));
+				mReplyListData.set__ROWS(dataObject.getIntValue("__ROWS"));
+				mReplyListData.setTime(jsonRoot.getLongValue("time"));
+
 				return SUCCESS;
 			} else if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_INTERNAL_ERROR) {
 				return SERVERERROR;
@@ -141,7 +179,7 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 	@Override
 	protected void onPostExecute(Integer status) {
 		if (status == SUCCESS) {
-			mDataListener.onPostFinished(null);
+			mDataListener.onPostFinished(mReplyListData);
 		} else {
 			mDataListener.onPostError(status);
 			if (status == TIMEOUT) {

@@ -2,6 +2,7 @@ package com.arthur.ngaclient.fragment;
 
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyListAdapter;
+import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.task.TopicReadTask;
 
@@ -32,7 +33,8 @@ public class ReplyListFragment extends Fragment {
 			Bundle savedInstanceState) {
 		mRootView = inflater.inflate(R.layout.fragment_replylist_list,
 				container, false);
-		Log.i(TAG, getArguments().getInt("itemIndex") + "");
+		int tid = getArguments().getInt("tid");
+		Log.i(TAG, tid + "");
 
 		mLoading = (ProgressBar) mRootView
 				.findViewById(R.id.fullscreen_loading);
@@ -43,14 +45,14 @@ public class ReplyListFragment extends Fragment {
 
 			@Override
 			public void onPostFinished(Object obj) {
-				mReplyListView.setAdapter(new ReplyListAdapter(getActivity()));
+				mReplyListView.setAdapter(new ReplyListAdapter(getActivity(), (ReplyListData) obj));
 			}
 
 			@Override
 			public void onPostError(Integer status) {
 
 			}
-		}).execute("");
+		}).execute(tid + "", "1");
 
 		mLoading.setVisibility(View.GONE);
 		mReplyListView.setVisibility(View.VISIBLE);

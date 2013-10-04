@@ -217,6 +217,7 @@ public class TopicListFragment extends Fragment implements
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
 				holder.tvTopicReplyTime.setText(Utils.timeFormat(
 						topicData.getLastpost(), mTopicListData.getTime()));
+				final int tid = topicData.getTid();
 				holder.vTopicListClickItem
 						.setOnClickListener(new OnClickListener() {
 
@@ -227,7 +228,7 @@ public class TopicListFragment extends Fragment implements
 								Fragment fragment = new ReplyListFragment();
 
 								Bundle bundle = new Bundle();
-								bundle.putInt("itemIndex", index);
+								bundle.putInt("tid", tid);
 								fragment.setArguments(bundle);
 
 								FragmentManager fragmentManager = getActivity()

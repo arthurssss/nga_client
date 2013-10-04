@@ -1,6 +1,11 @@
 package com.arthur.ngaclient.adapter;
 
+import java.util.Map;
+
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.bean.ReplyData;
+import com.arthur.ngaclient.bean.ReplyListData;
+import com.arthur.ngaclient.bean.UserInfoData;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,14 +18,16 @@ import android.widget.TextView;
 public class ReplyListAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater = null;
+	private ReplyListData mReplyListData = null;
 
-	public ReplyListAdapter(Context context) {
+	public ReplyListAdapter(Context context, ReplyListData replyListData) {
 		mInflater = LayoutInflater.from(context);
+		mReplyListData = replyListData;
 	}
 
 	@Override
 	public int getCount() {
-		return 20;
+		return mReplyListData.get__R().size();
 	}
 
 	@Override
@@ -53,8 +60,18 @@ public class ReplyListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		convertView.setBackgroundResource(position % 2 == 0 ? R.color.shit1 : R.color.shit2);
-		holder.tvFloor.setText("#" + position);
+		convertView.setBackgroundResource(position % 2 == 0 ? R.color.shit2
+				: R.color.shit3);
+		Map<String, ReplyData> replyList = mReplyListData.get__R();
+		Map<String, UserInfoData> userInfoList = mReplyListData.get__U();
+		ReplyData replyData = replyList.get(position + "");
+		int authorId = replyData.getAuthorid();
+		UserInfoData userInfoData = userInfoList.get(authorId + "");
+		holder.tvUserName.setText(userInfoData.getUsername());
+		holder.tvReplyDate.setText(replyData.getPostdatetimestamp() + "");
+		holder.tvContent.setText(replyData.getContent());
+		holder.tvFloor.setText("#" + replyData.getLou());
+		// holder.ivAvatar();
 		return convertView;
 	}
 

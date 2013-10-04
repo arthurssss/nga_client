@@ -1,6 +1,5 @@
 package com.arthur.ngaclient.bean;
 
-import java.util.List;
 import java.util.Map;
 
 public class ReplyData {
@@ -9,6 +8,15 @@ public class ReplyData {
 	private int type; // 帖子状态bit
 	private int authorid; // 发帖人uid
 	private String postdate; // 无用
+	private String subject; // 帖子标题
+	private int pid; // 回复id 主贴本身为0
+	private int tid; // 主题id
+	private int fid; // 所在版面id
+	private int content_length; // 内容长度
+	private int org_fid; // 发帖时所在版面id
+	private Map<String, AttachsData> attachs; // 附件
+	private int lou; // 楼层
+	private long postdatetimestamp; // 发帖时间
 
 	public String getContent() {
 		return content;
@@ -98,11 +106,11 @@ public class ReplyData {
 		this.org_fid = org_fid;
 	}
 
-	public List<Map<String, AttachsData>> getAttachs() {
+	public Map<String, AttachsData> getAttachs() {
 		return attachs;
 	}
 
-	public void setAttachs(List<Map<String, AttachsData>> attachs) {
+	public void setAttachs(Map<String, AttachsData> attachs) {
 		this.attachs = attachs;
 	}
 
@@ -114,12 +122,12 @@ public class ReplyData {
 		this.lou = lou;
 	}
 
-	private String subject; // 帖子标题
-	private int pid; // 回复id 主贴本身为0
-	private int tid; // 主题id
-	private int fid; // 所在版面id
-	private int content_length; // 内容长度
-	private int org_fid; // 发帖时所在版面id
-	private List<Map<String, AttachsData>> attachs; // 附件
-	private int lou; // 楼层
+	public long getPostdatetimestamp() {
+		return postdatetimestamp;
+	}
+
+	public void setPostdatetimestamp(long postdatetimestamp) {
+		this.postdatetimestamp = postdatetimestamp;
+	}
+
 }
