@@ -9,7 +9,7 @@ public class AttachsData {
     private int size;
     private String ext;
     private String name;
-    private int thumb;
+    private String thumb;
     private String attachurl; //附件地址 
     private String type;
 	private int subid;
@@ -70,11 +70,11 @@ public class AttachsData {
 		this.name = name;
 	}
 
-	public int getThumb() {
+	public String getThumb() {
 		return thumb;
 	}
 
-	public void setThumb(int thumb) {
+	public void setThumb(String thumb) {
 		this.thumb = thumb;
 	}
 
