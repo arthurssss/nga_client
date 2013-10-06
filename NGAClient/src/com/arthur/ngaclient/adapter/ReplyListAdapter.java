@@ -11,6 +11,7 @@ import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,7 @@ public class ReplyListAdapter extends BaseAdapter {
 		holder.tvUserName.setText(userInfoData.getUsername());
 		holder.tvReplyDate.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm",
 				Locale.getDefault()).format(new Date(replyData.getPostdatetimestamp() * 1000)));
-		holder.tvContent.setText(replyData.getContent());
+		holder.tvContent.setText(Html.fromHtml(replyData.getContent()));
 		holder.tvFloor.setText("#" + replyData.getLou());
 		// holder.ivAvatar();
 		return convertView;

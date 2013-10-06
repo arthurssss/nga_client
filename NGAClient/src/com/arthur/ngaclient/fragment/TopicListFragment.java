@@ -179,7 +179,6 @@ public class TopicListFragment extends Fragment implements
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder = null;
-			final int index = position;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_topiclist_topic,
 						null);

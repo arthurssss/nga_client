@@ -27,10 +27,13 @@ public class TopicListActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			// onBackPressed();
-			Intent intent = new Intent();
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.setClass(this, MainActivity.class);
-			this.startActivity(intent);
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			if (!fragmentManager.popBackStackImmediate()) {
+				Intent intent = new Intent();
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setClass(this, MainActivity.class);
+				this.startActivity(intent);
+			}
 			return true;
 		default:
 			return false;
