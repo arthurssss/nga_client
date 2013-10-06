@@ -1,5 +1,8 @@
 package com.arthur.ngaclient.adapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import com.arthur.ngaclient.R;
@@ -68,7 +71,8 @@ public class ReplyListAdapter extends BaseAdapter {
 		int authorId = replyData.getAuthorid();
 		UserInfoData userInfoData = userInfoList.get(authorId + "");
 		holder.tvUserName.setText(userInfoData.getUsername());
-		holder.tvReplyDate.setText(replyData.getPostdatetimestamp() + "");
+		holder.tvReplyDate.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm",
+				Locale.getDefault()).format(new Date(replyData.getPostdatetimestamp() * 1000)));
 		holder.tvContent.setText(replyData.getContent());
 		holder.tvFloor.setText("#" + replyData.getLou());
 		// holder.ivAvatar();
