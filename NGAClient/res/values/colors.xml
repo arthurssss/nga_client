@@ -19,5 +19,7 @@
     <color name="reply_date">#555</color>
     <color name="reply_user_name">#1D2A63</color>
     <color name="reply_content">#121C46</color>
+    
+    <color name="refresh_progress">#ddff8800</color>
 
 </resources>

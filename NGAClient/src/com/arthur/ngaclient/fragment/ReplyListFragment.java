@@ -45,14 +45,16 @@ public class ReplyListFragment extends Fragment {
 
 			@Override
 			public void onPostFinished(Object obj) {
-				mReplyListView.setAdapter(new ReplyListAdapter(getActivity(), (ReplyListData) obj));
+				mReplyListView.setAdapter(new ReplyListAdapter(getActivity(),
+						(ReplyListData) obj));
 			}
 
 			@Override
 			public void onPostError(Integer status) {
 
 			}
-		}).execute(tid + "", "1");
+		}).execute(tid + "", getActivity().getIntent().getStringExtra("fid"),
+				"1");
 
 		mLoading.setVisibility(View.GONE);
 		mReplyListView.setVisibility(View.VISIBLE);

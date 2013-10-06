@@ -73,7 +73,8 @@ public class ReplyListAdapter extends BaseAdapter {
 		UserInfoData userInfoData = userInfoList.get(authorId + "");
 		holder.tvUserName.setText(userInfoData.getUsername());
 		holder.tvReplyDate.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm",
-				Locale.getDefault()).format(new Date(replyData.getPostdatetimestamp() * 1000)));
+				Locale.getDefault()).format(new Date(replyData
+				.getPostdatetimestamp() * 1000)));
 		holder.tvContent.setText(Html.fromHtml(replyData.getContent()));
 		holder.tvFloor.setText("#" + replyData.getLou());
 		// holder.ivAvatar();

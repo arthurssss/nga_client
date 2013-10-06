@@ -23,10 +23,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,7 +35,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class TopicListFragment extends Fragment implements
-		PullToRefreshAttacher.OnRefreshListener, OnScrollListener {
+		PullToRefreshAttacher.OnRefreshListener, OnScrollListener,
+		OnItemClickListener {
 
 	private static final String TAG = TopicListFragment.class.getSimpleName();
 	private PullToRefreshAttacher mPullToRefreshAttacher;
@@ -74,10 +76,12 @@ public class TopicListFragment extends Fragment implements
 		mPullToRefreshAttacher.addRefreshableView(mTopicListView, this);
 		((DefaultHeaderTransformer) (mPullToRefreshAttacher
 				.getHeaderTransformer())).setProgressBarColor(getActivity()
-				.getResources().getColor(R.color.plate_name));
+				.getResources().getColor(R.color.refresh_progress));
 
 		String fid = getActivity().getIntent().getStringExtra("fid");
 		mTopicListView.setVisibility(View.GONE);
+		mTopicListView.setOnItemClickListener(TopicListFragment.this);
+
 		mLoading.setVisibility(View.VISIBLE);
 		mCurPageIndex = 1;
 		new TopicListTask(getActivity(), new IDataLoadedListener() {
@@ -161,6 +165,10 @@ public class TopicListFragment extends Fragment implements
 			notifyDataSetChanged();
 		}
 
+		public TopicListData getTopicListData() {
+			return mTopicListData;
+		}
+
 		@Override
 		public int getCount() {
 			return mTopicListData.get__T__ROWS();
@@ -195,8 +203,6 @@ public class TopicListFragment extends Fragment implements
 						.findViewById(R.id.board_title_bg);
 				holder.tvTopicReplyTime = (TextView) convertView
 						.findViewById(R.id.board_topic_replytime);
-				holder.vTopicListClickItem = convertView
-						.findViewById(R.id.topiclist_item_click);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -216,54 +222,6 @@ public class TopicListFragment extends Fragment implements
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
 				holder.tvTopicReplyTime.setText(Utils.timeFormat(
 						topicData.getLastpost(), mTopicListData.getTime()));
-				final int tid = topicData.getTid();
-				holder.vTopicListClickItem
-						.setOnClickListener(new OnClickListener() {
-
-							@Override
-							public void onClick(View v) {
-								Log.d(TAG, "onItemClick =================== ");
-
-								Fragment fragment = new ReplyListFragment();
-
-								Bundle bundle = new Bundle();
-								bundle.putInt("tid", tid);
-								fragment.setArguments(bundle);
-
-								FragmentManager fragmentManager = getActivity()
-										.getSupportFragmentManager();
-								FragmentTransaction fragmentTransaction = fragmentManager
-										.beginTransaction();
-
-								Configuration configuration = getActivity()
-										.getResources().getConfiguration();
-								int ori = configuration.orientation;
-
-								fragmentTransaction.replace(
-										R.id.topiclist_replyview, fragment);
-
-								DisplayMetrics dm = new DisplayMetrics();
-								getActivity().getWindowManager()
-										.getDefaultDisplay().getMetrics(dm);
-								int screenWidth = dm.widthPixels; // 屏幕宽（dip，如：320dip）
-								int screenHeight = dm.heightPixels; // 屏幕宽（dip，如：533dip）
-
-								int widthDip = DensityUtil.px2dip(
-										getActivity(), screenWidth);
-								int heightDip = DensityUtil.px2dip(
-										getActivity(), screenHeight);
-
-								int minDip = Math.min(widthDip, heightDip);
-
-								if (ori == Configuration.ORIENTATION_PORTRAIT
-										|| minDip < 600) {
-									fragmentTransaction.addToBackStack(null);
-								}
-
-								fragmentTransaction.commit();
-							}
-
-						});
 			}
 			return convertView;
 		}
@@ -275,7 +233,6 @@ public class TopicListFragment extends Fragment implements
 			public TextView tvTopicPoster;
 			public TextView tvTopicReplyTime;
 			public LinearLayout llTopicTitleBg;
-			public View vTopicListClickItem;
 		}
 
 	}
@@ -299,6 +256,58 @@ public class TopicListFragment extends Fragment implements
 
 		}).execute(getActivity().getIntent().getStringExtra("fid"),
 				mCurPageIndex + "");
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Log.d(TAG, "onItemClick =================== ");
+
+		Fragment fragment = new ReplyListFragment();
+
+		Bundle bundle = new Bundle();
+
+		TopicData topicData = mTopicListAdapter.getTopicListData()
+				.getTopicList().get(position);
+
+		int topicid = 0;
+		if (topicData.getQuote_from() != 0) {
+			topicid = topicData.getQuote_from();
+		} else {
+			topicid = topicData.getTid();
+		}
+		final int tid = topicid;
+
+		bundle.putInt("tid", tid);
+		fragment.setArguments(bundle);
+
+		FragmentManager fragmentManager = getActivity()
+				.getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+
+		Configuration configuration = getActivity().getResources()
+				.getConfiguration();
+		int ori = configuration.orientation;
+
+		fragmentTransaction.replace(R.id.topiclist_replyview, fragment);
+
+		DisplayMetrics dm = new DisplayMetrics();
+		getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+		int screenWidth = dm.widthPixels; // 屏幕宽（dip，如：320dip）
+		int screenHeight = dm.heightPixels; // 屏幕宽（dip，如：533dip）
+
+		int widthDip = DensityUtil.px2dip(getActivity(), screenWidth);
+		int heightDip = DensityUtil.px2dip(getActivity(), screenHeight);
+
+		int minDip = Math.min(widthDip, heightDip);
+
+		if (ori == Configuration.ORIENTATION_PORTRAIT || minDip < 600) {
+			fragmentTransaction.addToBackStack(null);
+		}
+
+		fragmentTransaction.commit();
 
 	}
 

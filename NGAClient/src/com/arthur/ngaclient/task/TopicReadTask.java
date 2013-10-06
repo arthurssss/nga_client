@@ -62,10 +62,11 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 
 	@Override
 	protected Integer doInBackground(String... params) {
-		String fid = params[0];
-		String page = params[1];
-		String url = Global.SERVER + "/read.php?lite=js&noprefix&tid=" + fid
-				+ "&page=" + page;
+		String tid = params[0];
+		String fid = params[1];
+		String page = params[2];
+		String url = Global.SERVER + "/read.php?lite=js&noprefix&tid=" + tid
+				+ "&_ff=" + fid + "&page=" + page;
 
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.addHeader("User-Agent", NGAClientApplication.USER_AGENT);
@@ -146,7 +147,8 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 				}
 				mReplyListData.set__R(replyDataMap);
 
-				mReplyListData.set__R__ROWS(dataObject.getIntValue("__R__ROWS"));
+				mReplyListData
+						.set__R__ROWS(dataObject.getIntValue("__R__ROWS"));
 				mReplyListData.set__R__ROWS_PAGE(dataObject
 						.getIntValue("__R__ROWS_PAGE"));
 				mReplyListData.set__ROWS(dataObject.getIntValue("__ROWS"));
