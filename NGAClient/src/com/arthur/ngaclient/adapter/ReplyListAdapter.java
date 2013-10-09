@@ -1,5 +1,7 @@
 package com.arthur.ngaclient.adapter;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -11,7 +13,11 @@ import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.text.Html;
+import android.text.Html.ImageGetter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +81,23 @@ public class ReplyListAdapter extends BaseAdapter {
 		holder.tvReplyDate.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm",
 				Locale.getDefault()).format(new Date(replyData
 				.getPostdatetimestamp() * 1000)));
-		holder.tvContent.setText(Html.fromHtml(replyData.getContent()));
+
+		
+		String ignoreCaseTag = "(?i)";
+		String content = replyData.getContent();
+		content = content
+				.replaceAll(
+						ignoreCaseTag
+								+ "\\[img\\]\\s*\\.(/[^\\[|\\]]+)\\s*\\[/img\\]",
+						"<a href='http://img6.ngacn.cc/attachments$1'><img src='http://img6.ngacn.cc/attachments$1' style= 'max-width:100%' ></a>");
+
+		content = content.replaceAll(ignoreCaseTag
+				+ "\\[img\\]\\s*(http[^\\[|\\]]+)\\s*\\[/img\\]",
+				"<a href='$1'><img src='$1' style= 'max-width:100%' ></a>");
+
+		new ImageGetTask().execute(holder.tvContent, content);
+//		holder.tvContent.setText(Html.fromHtml(content, imgGetter, null));
+		
 		holder.tvFloor.setText("#" + replyData.getLou());
 		// holder.ivAvatar();
 		return convertView;
@@ -87,6 +109,50 @@ public class ReplyListAdapter extends BaseAdapter {
 		public TextView tvFloor;
 		public TextView tvContent;
 		public ImageView ivAvatar;
+	}
+	
+	private class ImageGetTask extends AsyncTask<Object, Integer, CharSequence> {
+		
+		private TextView mTextView;
+
+		@Override
+		protected CharSequence doInBackground(Object... params) {
+
+			mTextView = (TextView) params[0];
+			String content = (String) params[1];
+			ImageGetter imgGetter = new Html.ImageGetter() {
+				public Drawable getDrawable(String source) {
+					Drawable drawable = null;
+					URL url;
+					try {
+//						url = new URL("http://avatar.csdn.net/3/9/1/1_pandazxx.jpg");
+						url = new URL(source);
+
+						HttpURLConnection connection = (HttpURLConnection) url
+								.openConnection();
+						connection.connect();
+						
+
+						drawable = Drawable.createFromStream(connection.getInputStream(), ""); // 获取网路图片
+					} catch (Exception e) {
+						e.printStackTrace();
+						return null;
+					}
+					drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+							drawable.getIntrinsicHeight());
+					return drawable;
+				}
+			};
+			Spanned c = Html.fromHtml(content, imgGetter, null);
+			return c;
+		}
+	
+		@Override
+		protected void onPostExecute(CharSequence c) {
+			if (c != null) {
+				mTextView.setText(c);
+			}
+		}
 	}
 
 }
