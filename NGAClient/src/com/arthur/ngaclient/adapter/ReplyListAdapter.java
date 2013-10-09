@@ -82,7 +82,6 @@ public class ReplyListAdapter extends BaseAdapter {
 				Locale.getDefault()).format(new Date(replyData
 				.getPostdatetimestamp() * 1000)));
 
-		
 		String ignoreCaseTag = "(?i)";
 		String content = replyData.getContent();
 		content = content
@@ -96,8 +95,8 @@ public class ReplyListAdapter extends BaseAdapter {
 				"<a href='$1'><img src='$1' style= 'max-width:100%' ></a>");
 
 		new ImageGetTask().execute(holder.tvContent, content);
-//		holder.tvContent.setText(Html.fromHtml(content, imgGetter, null));
-		
+		// holder.tvContent.setText(Html.fromHtml(content, imgGetter, null));
+
 		holder.tvFloor.setText("#" + replyData.getLou());
 		// holder.ivAvatar();
 		return convertView;
@@ -110,9 +109,9 @@ public class ReplyListAdapter extends BaseAdapter {
 		public TextView tvContent;
 		public ImageView ivAvatar;
 	}
-	
+
 	private class ImageGetTask extends AsyncTask<Object, Integer, CharSequence> {
-		
+
 		private TextView mTextView;
 
 		@Override
@@ -123,20 +122,24 @@ public class ReplyListAdapter extends BaseAdapter {
 			ImageGetter imgGetter = new Html.ImageGetter() {
 				public Drawable getDrawable(String source) {
 					Drawable drawable = null;
-					URL url;
+					URL url = null;
+					HttpURLConnection connection = null;
 					try {
-//						url = new URL("http://avatar.csdn.net/3/9/1/1_pandazxx.jpg");
 						url = new URL(source);
 
-						HttpURLConnection connection = (HttpURLConnection) url
-								.openConnection();
+						connection = (HttpURLConnection) url.openConnection();
 						connection.connect();
-						
 
-						drawable = Drawable.createFromStream(connection.getInputStream(), ""); // 获取网路图片
+						drawable = Drawable.createFromStream(
+								connection.getInputStream(), ""); // 获取网路图片
 					} catch (Exception e) {
 						e.printStackTrace();
 						return null;
+					} finally {
+						if (connection != null) {
+							connection.disconnect();
+							connection = null;
+						}
 					}
 					drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
 							drawable.getIntrinsicHeight());
@@ -146,7 +149,7 @@ public class ReplyListAdapter extends BaseAdapter {
 			Spanned c = Html.fromHtml(content, imgGetter, null);
 			return c;
 		}
-	
+
 		@Override
 		protected void onPostExecute(CharSequence c) {
 			if (c != null) {
