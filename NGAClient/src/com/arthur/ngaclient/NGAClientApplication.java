@@ -35,7 +35,7 @@ public class NGAClientApplication extends Application {
 				.denyCacheImageMultipleSizesInMemory()
 				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
-				.writeDebugLogs()
+				//.writeDebugLogs()
 				.build();
 		ImageLoader.getInstance().init(config);
 	}
