@@ -3,7 +3,10 @@ package com.arthur.ngaclient.adapter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -13,6 +16,7 @@ import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
@@ -25,10 +29,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+
 public class ReplyListAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater = null;
 	private ReplyListData mReplyListData = null;
+	private ImageLoader mImageLoader = ImageLoader.getInstance();
+	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
+	private DisplayImageOptions options = new DisplayImageOptions.Builder()
+			.cacheInMemory(true).cacheOnDisc(true)
+			.displayer(new RoundedBitmapDisplayer(5)).build();
 
 	public ReplyListAdapter(Context context, ReplyListData replyListData) {
 		mInflater = LayoutInflater.from(context);
@@ -95,10 +111,9 @@ public class ReplyListAdapter extends BaseAdapter {
 				"<a href='$1'><img src='$1' style= 'max-width:100%' ></a>");
 
 		new ImageGetTask().execute(holder.tvContent, content);
-		// holder.tvContent.setText(Html.fromHtml(content, imgGetter, null));
-
 		holder.tvFloor.setText("#" + replyData.getLou());
-		// holder.ivAvatar();
+		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
+				options, mAnimateFirstListener);
 		return convertView;
 	}
 
@@ -108,6 +123,26 @@ public class ReplyListAdapter extends BaseAdapter {
 		public TextView tvFloor;
 		public TextView tvContent;
 		public ImageView ivAvatar;
+	}
+
+	private static class AnimateFirstDisplayListener extends
+			SimpleImageLoadingListener {
+
+		static final List<String> mDisplayedImages = Collections
+				.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view,
+				Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				boolean firstDisplay = !mDisplayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					mDisplayedImages.add(imageUri);
+				}
+			}
+		}
 	}
 
 	private class ImageGetTask extends AsyncTask<Object, Integer, CharSequence> {
