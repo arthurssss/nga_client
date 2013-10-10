@@ -14,6 +14,7 @@ import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
+import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -98,17 +99,8 @@ public class ReplyListAdapter extends BaseAdapter {
 				Locale.getDefault()).format(new Date(replyData
 				.getPostdatetimestamp() * 1000)));
 
-		String ignoreCaseTag = "(?i)";
 		String content = replyData.getContent();
-		content = content
-				.replaceAll(
-						ignoreCaseTag
-								+ "\\[img\\]\\s*\\.(/[^\\[|\\]]+)\\s*\\[/img\\]",
-						"<a href='http://img6.ngacn.cc/attachments$1'><img src='http://img6.ngacn.cc/attachments$1' style= 'max-width:100%' ></a>");
-
-		content = content.replaceAll(ignoreCaseTag
-				+ "\\[img\\]\\s*(http[^\\[|\\]]+)\\s*\\[/img\\]",
-				"<a href='$1'><img src='$1' style= 'max-width:100%' ></a>");
+		content = Utils.decodeForumTag(content, true);
 
 		new ImageGetTask().execute(holder.tvContent, content);
 		holder.tvFloor.setText("#" + replyData.getLou());
