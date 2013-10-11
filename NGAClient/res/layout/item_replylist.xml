@@ -68,13 +68,12 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <WebView
         android:id="@+id/reply_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="骚尼没人权啊，过年回老家(三线城市但是好歹也是首府啊)不知道怎么脑子一热就想给骚尼配个壳，结果去手机市场掏出手机来，柜台小妹愣了一下问我：你这是什么牌子……尼玛那么大个骚尼啊！然后我说骚尼，她说对不起，这个牌子的手机壳我们没有…………
-以上都是废话，使用感良好…… "
+        android:text=""
         android:textColor="@color/reply_content" />
 
 </LinearLayout>

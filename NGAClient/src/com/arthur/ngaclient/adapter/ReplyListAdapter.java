@@ -1,8 +1,5 @@
 package com.arthur.ngaclient.adapter;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -18,14 +15,10 @@ import com.arthur.ngaclient.bean.UserInfoData;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.text.Html;
-import android.text.Html.ImageGetter;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,7 +72,7 @@ public class ReplyListAdapter extends BaseAdapter {
 					.findViewById(R.id.reply_date);
 			holder.tvFloor = (TextView) convertView
 					.findViewById(R.id.reply_floor);
-			holder.tvContent = (TextView) convertView
+			holder.tvContent = (WebView) convertView
 					.findViewById(R.id.reply_content);
 			holder.ivAvatar = (ImageView) convertView
 					.findViewById(R.id.reply_user_avatar);
@@ -100,13 +93,16 @@ public class ReplyListAdapter extends BaseAdapter {
 				.getPostdatetimestamp() * 1000)));
 
 		String content = replyData.getHtmlContent();
-		// content = Utils.decodeForumTag(content, true);
 
-		if (content.contains("<img")) {
-			new ImageGetTask().execute(holder.tvContent, content);
+		if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.FROYO){
+			holder.tvContent.setLongClickable(false);
 		}
-		// new ImageGetTask().execute(holder.tvContent, content);
-		holder.tvContent.setText(Html.fromHtml(content));
+		holder.tvContent.setFocusableInTouchMode(false);
+		holder.tvContent.setFocusable(false);
+		holder.tvContent.setBackgroundColor(0);
+		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
+				"utf-8", null);
+
 		holder.tvFloor.setText("#" + replyData.getLou());
 		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
 				options, mAnimateFirstListener);
@@ -117,7 +113,7 @@ public class ReplyListAdapter extends BaseAdapter {
 		public TextView tvUserName;
 		public TextView tvReplyDate;
 		public TextView tvFloor;
-		public TextView tvContent;
+		public WebView tvContent;
 		public ImageView ivAvatar;
 	}
 
@@ -137,65 +133,6 @@ public class ReplyListAdapter extends BaseAdapter {
 					FadeInBitmapDisplayer.animate(imageView, 500);
 					mDisplayedImages.add(imageUri);
 				}
-			}
-		}
-	}
-
-	private class ImageGetTask extends AsyncTask<Object, Integer, CharSequence> {
-
-		private TextView mTextView;
-
-		@Override
-		protected CharSequence doInBackground(Object... params) {
-
-			mTextView = (TextView) params[0];
-			String content = (String) params[1];
-			ImageGetter imgGetter = new Html.ImageGetter() {
-				public Drawable getDrawable(String source) {
-					Drawable drawable = null;
-					URL url = null;
-					HttpURLConnection connection = null;
-					try {
-						if (source.startsWith("file:///android_asset/")) {
-							
-							source = source.replace("file:///android_asset/", "");
-							InputStream is = mTextView.getResources().getAssets().open(source);
-							
-							drawable = Drawable.createFromStream(is, "local");
-						} else {
-							url = new URL(source);
-
-							connection = (HttpURLConnection) url
-									.openConnection();
-							connection.connect();
-
-							drawable = Drawable.createFromStream(
-									connection.getInputStream(), "net"); // 获取网路图片
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-						return null;
-					} finally {
-						if (connection != null) {
-							connection.disconnect();
-							connection = null;
-						}
-					}
-					if (drawable != null) {
-						drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-								drawable.getIntrinsicHeight());
-					}
-					return drawable;
-				}
-			};
-			Spanned c = Html.fromHtml(content, imgGetter, null);
-			return c;
-		}
-
-		@Override
-		protected void onPostExecute(CharSequence c) {
-			if (c != null) {
-				mTextView.setText(c);
 			}
 		}
 	}
