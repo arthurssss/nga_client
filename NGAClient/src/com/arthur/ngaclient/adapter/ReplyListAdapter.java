@@ -1,5 +1,6 @@
 package com.arthur.ngaclient.adapter;
 
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,6 @@ import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
-import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -99,10 +99,14 @@ public class ReplyListAdapter extends BaseAdapter {
 				Locale.getDefault()).format(new Date(replyData
 				.getPostdatetimestamp() * 1000)));
 
-		String content = replyData.getContent();
-		content = Utils.decodeForumTag(content, true);
+		String content = replyData.getHtmlContent();
+		// content = Utils.decodeForumTag(content, true);
 
-		new ImageGetTask().execute(holder.tvContent, content);
+		if (content.contains("<img")) {
+			new ImageGetTask().execute(holder.tvContent, content);
+		}
+		// new ImageGetTask().execute(holder.tvContent, content);
+		holder.tvContent.setText(Html.fromHtml(content));
 		holder.tvFloor.setText("#" + replyData.getLou());
 		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
 				options, mAnimateFirstListener);
@@ -152,13 +156,22 @@ public class ReplyListAdapter extends BaseAdapter {
 					URL url = null;
 					HttpURLConnection connection = null;
 					try {
-						url = new URL(source);
+						if (source.startsWith("file:///android_asset/")) {
+							
+							source = source.replace("file:///android_asset/", "");
+							InputStream is = mTextView.getResources().getAssets().open(source);
+							
+							drawable = Drawable.createFromStream(is, "local");
+						} else {
+							url = new URL(source);
 
-						connection = (HttpURLConnection) url.openConnection();
-						connection.connect();
+							connection = (HttpURLConnection) url
+									.openConnection();
+							connection.connect();
 
-						drawable = Drawable.createFromStream(
-								connection.getInputStream(), ""); // 获取网路图片
+							drawable = Drawable.createFromStream(
+									connection.getInputStream(), "net"); // 获取网路图片
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						return null;
@@ -168,8 +181,10 @@ public class ReplyListAdapter extends BaseAdapter {
 							connection = null;
 						}
 					}
-					drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-							drawable.getIntrinsicHeight());
+					if (drawable != null) {
+						drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+								drawable.getIntrinsicHeight());
+					}
 					return drawable;
 				}
 			};

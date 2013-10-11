@@ -17,6 +17,7 @@ public class ReplyData {
 	private Map<String, AttachsData> attachs; // 附件
 	private int lou; // 楼层
 	private long postdatetimestamp; // 发帖时间
+	private String htmlContent; 
 
 	public String getContent() {
 		return content;
@@ -128,6 +129,14 @@ public class ReplyData {
 
 	public void setPostdatetimestamp(long postdatetimestamp) {
 		this.postdatetimestamp = postdatetimestamp;
+	}
+
+	public String getHtmlContent() {
+		return htmlContent;
+	}
+
+	public void setHtmlContent(String htmlContent) {
+		this.htmlContent = htmlContent;
 	}
 
 }

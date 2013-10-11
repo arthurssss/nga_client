@@ -34,6 +34,7 @@ import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.util.HttpUtil;
+import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -143,6 +144,7 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 				Map<String, ReplyData> replyDataMap = new HashMap<String, ReplyData>();
 				for (String key : __R.keySet()) {
 					ReplyData replyData = __R.getObject(key, ReplyData.class);
+					replyData.setHtmlContent(Utils.decodeForumTag(replyData.getContent(), true));
 					replyDataMap.put(key, replyData);
 				}
 				mReplyListData.set__R(replyDataMap);
