@@ -218,9 +218,27 @@ public class TopicListFragment extends Fragment implements
 				holder.tvTopicReplyTime.setText(Utils.timeFormat(
 						topicData.getLastpost(), mTopicListData.getTime()));
 
+				float fontSize = 30;
+				if (topicData.getReplies() > 9) {
+					if (topicData.getReplies() > 99) {
+						if (topicData.getReplies() > 999) {
+							if (topicData.getReplies() > 9999) {
+								fontSize = 14;
+							} else {
+								fontSize = 17;
+							}
+						} else {
+							fontSize = 20;
+						}
+					} else {
+						fontSize = 25;
+					}
+				}
+				holder.tvReplyCount.setTextSize(fontSize);
 				if (position % 2 == 0) {
 					holder.tvReplyCount.setBackgroundResource(R.color.shit1_2);
-					holder.llTopicTitleBg.setBackgroundResource(R.color.shit1_1);
+					holder.llTopicTitleBg
+							.setBackgroundResource(R.color.shit1_1);
 					int c = getResources().getColor(R.color.shit1_2);
 
 					int[] replyColor = Utils.genReplyColor(
@@ -230,9 +248,11 @@ public class TopicListFragment extends Fragment implements
 							+ replyColor[2]);
 					holder.tvReplyCount.setTextColor(Color.rgb(replyColor[0],
 							replyColor[1], replyColor[2]));
+
 				} else {
 					holder.tvReplyCount.setBackgroundResource(R.color.shit2_2);
-					holder.llTopicTitleBg.setBackgroundResource(R.color.shit2_1);
+					holder.llTopicTitleBg
+							.setBackgroundResource(R.color.shit2_1);
 
 					int c = getResources().getColor(R.color.shit2_2);
 
