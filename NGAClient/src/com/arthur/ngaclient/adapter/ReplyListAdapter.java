@@ -80,8 +80,8 @@ public class ReplyListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		convertView.setBackgroundResource(position % 2 == 0 ? R.color.shit2
-				: R.color.shit3);
+		convertView.setBackgroundResource(position % 2 == 0 ? R.color.shit2_1
+				: R.color.shit2_2);
 		Map<String, ReplyData> replyList = mReplyListData.get__R();
 		Map<String, UserInfoData> userInfoList = mReplyListData.get__U();
 		ReplyData replyData = replyList.get(position + "");

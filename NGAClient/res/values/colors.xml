@@ -2,12 +2,14 @@
 
     <color name="white">#ffffff</color>
     <color name="actionbar_bg">#ffffee</color>
-    <color name="page_bg">#feffed</color>
+    <color name="page_bg">#FEB</color>
+    <color name="footer_bg">#feffed</color>
     <color name="plate_name">#712d08</color>
     <color name="shit_bg">#fff5d7</color>
-    <color name="shit1">#feb</color>
-    <color name="shit2">#fff1c9</color>
-    <color name="shit3">#FFF8E5</color>
+    <color name="shit1_1">#FFF8E5</color>
+    <color name="shit1_2">#FFF5D7</color>
+    <color name="shit2_1">#FEF3D1</color>
+    <color name="shit2_2">#FEB</color>
     <color name="board_name_bg">#551200</color>
     <color name="tab_line">#965D36</color>
     <color name="setting_title">#444</color>
@@ -19,7 +21,8 @@
     <color name="reply_date">#555</color>
     <color name="reply_user_name">#1D2A63</color>
     <color name="reply_content">#121C46</color>
-    
     <color name="refresh_progress">#ddff8800</color>
+    <color name="myboard_shit1">#FEB</color>
+    <color name="myboard_shit2">#FFF1C9</color>
 
 </resources>

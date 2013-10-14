@@ -701,9 +701,9 @@ public class MainActivity extends FragmentActivity {
 				holder.tvBoardName
 						.setBackgroundColor((raw % 2 == 0 && col % 2 == 0)
 								|| (raw % 2 != 0 && col % 2 != 0) ? mContext
-								.getResources().getColor(R.color.shit1)
+								.getResources().getColor(R.color.myboard_shit1)
 								: mContext.getResources().getColor(
-										R.color.shit2));
+										R.color.myboard_shit2));
 			}
 
 			return convertView;

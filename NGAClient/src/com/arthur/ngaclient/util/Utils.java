@@ -222,4 +222,89 @@ public class Utils {
 		return s;
 	}
 
+	public static float[] rgbToHsv(int r, int g, int b) { // 0-255
+		float fR = r / 255.0f;
+		float fG = g / 255.0f;
+		float fB = b / 255.0f;
+		float max = Math.max(Math.max(fR, fG), fB);
+		float min = Math.min(Math.min(fR, fG), fB);
+		float h = 0, s = 0, v = max;
+
+		float d = max - min;
+		s = max == 0 ? 0 : d / max;
+
+		if (max == min) {
+			h = 0; // achromatic
+		} else {
+			if (max == fR) {
+				h = (fG - fB) / d + (fG < fB ? 6 : 0);
+			} else if (max == fG) {
+				h = (fB - fR) / d + 2;
+			} else if (max == fB) {
+				h = (fR - fG) / d + 4;
+			}
+			h /= 6;
+		}
+		float[] ret = { h, s, v };
+		return ret; // 0~1
+	}
+
+	public static int[] hsvToRgb(float h, float s, float v) { // 0~1
+		float r = 0, g = 0, b = 0;
+
+		int i = (int) (h * 6);
+		float f = h * 6 - i;
+		float p = v * (1 - s);
+		float q = v * (1 - f * s);
+		float t = v * (1 - (1 - f) * s);
+
+		switch (i % 6) {
+		case 0:
+			r = v;
+			g = t;
+			b = p;
+			break;
+		case 1:
+			r = q;
+			g = v;
+			b = p;
+			break;
+		case 2:
+			r = p;
+			g = v;
+			b = t;
+			break;
+		case 3:
+			r = p;
+			g = q;
+			b = v;
+			break;
+		case 4:
+			r = t;
+			g = p;
+			b = v;
+			break;
+		case 5:
+			r = v;
+			g = p;
+			b = q;
+			break;
+		}
+
+		int[] ret = { Math.round(r * 255), Math.round(g * 255),
+				Math.round(b * 255) };
+		return ret; // 0-255
+	}
+
+	// 回复的颜色
+	public static int[] genReplyColor(float[] bgC, int replies) {
+		if (replies > 100) {
+			replies = 100;
+		}
+		float p1 = 1 / 600.0f * replies;
+		float p2 = bgC[1] + p1 + 0.005f;
+		float p3 = bgC[0] - p1 - 0.065f;
+		int[] x = hsvToRgb(p3 < 0 ? p3 + 1 : p3, p2 > 1 ? p2 - 1 : p2, bgC[2]);
+		return x;
+	}
 }

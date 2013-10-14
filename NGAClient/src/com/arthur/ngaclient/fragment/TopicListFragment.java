@@ -15,6 +15,7 @@ import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -207,13 +208,7 @@ public class TopicListFragment extends Fragment implements
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			if (position % 2 == 0) {
-				holder.tvReplyCount.setBackgroundResource(R.color.shit1);
-				holder.llTopicTitleBg.setBackgroundResource(R.color.shit2);
-			} else {
-				holder.tvReplyCount.setBackgroundResource(R.color.shit2);
-				holder.llTopicTitleBg.setBackgroundResource(R.color.shit3);
-			}
+
 			TopicData topicData = mTopicListData.getTopicList().get(position);
 			if (topicData != null) {
 				holder.tvTopicTitle.setText(topicData.getSubject());
@@ -222,6 +217,33 @@ public class TopicListFragment extends Fragment implements
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
 				holder.tvTopicReplyTime.setText(Utils.timeFormat(
 						topicData.getLastpost(), mTopicListData.getTime()));
+
+				if (position % 2 == 0) {
+					holder.tvReplyCount.setBackgroundResource(R.color.shit1_2);
+					holder.llTopicTitleBg.setBackgroundResource(R.color.shit1_1);
+					int c = getResources().getColor(R.color.shit1_2);
+
+					int[] replyColor = Utils.genReplyColor(
+							Utils.rgbToHsv(Color.red(c), Color.green(c),
+									Color.blue(c)), topicData.getReplies());
+					Log.d(TAG, replyColor[0] + "," + replyColor[1] + ","
+							+ replyColor[2]);
+					holder.tvReplyCount.setTextColor(Color.rgb(replyColor[0],
+							replyColor[1], replyColor[2]));
+				} else {
+					holder.tvReplyCount.setBackgroundResource(R.color.shit2_2);
+					holder.llTopicTitleBg.setBackgroundResource(R.color.shit2_1);
+
+					int c = getResources().getColor(R.color.shit2_2);
+
+					int[] replyColor = Utils.genReplyColor(
+							Utils.rgbToHsv(Color.red(c), Color.green(c),
+									Color.blue(c)), topicData.getReplies());
+					Log.d(TAG, replyColor[0] + "," + replyColor[1] + ","
+							+ replyColor[2]);
+					holder.tvReplyCount.setTextColor(Color.rgb(replyColor[0],
+							replyColor[1], replyColor[2]));
+				}
 			}
 			return convertView;
 		}
