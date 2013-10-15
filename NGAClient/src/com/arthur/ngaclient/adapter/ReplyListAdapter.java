@@ -1,5 +1,6 @@
 package com.arthur.ngaclient.adapter;
 
+import java.lang.ref.SoftReference;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -16,6 +17,7 @@ import com.arthur.ngaclient.bean.UserInfoData;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +43,12 @@ public class ReplyListAdapter extends BaseAdapter {
 			.cacheInMemory(true).cacheOnDisc(true)
 			.displayer(new RoundedBitmapDisplayer(5)).build();
 
+	private final SparseArray<SoftReference<View>> mViewCache;
+
 	public ReplyListAdapter(Context context, ReplyListData replyListData) {
 		mInflater = LayoutInflater.from(context);
 		mReplyListData = replyListData;
+		mViewCache = new SparseArray<SoftReference<View>>();
 	}
 
 	@Override
@@ -63,24 +68,36 @@ public class ReplyListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		SoftReference<View> srf = mViewCache.get(position);
+		View cacheView = null;
+		if (srf != null) {
+			cacheView = srf.get();
+		}
+		if (cacheView != null) {
+			return cacheView;
+		}
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = mInflater.inflate(R.layout.item_replylist, null);
-			holder.tvUserName = (TextView) convertView
-					.findViewById(R.id.reply_user_name);
-			holder.tvReplyDate = (TextView) convertView
-					.findViewById(R.id.reply_date);
-			holder.tvFloor = (TextView) convertView
-					.findViewById(R.id.reply_floor);
-			holder.tvContent = (WebView) convertView
-					.findViewById(R.id.reply_content);
-			holder.ivAvatar = (ImageView) convertView
-					.findViewById(R.id.reply_user_avatar);
-			convertView.setTag(holder);
+			holder.setViewHolder(convertView);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
+			if (holder.position == position) {
+				return convertView;
+			}
+			holder.tvContent.stopLoading();
+			if (holder.tvContent.getHeight() > 300) {
+				mViewCache.put(holder.position, new SoftReference<View>(
+						convertView));
+				holder = new ViewHolder();
+				convertView = mInflater.inflate(R.layout.item_replylist, null);
+				holder.setViewHolder(convertView);
+			}
 		}
+
+		holder.position = position;
+
 		convertView.setBackgroundResource(position % 2 == 0 ? R.color.shit2_1
 				: R.color.shit2_2);
 		Map<String, ReplyData> replyList = mReplyListData.get__R();
@@ -95,7 +112,7 @@ public class ReplyListAdapter extends BaseAdapter {
 
 		String content = replyData.getHtmlContent();
 
-		if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.FROYO){
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.FROYO) {
 			holder.tvContent.setLongClickable(false);
 		}
 		holder.tvContent.setFocusableInTouchMode(false);
@@ -117,6 +134,21 @@ public class ReplyListAdapter extends BaseAdapter {
 		public TextView tvFloor;
 		public WebView tvContent;
 		public ImageView ivAvatar;
+		public int position;
+
+		public void setViewHolder(View convertView) {
+			this.tvUserName = (TextView) convertView
+					.findViewById(R.id.reply_user_name);
+			this.tvReplyDate = (TextView) convertView
+					.findViewById(R.id.reply_date);
+			this.tvFloor = (TextView) convertView
+					.findViewById(R.id.reply_floor);
+			this.tvContent = (WebView) convertView
+					.findViewById(R.id.reply_content);
+			this.ivAvatar = (ImageView) convertView
+					.findViewById(R.id.reply_user_avatar);
+			convertView.setTag(this);
+		}
 	}
 
 	private static class AnimateFirstDisplayListener extends
