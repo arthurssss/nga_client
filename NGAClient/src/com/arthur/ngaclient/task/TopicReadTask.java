@@ -144,7 +144,19 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 				Map<String, ReplyData> replyDataMap = new HashMap<String, ReplyData>();
 				for (String key : __R.keySet()) {
 					ReplyData replyData = __R.getObject(key, ReplyData.class);
-					replyData.setHtmlContent(Utils.decodeForumTag(replyData.getContent(), true));
+					int type = replyData.getType();
+					if (replyData.getType() == 2) {
+						replyData
+								.setHtmlContent("<span style='color:#D00;white-space:nowrap'>[隐藏]</span>");
+
+					} else if (type == 1024) {
+						replyData
+								.setHtmlContent("<span style='color:#D00;white-space:nowrap'>[锁定]</span>");
+
+					} else {
+						replyData.setHtmlContent(Utils.decodeForumTag(
+								replyData.getContent(), true));
+					}
 					replyDataMap.put(key, replyData);
 				}
 				mReplyListData.set__R(replyDataMap);

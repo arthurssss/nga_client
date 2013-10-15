@@ -100,7 +100,7 @@ public class ReplyListAdapter extends BaseAdapter {
 		}
 		holder.tvContent.setFocusableInTouchMode(false);
 		holder.tvContent.setFocusable(false);
-		holder.tvContent.setBackgroundColor(Color.parseColor("#000000"));
+		holder.tvContent.setBackgroundColor(Color.parseColor("#00000000"));
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
 		holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
