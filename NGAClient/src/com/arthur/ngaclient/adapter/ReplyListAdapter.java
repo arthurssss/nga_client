@@ -15,6 +15,7 @@ import com.arthur.ngaclient.bean.UserInfoData;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,9 +100,10 @@ public class ReplyListAdapter extends BaseAdapter {
 		}
 		holder.tvContent.setFocusableInTouchMode(false);
 		holder.tvContent.setFocusable(false);
-		holder.tvContent.setBackgroundColor(0);
+		holder.tvContent.setBackgroundColor(Color.parseColor("#000000"));
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
+		holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		holder.tvFloor.setText("#" + replyData.getLou());
 		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
