@@ -41,23 +41,25 @@ public class ReplyListFragment extends Fragment {
 
 		mReplyListView = (ListView) mRootView.findViewById(R.id.reply_list);
 
+		mLoading.setVisibility(View.VISIBLE);
+		mReplyListView.setVisibility(View.GONE);
+
 		new TopicReadTask(getActivity(), new IDataLoadedListener() {
 
 			@Override
 			public void onPostFinished(Object obj) {
 				mReplyListView.setAdapter(new ReplyListAdapter(getActivity(),
 						(ReplyListData) obj));
+				mLoading.setVisibility(View.GONE);
+				mReplyListView.setVisibility(View.VISIBLE);
 			}
 
 			@Override
 			public void onPostError(Integer status) {
-
+				mLoading.setVisibility(View.GONE);
 			}
 		}).execute(tid + "", getActivity().getIntent().getStringExtra("fid"),
 				"1");
-
-		mLoading.setVisibility(View.GONE);
-		mReplyListView.setVisibility(View.VISIBLE);
 		return mRootView;
 	}
 
