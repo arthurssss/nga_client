@@ -122,11 +122,11 @@ public class ReplyListAdapter extends BaseAdapter {
 		
 		WebSettings setting = holder.tvContent.getSettings();
 //		setting.setBlockNetworkImage(!false);
-		setting.setDefaultFontSize(16);
+		setting.setDefaultFontSize(14);
 		setting.setJavaScriptEnabled(false);
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
-		holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//		holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		holder.tvFloor.setText("#" + replyData.getLou());
 		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
