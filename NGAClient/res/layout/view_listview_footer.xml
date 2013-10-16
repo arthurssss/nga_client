@@ -24,7 +24,6 @@
         android:orientation="horizontal" >
 
         <ProgressBar
-            android:id="@+id/listview_footer"
             android:layout_width="wrap_content"
             android:layout_height="80dp" />
 

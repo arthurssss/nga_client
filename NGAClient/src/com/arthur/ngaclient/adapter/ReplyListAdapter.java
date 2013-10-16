@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.ReplyData;
@@ -54,7 +55,7 @@ public class ReplyListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mReplyListData.get__R().size();
+		return mReplyListData.get__R__ROWS();
 	}
 
 	@Override
@@ -119,14 +120,14 @@ public class ReplyListAdapter extends BaseAdapter {
 		holder.tvContent.setFocusableInTouchMode(false);
 		holder.tvContent.setFocusable(false);
 		holder.tvContent.setBackgroundColor(Color.parseColor("#00000000"));
-		
+
 		WebSettings setting = holder.tvContent.getSettings();
-//		setting.setBlockNetworkImage(!false);
+		// setting.setBlockNetworkImage(!false);
 		setting.setDefaultFontSize(14);
 		setting.setJavaScriptEnabled(false);
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
-//		holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		// holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		holder.tvFloor.setText("#" + replyData.getLou());
 		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
@@ -177,4 +178,30 @@ public class ReplyListAdapter extends BaseAdapter {
 		}
 	}
 
+	public void addAndRefresh(Map<String, UserInfoData> userList,
+			Map<String, ReplyData> replyList) {
+		mReplyListData.get__U().putAll(userList);
+
+		Map<String, ReplyData> __R = mReplyListData.get__R();
+		int curRowCount = mReplyListData.get__R__ROWS();
+		Set<String> index = replyList.keySet();
+		for (String i : index) {
+			__R.put(Integer.valueOf(i) + curRowCount + "", replyList.get(i));
+		}
+
+		mReplyListData.set__R__ROWS(mReplyListData.get__R__ROWS()
+				+ replyList.size());
+
+		notifyDataSetChanged();
+	}
+
+	public boolean isHaveMore() {
+		return mReplyListData.get__R__ROWS() != mReplyListData.get__ROWS();
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		mViewCache.clear();
+		super.notifyDataSetChanged();
+	}
 }
