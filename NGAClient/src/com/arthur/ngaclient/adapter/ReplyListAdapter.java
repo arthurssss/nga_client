@@ -21,6 +21,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -118,6 +119,11 @@ public class ReplyListAdapter extends BaseAdapter {
 		holder.tvContent.setFocusableInTouchMode(false);
 		holder.tvContent.setFocusable(false);
 		holder.tvContent.setBackgroundColor(Color.parseColor("#00000000"));
+		
+		WebSettings setting = holder.tvContent.getSettings();
+//		setting.setBlockNetworkImage(!false);
+		setting.setDefaultFontSize(16);
+		setting.setJavaScriptEnabled(false);
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
 		holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
