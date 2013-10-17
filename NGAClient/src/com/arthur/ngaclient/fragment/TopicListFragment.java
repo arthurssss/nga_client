@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
 import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -237,7 +238,7 @@ public class TopicListFragment extends Fragment implements
 							R.color.topictile_normal));
 				}
 
-				holder.tvTopicTitle.setText(topicData.getSubject());
+				holder.tvTopicTitle.setText(Html.fromHtml(topicData.getSubject()));
 				holder.tvTopicAuthor.setText(topicData.getAuthor());
 				holder.tvTopicPoster.setText(topicData.getLastposter());
 				holder.tvReplyCount.setText(topicData.getReplies() + "");
