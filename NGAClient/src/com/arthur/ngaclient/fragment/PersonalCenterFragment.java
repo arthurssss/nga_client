@@ -44,6 +44,7 @@ public class PersonalCenterFragment extends Fragment {
 			}
 
 		});
+		
 		return rootView;
 	}
 }

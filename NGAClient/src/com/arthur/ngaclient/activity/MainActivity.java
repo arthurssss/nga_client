@@ -6,6 +6,7 @@ import com.arthur.ngaclient.adapter.SectionsPagerAdapter;
 import com.arthur.ngaclient.util.DBManager;
 import com.arthur.ngaclient.util.DensityUtil;
 
+import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends FragmentActivity {
 
@@ -131,6 +133,17 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == R.id.action_settings) {
+			Intent intent = new Intent();
+			intent.setClass(this, SettingActivity.class);
+			startActivity(intent);
+		}
 		return true;
 	}
 

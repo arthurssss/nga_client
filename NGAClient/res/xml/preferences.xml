@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="网络设置" >
+        <SwitchPreference
+            android:key="is_use_cellular_network"
+            android:summary="是否在2G/3G网络环境下自动载入图片"
+            android:title="移动网络载入图片" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
