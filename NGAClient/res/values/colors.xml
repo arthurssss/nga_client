@@ -25,5 +25,10 @@
     <color name="refresh_progress">#ddff8800</color>
     <color name="myboard_shit1">#FEB</color>
     <color name="myboard_shit2">#FFF1C9</color>
+    <color name="topictile_blue">#06B</color>
+    <color name="topictile_orange">#A06700</color>
+    <color name="topictile_green">#3D9F0E</color>
+    <color name="topictile_red">#D00</color>
+    <color name="topictile_normal">#1D2A63</color>
 
 </resources>

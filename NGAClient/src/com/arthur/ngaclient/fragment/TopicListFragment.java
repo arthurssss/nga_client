@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextPaint;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -209,8 +210,33 @@ public class TopicListFragment extends Fragment implements
 				holder = (ViewHolder) convertView.getTag();
 			}
 
+			TextPaint tp = holder.tvTopicTitle.getPaint();
 			TopicData topicData = mTopicListData.getTopicList().get(position);
+			tp.setFakeBoldText(false);
 			if (topicData != null) {
+				String titleFont = topicData.getTitlefont();
+				if (titleFont != null && !titleFont.equals("")) {
+					if (titleFont.contains("~1")) {
+						tp.setFakeBoldText(true);
+					}
+					if (titleFont.startsWith("green")) {
+						holder.tvTopicTitle.setTextColor(getResources()
+								.getColor(R.color.topictile_green));
+					} else if (titleFont.startsWith("blue")) {
+						holder.tvTopicTitle.setTextColor(getResources()
+								.getColor(R.color.topictile_blue));
+					} else if (titleFont.startsWith("red")) {
+						holder.tvTopicTitle.setTextColor(getResources()
+								.getColor(R.color.topictile_red));
+					} else if (titleFont.startsWith("orange")) {
+						holder.tvTopicTitle.setTextColor(getResources()
+								.getColor(R.color.topictile_orange));
+					}
+				} else {
+					holder.tvTopicTitle.setTextColor(getResources().getColor(
+							R.color.topictile_normal));
+				}
+
 				holder.tvTopicTitle.setText(topicData.getSubject());
 				holder.tvTopicAuthor.setText(topicData.getAuthor());
 				holder.tvTopicPoster.setText(topicData.getLastposter());
@@ -239,9 +265,10 @@ public class TopicListFragment extends Fragment implements
 					holder.tvReplyCount.setBackgroundResource(R.color.shit1_2);
 					holder.llTopicTitleBg
 							.setBackgroundResource(R.color.shit1_1);
-					
+
 					if (topicData.getType() == 1024) {
-						int color = getResources().getColor(R.color.replycount_1024);
+						int color = getResources().getColor(
+								R.color.replycount_1024);
 						holder.tvReplyCount.setTextColor(color);
 					} else {
 						int c = getResources().getColor(R.color.shit1_2);
