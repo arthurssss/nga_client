@@ -86,7 +86,9 @@ public class Utils {
 			return "";
 		}
 
-		String quoteStyle = "<div style='background:#E8E8E8;border:1px solid #888' >";
+		String quoteStyle = "<div style='background:#E8E8E8;border:1px solid #888;"
+				+ "padding:8px 8px 8px 8px;margin:8px 8px 8px 8px;display:block;line-height:1.9em;"
+				+ "font-size:1.085em;color:#121C46'>";
 
 		final String styleLeft = "<div style='float:left' >";
 		final String styleRight = "<div style='float:right' >";
@@ -115,11 +117,6 @@ public class Utils {
 		s = s.replaceAll(mIgnoreCaseTag + "\\[tid=\\d+\\]Topic\\[/pid\\]",
 				"Topic");
 		// reply
-		// s =
-		// s.replaceAll("\\[b\\]Reply to \\[pid=\\d+\\]Reply\\[/pid\\] (Post by .+ \\(\\d{4,4}-\\d\\d-\\d\\d \\d\\d:\\d\\d\\))\\[/b\\]"
-		// , "Reply to Reply <b>$1</b>");
-		// 转换 tag
-		// [b]
 		s = s.replaceAll(mIgnoreCaseTag + "\\[b\\]", "<b>");
 		s = s.replaceAll(mIgnoreCaseTag + "\\[/b\\]", "</b>"/* "</font>" */);
 
@@ -145,9 +142,6 @@ public class Utils {
 				mIgnoreCaseTag + "\\[flash\\](http[^\\[|\\]]+)\\[/flash\\]",
 				"<a href=\"$1\"><img src='file:///android_asset/flash.png' style= 'max-width:100%;' ></a>");
 		// color
-
-		// s = s.replaceAll("\\[color=([^\\[|\\]]+)\\]\\s*(.+?)\\s*\\[/color\\]"
-		// ,"<b style=\"color:$1\">$2</b>");
 		s = s.replaceAll(mIgnoreCaseTag + "\\[color=([^\\[|\\]]+)\\]",
 				mStyleColor);
 		s = s.replaceAll(mIgnoreCaseTag + "\\[/color\\]", "</span>");

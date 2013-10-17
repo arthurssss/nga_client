@@ -6,7 +6,6 @@ import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.task.TopicReadTask;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
