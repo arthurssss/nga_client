@@ -179,6 +179,7 @@ public class TopicListFragment extends Fragment implements
 		final int tid = topicid;
 
 		bundle.putInt("tid", tid);
+		bundle.putString("title", topicData.getSubject());
 		fragment.setArguments(bundle);
 
 		FragmentManager fragmentManager = getActivity()

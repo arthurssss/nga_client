@@ -26,13 +26,16 @@ public class TopicListActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			// onBackPressed();
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			if (!fragmentManager.popBackStackImmediate()) {
 				Intent intent = new Intent();
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.setClass(this, MainActivity.class);
 				this.startActivity(intent);
+			} else {
+				ActionBar actionBar = getActionBar();
+				actionBar.setTitle(getIntent().getStringExtra("title"));
+				actionBar.setDisplayShowHomeEnabled(true);
 			}
 			return true;
 		default:
@@ -49,6 +52,10 @@ public class TopicListActivity extends FragmentActivity {
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.setClass(this, MainActivity.class);
 				this.startActivity(intent);
+			} else {
+				ActionBar actionBar = getActionBar();
+				actionBar.setTitle(getIntent().getStringExtra("title"));
+				actionBar.setDisplayShowHomeEnabled(true);
 			}
 		}
 		return true;// super.onKeyUp(keyCode, event);

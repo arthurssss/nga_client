@@ -6,8 +6,10 @@ import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.task.TopicReadTask;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,10 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActionBar actionBar = getActivity().getActionBar();
+		String title = getArguments().getString("title");
+		actionBar.setTitle(Html.fromHtml(title));
+		actionBar.setDisplayShowHomeEnabled(false);
 	}
 
 	@Override
