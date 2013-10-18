@@ -44,6 +44,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.arthur.ngaclient.activity.ImageViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

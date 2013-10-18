@@ -11,12 +11,14 @@ import java.util.Map;
 import java.util.Set;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.activity.ImageViewActivity;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -24,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -147,8 +150,9 @@ public class ReplyListAdapter extends BaseAdapter {
 			mImageLoader.denyNetworkDownloads(false);
 		}
 
-		mImageLoader.displayImage(userInfoData.getAvatar(),
-				holder.ivAvatar, options, mAnimateFirstListener);
+		holder.ivAvatar.setTag(userInfoData.getAvatar());
+		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
+				options, mAnimateFirstListener);
 		return convertView;
 	}
 
@@ -171,8 +175,26 @@ public class ReplyListAdapter extends BaseAdapter {
 					.findViewById(R.id.reply_content);
 			this.ivAvatar = (ImageView) convertView
 					.findViewById(R.id.reply_user_avatar);
+			this.ivAvatar.setOnClickListener(new AvatarOnClickListener());
 			convertView.setTag(this);
 		}
+	}
+
+	private class AvatarOnClickListener implements OnClickListener {
+
+		public AvatarOnClickListener() {
+
+		}
+
+		@Override
+		public void onClick(View v) {
+			String uri = (String) v.getTag();
+			Intent intent = new Intent();
+			intent.setClass(mContext, ImageViewActivity.class);
+			intent.putExtra("uri", uri);
+			mContext.startActivity(intent);
+		}
+
 	}
 
 	private static class AnimateFirstDisplayListener extends
