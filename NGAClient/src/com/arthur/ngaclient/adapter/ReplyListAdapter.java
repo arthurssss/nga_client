@@ -182,17 +182,20 @@ public class ReplyListAdapter extends BaseAdapter {
 
 	private class AvatarOnClickListener implements OnClickListener {
 
-		public AvatarOnClickListener() {
-
-		}
-
 		@Override
 		public void onClick(View v) {
-			String uri = (String) v.getTag();
-			Intent intent = new Intent();
-			intent.setClass(mContext, ImageViewActivity.class);
-			intent.putExtra("uri", uri);
-			mContext.startActivity(intent);
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(mContext);
+			Boolean isLoadImage = prefs.getBoolean("is_load_avatar", false);
+			if (Utils.getNetworkType(mContext) != Utils.NetworkType.MOBILE
+					|| isLoadImage) {
+
+				String uri = (String) v.getTag();
+				Intent intent = new Intent();
+				intent.setClass(mContext, ImageViewActivity.class);
+				intent.putExtra("uri", uri);
+				mContext.startActivity(intent);
+			}
 		}
 
 	}
