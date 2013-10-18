@@ -8,6 +8,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 public class Utils {
 
 	public final static String key = "asdfasdf";
@@ -300,5 +304,33 @@ public class Utils {
 		float p3 = bgC[0] - p1 - 0.065f;
 		int[] x = hsvToRgb(p3 < 0 ? p3 + 1 : p3, p2 > 1 ? p2 - 1 : p2, bgC[2]);
 		return x;
+	}
+
+	/**
+	 * 获取网络当前状态
+	 * 
+	 * @param context
+	 * @return NetworkType
+	 */
+	public static NetworkType getNetworkType(Context context) {
+		ConnectivityManager connMgr = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		if (networkInfo == null || !networkInfo.isConnected()) {
+			return NetworkType.NO_NETWORK;
+		}
+		int nType = networkInfo.getType();
+		if (nType == ConnectivityManager.TYPE_MOBILE) {
+			return NetworkType.MOBILE;
+		} else if (nType == ConnectivityManager.TYPE_WIFI) {
+			return NetworkType.WIFI;
+		}
+		return NetworkType.NO_NETWORK;
+	}
+	
+	public static enum NetworkType{
+		NO_NETWORK,
+		MOBILE,
+		WIFI
 	}
 }

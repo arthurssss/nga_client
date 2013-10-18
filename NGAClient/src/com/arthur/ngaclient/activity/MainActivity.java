@@ -7,9 +7,11 @@ import com.arthur.ngaclient.util.DBManager;
 import com.arthur.ngaclient.util.DensityUtil;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
@@ -91,11 +93,15 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setCurrentItem(mCurPagerIndex);
 		PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
 
-		pagerTabStrip.setTabIndicatorColor(this.getResources().getColor(
+		pagerTabStrip.setTabIndicatorColor(getResources().getColor(
 				R.color.tab_line));
 
 		mDBManager = new DBManager(this);
 
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		Boolean isUseCellularNetwork = prefs.getBoolean("is_load_image", false);
+		Log.d(TAG, "isUseCellularNetwork = " + isUseCellularNetwork.toString());
 	}
 
 	@Override

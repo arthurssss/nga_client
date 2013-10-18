@@ -37,7 +37,9 @@ import com.arthur.ngaclient.util.HttpUtil;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -154,8 +156,17 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 								.setHtmlContent("<span style='color:#D00;white-space:nowrap'>[锁定]</span>");
 
 					} else {
+						boolean loadImg = true;
+						SharedPreferences prefs = PreferenceManager
+								.getDefaultSharedPreferences(mContext);
+						Boolean isLoadImage = prefs.getBoolean("is_load_image",
+								false);
+						if (Utils.getNetworkType(mContext) == Utils.NetworkType.MOBILE
+								&& !isLoadImage) {
+							loadImg = false;
+						}
 						replyData.setHtmlContent(Utils.decodeForumTag(
-								replyData.getContent(), true));
+								replyData.getContent(), loadImg));
 					}
 					replyDataMap.put(key, replyData);
 				}

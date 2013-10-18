@@ -14,10 +14,13 @@ import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
+import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,17 +40,20 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class ReplyListAdapter extends BaseAdapter {
 
+	private Context mContext = null;
 	private LayoutInflater mInflater = null;
 	private ReplyListData mReplyListData = null;
 	private ImageLoader mImageLoader = ImageLoader.getInstance();
 	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 	private DisplayImageOptions options = new DisplayImageOptions.Builder()
 			.cacheInMemory(true).cacheOnDisc(true)
+			.showImageForEmptyUri(R.drawable.nga_bg)
 			.displayer(new RoundedBitmapDisplayer(5)).build();
 
 	private final SparseArray<SoftReference<View>> mViewCache;
 
 	public ReplyListAdapter(Context context, ReplyListData replyListData) {
+		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mReplyListData = replyListData;
 		mViewCache = new SparseArray<SoftReference<View>>();
@@ -130,8 +136,19 @@ public class ReplyListAdapter extends BaseAdapter {
 		// holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		holder.tvFloor.setText("#" + replyData.getLou());
-		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
-				options, mAnimateFirstListener);
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(mContext);
+		Boolean isLoadImage = prefs.getBoolean("is_load_avatar", false);
+		if (Utils.getNetworkType(mContext) == Utils.NetworkType.MOBILE
+				&& !isLoadImage) {
+			mImageLoader.denyNetworkDownloads(true);
+		} else {
+			mImageLoader.denyNetworkDownloads(false);
+		}
+
+		mImageLoader.displayImage(userInfoData.getAvatar(),
+				holder.ivAvatar, options, mAnimateFirstListener);
 		return convertView;
 	}
 

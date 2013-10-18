@@ -3,9 +3,13 @@
 
     <PreferenceCategory android:title="网络设置" >
         <SwitchPreference
-            android:key="is_use_cellular_network"
+            android:key="is_load_image"
             android:summary="是否在2G/3G网络环境下自动载入图片"
             android:title="移动网络载入图片" />
+        <SwitchPreference
+            android:key="is_load_avatar"
+            android:summary="是否在2G/3G网络环境下自动载入头像"
+            android:title="移动网络载入头像" />
     </PreferenceCategory>
 
 </PreferenceScreen>
