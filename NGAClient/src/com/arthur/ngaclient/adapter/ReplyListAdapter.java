@@ -15,6 +15,7 @@ import com.arthur.ngaclient.activity.ImageViewActivity;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
+import com.arthur.ngaclient.util.ReplyWebViewClient;
 import com.arthur.ngaclient.util.Utils;
 
 import android.content.Context;
@@ -123,20 +124,8 @@ public class ReplyListAdapter extends BaseAdapter {
 
 		String content = replyData.getHtmlContent();
 
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.FROYO) {
-			holder.tvContent.setLongClickable(false);
-		}
-		holder.tvContent.setFocusableInTouchMode(false);
-		holder.tvContent.setFocusable(false);
-		holder.tvContent.setBackgroundColor(Color.parseColor("#00000000"));
-
-		WebSettings setting = holder.tvContent.getSettings();
-		// setting.setBlockNetworkImage(!false);
-		setting.setDefaultFontSize(14);
-		setting.setJavaScriptEnabled(false);
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
-		// holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 		holder.tvFloor.setText("#" + replyData.getLou());
 
@@ -173,6 +162,23 @@ public class ReplyListAdapter extends BaseAdapter {
 					.findViewById(R.id.reply_floor);
 			this.tvContent = (WebView) convertView
 					.findViewById(R.id.reply_content);
+
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.FROYO) {
+				this.tvContent.setLongClickable(false);
+			}
+			this.tvContent.setFocusableInTouchMode(false);
+			this.tvContent.setFocusable(false);
+			this.tvContent.setBackgroundColor(Color.parseColor("#00000000"));
+			// holder.tvContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+			WebSettings setting = this.tvContent.getSettings();
+			// setting.setBlockNetworkImage(!false);
+			setting.setDefaultFontSize(14);
+			setting.setJavaScriptEnabled(false);
+			
+			ReplyWebViewClient webClient = new ReplyWebViewClient();
+			this.tvContent.setWebViewClient(webClient);
+
 			this.ivAvatar = (ImageView) convertView
 					.findViewById(R.id.reply_user_avatar);
 			this.ivAvatar.setOnClickListener(new AvatarOnClickListener());
