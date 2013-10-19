@@ -96,22 +96,36 @@ public class TopicListAdapter extends BaseAdapter {
 				if (titleFont.contains("~1")) {
 					tp.setFakeBoldText(true);
 				}
-				if (titleFont.startsWith("green")) {
+				if (topicData.getPostdate() == 0) {
 					holder.tvTopicTitle.setTextColor(mContext.getResources()
-							.getColor(R.color.topictile_green));
-				} else if (titleFont.startsWith("blue")) {
-					holder.tvTopicTitle.setTextColor(mContext.getResources()
-							.getColor(R.color.topictile_blue));
-				} else if (titleFont.startsWith("red")) {
-					holder.tvTopicTitle.setTextColor(mContext.getResources()
-							.getColor(R.color.topictile_red));
-				} else if (titleFont.startsWith("orange")) {
-					holder.tvTopicTitle.setTextColor(mContext.getResources()
-							.getColor(R.color.topictile_orange));
+							.getColor(R.color.topic_timeout));
+				} else {
+					if (titleFont.startsWith("green")) {
+						holder.tvTopicTitle.setTextColor(mContext
+								.getResources().getColor(
+										R.color.topictile_green));
+					} else if (titleFont.startsWith("blue")) {
+						holder.tvTopicTitle.setTextColor(mContext
+								.getResources()
+								.getColor(R.color.topictile_blue));
+					} else if (titleFont.startsWith("red")) {
+						holder.tvTopicTitle
+								.setTextColor(mContext.getResources().getColor(
+										R.color.topictile_red));
+					} else if (titleFont.startsWith("orange")) {
+						holder.tvTopicTitle.setTextColor(mContext
+								.getResources().getColor(
+										R.color.topictile_orange));
+					}
 				}
 			} else {
-				holder.tvTopicTitle.setTextColor(mContext.getResources()
-						.getColor(R.color.topictile_normal));
+				if (topicData.getPostdate() == 0) {
+					holder.tvTopicTitle.setTextColor(mContext.getResources()
+							.getColor(R.color.topic_timeout));
+				} else {
+					holder.tvTopicTitle.setTextColor(mContext.getResources()
+							.getColor(R.color.topictile_normal));
+				}
 			}
 
 			holder.tvTopicTitle.setText(Html.fromHtml(topicData.getSubject()));
@@ -162,15 +176,21 @@ public class TopicListAdapter extends BaseAdapter {
 				holder.tvReplyCount.setBackgroundResource(R.color.shit2_2);
 				holder.llTopicTitleBg.setBackgroundResource(R.color.shit2_1);
 
-				int c = mContext.getResources().getColor(R.color.shit2_2);
+				if (topicData.getType() == 1024) {
+					int color = mContext.getResources().getColor(
+							R.color.replycount_1024);
+					holder.tvReplyCount.setTextColor(color);
+				} else {
+					int c = mContext.getResources().getColor(R.color.shit2_2);
 
-				int[] replyColor = Utils.genReplyColor(
-						Utils.rgbToHsv(Color.red(c), Color.green(c),
-								Color.blue(c)), topicData.getReplies());
-				Log.d(TAG, replyColor[0] + "," + replyColor[1] + ","
-						+ replyColor[2]);
-				holder.tvReplyCount.setTextColor(Color.rgb(replyColor[0],
-						replyColor[1], replyColor[2]));
+					int[] replyColor = Utils.genReplyColor(
+							Utils.rgbToHsv(Color.red(c), Color.green(c),
+									Color.blue(c)), topicData.getReplies());
+					Log.d(TAG, replyColor[0] + "," + replyColor[1] + ","
+							+ replyColor[2]);
+					holder.tvReplyCount.setTextColor(Color.rgb(replyColor[0],
+							replyColor[1], replyColor[2]));
+				}
 			}
 		}
 		return convertView;

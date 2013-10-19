@@ -3,6 +3,7 @@ package com.arthur.ngaclient.util;
 import com.arthur.ngaclient.activity.ImageViewActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,7 +28,10 @@ public class ReplyWebViewClient extends WebViewClient {
 			view.getContext().startActivity(intent);
 			return true;
 		}
-		return false;
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(url));
+		view.getContext().startActivity(intent);
+		return true;
 	}
 
 }

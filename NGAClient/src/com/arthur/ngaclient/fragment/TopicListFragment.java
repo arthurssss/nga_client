@@ -163,12 +163,15 @@ public class TopicListFragment extends Fragment implements
 			long id) {
 		Log.d(TAG, "onItemClick =================== ");
 
-		Fragment fragment = new ReplyListFragment();
-
-		Bundle bundle = new Bundle();
-
 		TopicData topicData = mTopicListAdapter.getTopicListData()
 				.getTopicList().get(position);
+
+		if (topicData.getPostdate() == 0) {
+			return;
+		}
+
+		Fragment fragment = new ReplyListFragment();
+		Bundle bundle = new Bundle();
 
 		int topicid = 0;
 		if (topicData.getQuote_from() != 0) {
