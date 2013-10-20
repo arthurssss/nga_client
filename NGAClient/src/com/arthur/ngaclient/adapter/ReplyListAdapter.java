@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,8 +122,9 @@ public class ReplyListAdapter extends BaseAdapter {
 		holder.tvReplyDate.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm",
 				Locale.getDefault()).format(new Date(replyData
 				.getPostdatetimestamp() * 1000)));
-		if (replyData.getSubject() != null && !replyData.getSubject().equals("")) {
-			holder.tvTitle.setText(replyData.getSubject());
+		if (replyData.getSubject() != null
+				&& !replyData.getSubject().equals("")) {
+			holder.tvTitle.setText(Html.fromHtml(replyData.getSubject()));
 			holder.tvTitle.setVisibility(View.VISIBLE);
 		} else {
 			holder.tvTitle.setVisibility(View.GONE);
