@@ -33,7 +33,7 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	private int mCurPageIndex = 1;
 	private int mLastItemIndex;
 	private ReplyListAdapter mReplyListAdapter = null;
-	
+
 	private TopicReadTask mTopicReadTask = null;
 
 	@Override
@@ -68,24 +68,25 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 		mReplyListView.setVisibility(View.GONE);
 		mLoading.setVisibility(View.VISIBLE);
 
-		mTopicReadTask = new TopicReadTask(getActivity(), new IDataLoadedListener() {
+		mTopicReadTask = new TopicReadTask(getActivity(),
+				new IDataLoadedListener() {
 
-			@Override
-			public void onPostFinished(Object obj) {
-				mReplyListAdapter = new ReplyListAdapter(getActivity(),
-						(ReplyListData) obj);
-				mReplyListView.setAdapter(mReplyListAdapter);
-				mLoading.setVisibility(View.GONE);
-				mReplyListView.setVisibility(View.VISIBLE);
-			}
+					@Override
+					public void onPostFinished(Object obj) {
+						mReplyListAdapter = new ReplyListAdapter(getActivity(),
+								(ReplyListData) obj);
+						mReplyListView.setAdapter(mReplyListAdapter);
+						mLoading.setVisibility(View.GONE);
+						mReplyListView.setVisibility(View.VISIBLE);
+					}
 
-			@Override
-			public void onPostError(Integer status) {
-				mLoading.setVisibility(View.GONE);
-			}
-		});
-		mTopicReadTask.execute(tid + "", getActivity().getIntent().getStringExtra("fid"),
-				"1");
+					@Override
+					public void onPostError(Integer status) {
+						mLoading.setVisibility(View.GONE);
+					}
+				});
+		mTopicReadTask.execute(tid + "", getActivity().getIntent()
+				.getStringExtra("fid"), "1");
 		return mRootView;
 	}
 
@@ -132,8 +133,7 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 			int visibleItemCount, int totalItemCount) {
 		mLastItemIndex = firstVisibleItem + visibleItemCount - 1;
 	}
-	
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -161,7 +161,9 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	@Override
 	public void onPause() {
 		super.onPause();
-		mTopicReadTask.cancel(true);
+		if (!mTopicReadTask.isCancelled()) {
+			mTopicReadTask.cancel(true);
+		}
 		Log.d(TAG, "onPause");
 	}
 
