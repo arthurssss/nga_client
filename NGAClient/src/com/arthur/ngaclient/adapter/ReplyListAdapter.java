@@ -121,6 +121,12 @@ public class ReplyListAdapter extends BaseAdapter {
 		holder.tvReplyDate.setText(new SimpleDateFormat("yyyy-MM-dd hh:mm",
 				Locale.getDefault()).format(new Date(replyData
 				.getPostdatetimestamp() * 1000)));
+		if (replyData.getSubject() != null && !replyData.getSubject().equals("")) {
+			holder.tvTitle.setText(replyData.getSubject());
+			holder.tvTitle.setVisibility(View.VISIBLE);
+		} else {
+			holder.tvTitle.setVisibility(View.GONE);
+		}
 
 		String content = replyData.getHtmlContent();
 
@@ -150,6 +156,7 @@ public class ReplyListAdapter extends BaseAdapter {
 		public TextView tvReplyDate;
 		public TextView tvFloor;
 		public WebView tvContent;
+		public TextView tvTitle;
 		public ImageView ivAvatar;
 		public int position;
 
@@ -162,6 +169,8 @@ public class ReplyListAdapter extends BaseAdapter {
 					.findViewById(R.id.reply_floor);
 			this.tvContent = (WebView) convertView
 					.findViewById(R.id.reply_content);
+			this.tvTitle = (TextView) convertView
+					.findViewById(R.id.reply_title);
 
 			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.FROYO) {
 				this.tvContent.setLongClickable(false);
@@ -175,7 +184,7 @@ public class ReplyListAdapter extends BaseAdapter {
 			// setting.setBlockNetworkImage(!false);
 			setting.setDefaultFontSize(14);
 			setting.setJavaScriptEnabled(false);
-			
+
 			ReplyWebViewClient webClient = new ReplyWebViewClient();
 			this.tvContent.setWebViewClient(webClient);
 
@@ -226,8 +235,9 @@ public class ReplyListAdapter extends BaseAdapter {
 		}
 	}
 
+	// 追加数据并更新列表
 	public void addAndRefresh(Map<String, UserInfoData> userList,
-			Map<String, ReplyData> replyList) {
+			Map<String, ReplyData> replyList, int rows) {
 		mReplyListData.get__U().putAll(userList);
 
 		Map<String, ReplyData> __R = mReplyListData.get__R();
@@ -240,11 +250,12 @@ public class ReplyListAdapter extends BaseAdapter {
 		mReplyListData.set__R__ROWS(mReplyListData.get__R__ROWS()
 				+ replyList.size());
 
+		mReplyListData.set__ROWS(rows);
 		notifyDataSetChanged();
 	}
 
 	public boolean isHaveMore() {
-		return mReplyListData.get__R__ROWS() != mReplyListData.get__ROWS();
+		return mReplyListData.get__R__ROWS() < mReplyListData.get__ROWS();
 	}
 
 	@Override

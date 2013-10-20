@@ -106,7 +106,7 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 
 						ReplyListData data = (ReplyListData) obj;
 						mReplyListAdapter.addAndRefresh(data.get__U(),
-								data.get__R());
+								data.get__R(), data.get__ROWS());
 						mFooterView.setVisibility(View.GONE);
 					}
 

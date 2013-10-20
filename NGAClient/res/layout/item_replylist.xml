@@ -35,7 +35,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="夏木水田"
                     android:textColor="@color/reply_user_name" />
 
                 <TextView
@@ -52,7 +51,6 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="3dp"
-                    android:text="183楼"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/replylist_floor" />
             </LinearLayout>
@@ -63,10 +61,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="right"
-                android:text="2013-10-1 12:34"
                 android:textColor="@color/reply_date" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/reply_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:textSize="@dimen/reply_title"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
 
     <WebView
         android:id="@+id/reply_content"
