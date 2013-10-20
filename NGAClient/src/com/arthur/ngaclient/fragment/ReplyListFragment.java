@@ -7,6 +7,7 @@ import com.arthur.ngaclient.interfaces.IDataLoadedListener;
 import com.arthur.ngaclient.task.TopicReadTask;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -32,6 +33,8 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	private int mCurPageIndex = 1;
 	private int mLastItemIndex;
 	private ReplyListAdapter mReplyListAdapter = null;
+	
+	private TopicReadTask mTopicReadTask = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 		mReplyListView.setVisibility(View.GONE);
 		mLoading.setVisibility(View.VISIBLE);
 
-		new TopicReadTask(getActivity(), new IDataLoadedListener() {
+		mTopicReadTask = new TopicReadTask(getActivity(), new IDataLoadedListener() {
 
 			@Override
 			public void onPostFinished(Object obj) {
@@ -80,7 +83,8 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 			public void onPostError(Integer status) {
 				mLoading.setVisibility(View.GONE);
 			}
-		}).execute(tid + "", getActivity().getIntent().getStringExtra("fid"),
+		});
+		mTopicReadTask.execute(tid + "", getActivity().getIntent().getStringExtra("fid"),
 				"1");
 		return mRootView;
 	}
@@ -127,6 +131,62 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		mLastItemIndex = firstVisibleItem + visibleItemCount - 1;
+	}
+	
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		Log.d(TAG, "onAttach");
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		Log.d(TAG, "onActivityCreated");
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Log.d(TAG, "onStart");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		mTopicReadTask.cancel(true);
+		Log.d(TAG, "onPause");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		Log.d(TAG, "onStop");
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		Log.d(TAG, "onDestroyView");
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.d(TAG, "onDestroy");
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		Log.d(TAG, "onDetach");
 	}
 
 }
