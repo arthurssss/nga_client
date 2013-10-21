@@ -17,7 +17,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/nga_bg" />
+            android:src="@drawable/ic_nga_avatar" />
 
         <LinearLayout
             android:layout_width="match_parent"

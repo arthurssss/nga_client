@@ -55,7 +55,8 @@ public class ReplyListAdapter extends BaseAdapter {
 	private ImageLoadingListener mAnimateFirstListener = new AnimateFirstDisplayListener();
 	private DisplayImageOptions options = new DisplayImageOptions.Builder()
 			.cacheInMemory(true).cacheOnDisc(true)
-			.showImageForEmptyUri(R.drawable.nga_bg)
+			.showImageForEmptyUri(R.drawable.ic_nga_avatar)
+			.showImageOnFail(R.drawable.ic_nga_avatar)
 			.displayer(new RoundedBitmapDisplayer(5)).build();
 
 	private final SparseArray<SoftReference<View>> mViewCache;

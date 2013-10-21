@@ -15,7 +15,7 @@
         android:name=".NGAClientApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@drawable/nga_bg"
+        android:icon="@drawable/ic_nga_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
