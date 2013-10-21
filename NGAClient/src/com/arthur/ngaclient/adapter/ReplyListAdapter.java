@@ -124,7 +124,7 @@ public class ReplyListAdapter extends BaseAdapter {
 				.getPostdatetimestamp() * 1000)));
 		if (replyData.getSubject() != null
 				&& !replyData.getSubject().equals("")) {
-			holder.tvTitle.setText(Html.fromHtml(replyData.getSubject()));
+			holder.tvTitle.setText("»" + Html.fromHtml(replyData.getSubject()));
 			holder.tvTitle.setVisibility(View.VISIBLE);
 		} else {
 			holder.tvTitle.setVisibility(View.GONE);

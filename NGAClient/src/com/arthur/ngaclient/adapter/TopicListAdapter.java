@@ -1,11 +1,16 @@
 package com.arthur.ngaclient.adapter;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +133,18 @@ public class TopicListAdapter extends BaseAdapter {
 				}
 			}
 
-			holder.tvTopicTitle.setText(Html.fromHtml(topicData.getSubject()));
+			SpannableString ss = new SpannableString(Html.fromHtml(topicData.getSubject()));
+
+			Pattern p = Pattern.compile("\\[.+?\\]");
+			Matcher m = p.matcher(topicData.getSubject());
+			while (m.find()) {
+				System.out.println(m.start() + "," + m.end());
+				ss.setSpan(new ForegroundColorSpan(mContext.getResources()
+						.getColor(R.color.topic_title_class)), m.start(), m
+						.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+
+			holder.tvTopicTitle.setText(ss);
 			holder.tvTopicAuthor.setText(topicData.getAuthor());
 			holder.tvTopicPoster.setText(topicData.getLastposter());
 			holder.tvReplyCount.setText(topicData.getReplies() + "");

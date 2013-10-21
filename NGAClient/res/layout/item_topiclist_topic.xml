@@ -17,7 +17,6 @@
             android:layout_marginBottom="@dimen/px_1"
             android:background="@color/shit1_2"
             android:gravity="center"
-            android:text="133"
             android:textColor="#FF8FD7"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -37,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:text="我怎能不变态"
                 android:textColor="@color/boardlist_author"
                 android:textSize="12sp" />
 
@@ -49,21 +47,19 @@
                 android:gravity="center_vertical"
                 android:minHeight="30dp"
                 android:paddingTop="5dp"
-                android:text="关于腾讯新闻弹框等等了设计费拉卡机了"
                 android:textSize="18sp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:paddingTop="10dp" >
 
                 <TextView
                     android:id="@+id/board_topic_replytime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:maxWidth="100dp"
-                    android:text="2013-9-16"
+                    android:layout_weight="0"
                     android:textColor="@color/boardlist_replytime"
                     android:textSize="12sp" />
 
@@ -71,12 +67,12 @@
                     android:id="@+id/board_topic_poster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:maxWidth="100dp"
-                    android:text="夏木水田"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
                     android:textColor="@color/boardlist_poster"
                     android:textSize="12sp" />
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
