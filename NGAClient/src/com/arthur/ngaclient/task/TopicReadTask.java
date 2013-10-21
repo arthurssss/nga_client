@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -28,6 +30,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.bean.CommentData;
 import com.arthur.ngaclient.bean.Global;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
@@ -146,6 +149,23 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 				Map<String, ReplyData> replyDataMap = new HashMap<String, ReplyData>();
 				for (String key : __R.keySet()) {
 					ReplyData replyData = __R.getObject(key, ReplyData.class);
+
+					// 评论列表
+					JSONObject comment = __R.getJSONObject(key).getJSONObject(
+							"comment");
+					List<CommentData> commentList = new ArrayList<CommentData>();
+					if (comment != null) {
+						Log.i(TAG, "comment size = " + comment.size());
+						for (int i = 0; i < comment.size(); i++) {
+							Log.i(TAG, "commentKey = " + i);
+							CommentData commentData = comment.getObject(i + "",
+									CommentData.class);
+							commentList.add(commentData);
+						}
+						replyData.setCommentList(commentList);
+					}
+
+					// 回复内容整理为html
 					int type = replyData.getType();
 					if (replyData.getType() == 2) {
 						replyData

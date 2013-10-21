@@ -1,5 +1,6 @@
 package com.arthur.ngaclient.bean;
 
+import java.util.List;
 import java.util.Map;
 
 public class ReplyData {
@@ -17,7 +18,8 @@ public class ReplyData {
 	private Map<String, AttachsData> attachs; // 附件
 	private int lou; // 楼层
 	private long postdatetimestamp; // 发帖时间
-	private String htmlContent; 
+	private String htmlContent;
+	private List<CommentData> commentList;
 
 	public String getContent() {
 		return content;
@@ -137,6 +139,14 @@ public class ReplyData {
 
 	public void setHtmlContent(String htmlContent) {
 		this.htmlContent = htmlContent;
+	}
+
+	public List<CommentData> getCommentList() {
+		return commentList;
+	}
+
+	public void setCommentList(List<CommentData> commentList) {
+		this.commentList = commentList;
 	}
 
 }

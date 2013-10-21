@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.activity.ImageViewActivity;
+import com.arthur.ngaclient.bean.CommentData;
 import com.arthur.ngaclient.bean.ReplyData;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.bean.UserInfoData;
@@ -25,6 +26,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 public class ReplyListAdapter extends BaseAdapter {
 
+	private static final String TAG = ReplyListAdapter.class.getSimpleName();
 	private Context mContext = null;
 	private LayoutInflater mInflater = null;
 	private ReplyListData mReplyListData = null;
@@ -130,8 +133,7 @@ public class ReplyListAdapter extends BaseAdapter {
 			holder.tvTitle.setVisibility(View.GONE);
 		}
 
-		String content = replyData.getHtmlContent();
-
+		String content = replyData.getHtmlContent() + buildComment(replyData);
 		holder.tvContent.loadDataWithBaseURL(null, content, "text/html",
 				"utf-8", null);
 
@@ -148,8 +150,8 @@ public class ReplyListAdapter extends BaseAdapter {
 		}
 
 		holder.ivAvatar.setTag(userInfoData.getAvatar());
-		mImageLoader.displayImage(userInfoData.getAvatar(), holder.ivAvatar,
-				options, mAnimateFirstListener);
+		mImageLoader.displayImage(parseAvatarUrl(userInfoData.getAvatar()),
+				holder.ivAvatar, options, mAnimateFirstListener);
 		return convertView;
 	}
 
@@ -264,5 +266,61 @@ public class ReplyListAdapter extends BaseAdapter {
 	public void notifyDataSetChanged() {
 		mViewCache.clear();
 		super.notifyDataSetChanged();
+	}
+
+	private String buildComment(ReplyData replyData) {
+		if (replyData == null || replyData.getCommentList() == null
+				|| replyData.getCommentList().size() == 0) {
+			return "";
+		}
+
+		StringBuilder ret = new StringBuilder();
+		ret.append("<br/></br>").append("评论").append("<hr/><br/>");
+		ret.append("<table  border='1px' cellspacing='0px' style='border-collapse:collapse;");
+		ret.append("color:");
+		ret.append(mContext.getResources().getColor(R.color.reply_content));
+		ret.append("'>");
+
+		ret.append("<tbody>");
+
+		for (CommentData comment : replyData.getCommentList()) {
+			ret.append("<tr><td>");
+			ret.append("<span style='font-weight:bold' >");
+			ret.append(comment.getAuthor());
+			ret.append("</span><br/>");
+			ret.append("<img src='");
+			String avatarUrl = parseAvatarUrl(comment.getJs_escap_avatar());
+			ret.append(avatarUrl);
+			ret.append("' style= 'max-width:32;'>");
+
+			ret.append("</td><td>");
+			ret.append(comment.getContent());
+			ret.append("</td></tr>");
+
+		}
+		ret.append("</tbody></table>");
+		return ret.toString();
+	}
+
+	private static String parseAvatarUrl(String js_escap_avatar) {
+		// "js_escap_avatar":"{ \"t\":1,\"l\":2,\"0\":{ \"0\":\"http://pic2.178.com/53/533387/month_1109/93ba4788cc8c7d6c75453fa8a74f3da6.jpg\",\"cX\":0.47,\"cY\":0.78},\"1\":{ \"0\":\"http://pic2.178.com/53/533387/month_1108/8851abc8674af3adc622a8edff731213.jpg\",\"cX\":0.49,\"cY\":0.68}}"
+		if (null == js_escap_avatar)
+			return null;
+
+		int start = js_escap_avatar.indexOf("http");
+		if (start == 0 || start == -1) {
+			return js_escap_avatar;
+		}
+		int end = js_escap_avatar.indexOf("\"", start);
+		if (end == -1) {
+			end = js_escap_avatar.length();
+		}
+		String ret = null;
+		try {
+			ret = js_escap_avatar.substring(start, end);
+		} catch (Exception e) {
+			Log.e(TAG, "cann't handle avatar url " + js_escap_avatar);
+		}
+		return ret;
 	}
 }
