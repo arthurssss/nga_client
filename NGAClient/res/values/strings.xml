@@ -26,4 +26,7 @@
     <string name="request_forbiddenerror">没有权限访问</string>
     
     <string name="view_listview_footer">正在加载…</string>
+    
+    <string name="reply_title_hint">标题</string>
+    <string name="reply_content_hint">回复内容</string>
 </resources>

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 
 public class TopicListActivity extends FragmentActivity {
@@ -38,6 +39,10 @@ public class TopicListActivity extends FragmentActivity {
 				actionBar.setDisplayShowHomeEnabled(true);
 			}
 			return true;
+		case R.id.action_reply:
+			Intent intent = new Intent();
+			intent.setClass(this, ReplyActivity.class);
+			startActivity(intent);
 		default:
 			return false;
 		}
@@ -61,4 +66,10 @@ public class TopicListActivity extends FragmentActivity {
 		return true;// super.onKeyUp(keyCode, event);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.reply_list, menu);
+		return true;
+	}
+	
 }
