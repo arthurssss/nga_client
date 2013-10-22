@@ -1,6 +1,7 @@
 package com.arthur.ngaclient.activity;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.adapter.ReplyImagesAdapter;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.GridView;
 
 public class ReplyActivity extends Activity {
 
@@ -22,6 +24,7 @@ public class ReplyActivity extends Activity {
 
 	private EditText mReplyContentEdit = null;
 	private EditText mReplyTitleEdit = null;
+	private GridView mReplyImages = null;
 
 	private MenuItem mImagesItem = null;
 
@@ -37,6 +40,9 @@ public class ReplyActivity extends Activity {
 		mInputMethodManger = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		mReplyContentEdit = (EditText) findViewById(R.id.reply_content);
 		mReplyTitleEdit = (EditText) findViewById(R.id.reply_title);
+
+		mReplyImages = (GridView) findViewById(R.id.reply_images_grid);
+		mReplyImages.setAdapter(new ReplyImagesAdapter(this));
 
 		mReplyTitleEdit.setOnTouchListener(new OnTouchListener() {
 
@@ -92,12 +98,14 @@ public class ReplyActivity extends Activity {
 		mImagesItem.setIcon(R.drawable.ic_action_keyboard);
 		mInputMethodManger.hideSoftInputFromWindow(
 				mReplyContentEdit.getWindowToken(), 0);
+		mReplyImages.setVisibility(View.VISIBLE);
 		mIsImagesShow = true;
 	}
 
 	private void hideImages() {
 		mImagesItem.setIcon(R.drawable.ic_action_picture);
 		mInputMethodManger.showSoftInput(mReplyContentEdit, 0);
+		mReplyImages.setVisibility(View.GONE);
 		mIsImagesShow = false;
 	}
 }
