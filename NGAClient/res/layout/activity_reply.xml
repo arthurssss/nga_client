@@ -32,4 +32,17 @@
             android:inputType="textMultiLine" />
     </LinearLayout>
 
+    <GridView
+        android:id="@+id/reply_images_grid"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@color/face_bg"
+        android:columnWidth="60dp"
+        android:fadingEdge="none"
+        android:gravity="center"
+        android:numColumns="auto_fit"
+        android:scrollingCache="false"
+        android:stretchMode="columnWidth"
+        android:visibility="gone" />
+
 </LinearLayout>
