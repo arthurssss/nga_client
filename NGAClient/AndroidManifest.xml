@@ -53,7 +53,7 @@
             android:name="com.arthur.ngaclient.activity.ReplyActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:windowSoftInputMode="stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
     </application>
 
