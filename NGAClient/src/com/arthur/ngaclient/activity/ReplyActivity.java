@@ -10,6 +10,8 @@ import android.view.MenuItem;
 
 public class ReplyActivity extends Activity {
 
+	private boolean mIsImagesShow = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -26,6 +28,13 @@ public class ReplyActivity extends Activity {
 		case android.R.id.home:
 			onBackPressed();
 			return true;
+		case R.id.action_image:
+			if (!mIsImagesShow) {
+				item.setIcon(R.drawable.ic_action_keyboard);
+			} else {
+				item.setIcon(R.drawable.ic_action_picture);
+			}
+			mIsImagesShow = !mIsImagesShow;
 		default:
 			return false;
 		}
