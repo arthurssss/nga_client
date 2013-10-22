@@ -5,6 +5,7 @@ import com.arthur.ngaclient.R;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 public class ReplyActivity extends Activity {
@@ -13,7 +14,7 @@ public class ReplyActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reply);
-		
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
@@ -28,5 +29,11 @@ public class ReplyActivity extends Activity {
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.reply, menu);
+		return true;
 	}
 }
