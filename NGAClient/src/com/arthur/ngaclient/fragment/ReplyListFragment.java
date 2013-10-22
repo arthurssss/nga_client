@@ -4,15 +4,20 @@ import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyListAdapter;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
+import com.arthur.ngaclient.task.AddFavTask;
 import com.arthur.ngaclient.task.TopicReadTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -35,19 +40,23 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	private ReplyListAdapter mReplyListAdapter = null;
 
 	private TopicReadTask mTopicReadTask = null;
+	private AddFavTask mAddFavTask = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i(TAG, "onCreate");
 		ActionBar actionBar = getActivity().getActionBar();
 		String title = getArguments().getString("title");
 		actionBar.setTitle(Html.fromHtml(title));
 		actionBar.setDisplayShowHomeEnabled(false);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.i(TAG, "onCreateView");
 		mRootView = inflater.inflate(R.layout.fragment_replylist_list,
 				container, false);
 		int tid = getArguments().getInt("tid");
@@ -135,6 +144,30 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		Log.i(TAG, "onCreateOptionsMenu");
+		inflater.inflate(R.menu.reply_list, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.i(TAG, "onOptionsItemSelected");
+		switch (item.getItemId()) {
+		case R.id.action_addfav:
+			Log.i(TAG, "action_addfav");
+			if (mAddFavTask != null) {
+				mAddFavTask.cancel(true);
+			}
+			mAddFavTask = new AddFavTask(getActivity());
+			mAddFavTask.execute(String.valueOf(getArguments().getInt("tid")));
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		Log.d(TAG, "onAttach");
@@ -163,6 +196,9 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 		super.onPause();
 		if (!mTopicReadTask.isCancelled()) {
 			mTopicReadTask.cancel(true);
+		}
+		if (!mAddFavTask.isCancelled()) {
+			mAddFavTask.cancel(true);
 		}
 		Log.d(TAG, "onPause");
 	}

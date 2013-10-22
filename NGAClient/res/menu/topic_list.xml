@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_addfav"
-        android:icon="@drawable/ic_action_important"
+        android:id="@+id/action_reply"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/action_settings"/>
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_action_chat"/>
 
 </menu>

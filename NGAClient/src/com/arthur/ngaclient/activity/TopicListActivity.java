@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 
 public class TopicListActivity extends FragmentActivity {
+
+	private static final String TAG = TopicListActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class TopicListActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.i(TAG, "onOptionsItemSelected");
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			FragmentManager fragmentManager = getSupportFragmentManager();
@@ -63,13 +66,7 @@ public class TopicListActivity extends FragmentActivity {
 				actionBar.setDisplayShowHomeEnabled(true);
 			}
 		}
-		return true;// super.onKeyUp(keyCode, event);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.reply_list, menu);
 		return true;
 	}
-	
+
 }

@@ -17,16 +17,17 @@
     <string name="login_btn">登录</string>
     <string name="login_success">登录成功</string>
     <string name="login_fail">登录失败</string>
-
     <string name="request_timeout">网络不给力</string>
     <string name="request_dataerror">数据错误</string>
     <string name="request_neterror">网络错误</string>
     <string name="request_servererror">二哥玩坏了</string>
     <string name="request_othererror">请求错误</string>
     <string name="request_forbiddenerror">没有权限访问</string>
-    
     <string name="view_listview_footer">正在加载…</string>
-    
     <string name="reply_title_hint">标题</string>
     <string name="reply_content_hint">回复内容</string>
+    <string name="add_fav_success">收藏成功</string>
+    <string name="add_fav_already_add">已经收藏过了</string>
+    <string name="add_fav_fail">收藏失败</string>
+
 </resources>
