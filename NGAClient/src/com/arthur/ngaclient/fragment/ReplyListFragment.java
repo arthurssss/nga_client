@@ -197,7 +197,7 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 		if (!mTopicReadTask.isCancelled()) {
 			mTopicReadTask.cancel(true);
 		}
-		if (!mAddFavTask.isCancelled()) {
+		if (mAddFavTask != null && !mAddFavTask.isCancelled()) {
 			mAddFavTask.cancel(true);
 		}
 		Log.d(TAG, "onPause");
