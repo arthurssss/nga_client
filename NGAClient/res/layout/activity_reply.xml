@@ -51,4 +51,11 @@
         android:stretchMode="columnWidth"
         android:visibility="gone" />
 
+    <FrameLayout
+        android:id="@+id/reply_images_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:visibility="gone" />
+
 </LinearLayout>

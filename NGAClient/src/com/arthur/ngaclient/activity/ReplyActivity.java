@@ -1,22 +1,29 @@
 package com.arthur.ngaclient.activity;
 
 import com.arthur.ngaclient.R;
-import com.arthur.ngaclient.adapter.ReplyImagesAdapter;
+import com.arthur.ngaclient.adapter.ReplyImagesCategoryAdapter;
+import com.arthur.ngaclient.fragment.ReplyImagesFragment;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 
-public class ReplyActivity extends Activity {
+public class ReplyActivity extends FragmentActivity {
 
 	private static final String TAG = ReplyActivity.class.getSimpleName();
 	private boolean mIsImagesShow = false;
@@ -25,6 +32,7 @@ public class ReplyActivity extends Activity {
 	private EditText mReplyContentEdit = null;
 	private EditText mReplyTitleEdit = null;
 	private GridView mReplyImages = null;
+	private View mReplyImagesLayout = null;
 
 	private MenuItem mImagesItem = null;
 
@@ -40,9 +48,30 @@ public class ReplyActivity extends Activity {
 		mInputMethodManger = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		mReplyContentEdit = (EditText) findViewById(R.id.reply_content);
 		mReplyTitleEdit = (EditText) findViewById(R.id.reply_title);
+		mReplyImagesLayout = findViewById(R.id.reply_images_layout);
+
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.popBackStackImmediate();
 
 		mReplyImages = (GridView) findViewById(R.id.reply_images_grid);
-		mReplyImages.setAdapter(new ReplyImagesAdapter(this));
+		mReplyImages.setAdapter(new ReplyImagesCategoryAdapter(this));
+		mReplyImages.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.d(TAG, "onItemClick");
+				FragmentManager fm = getSupportFragmentManager();
+				FragmentTransaction ft = fm.beginTransaction();
+				Fragment fragment = new ReplyImagesFragment();
+				ft.replace(R.id.reply_images_layout, fragment);
+				ft.addToBackStack(null);
+				ft.commit();
+				mReplyImagesLayout.setVisibility(View.VISIBLE);
+				mReplyImages.setVisibility(View.GONE);
+			}
+
+		});
 
 		mReplyTitleEdit.setOnTouchListener(new OnTouchListener() {
 
@@ -94,11 +123,25 @@ public class ReplyActivity extends Activity {
 		return true;
 	}
 
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			if (!fragmentManager.popBackStackImmediate()) {
+				onBackPressed();
+			}
+		}
+		return true;
+	}
+
 	private void showImages() {
 		mImagesItem.setIcon(R.drawable.ic_action_keyboard);
 		mInputMethodManger.hideSoftInputFromWindow(
 				mReplyContentEdit.getWindowToken(), 0);
 		mReplyImages.setVisibility(View.VISIBLE);
+		mReplyImagesLayout.setVisibility(View.GONE);
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.popBackStackImmediate();
 		mIsImagesShow = true;
 	}
 
@@ -106,6 +149,9 @@ public class ReplyActivity extends Activity {
 		mImagesItem.setIcon(R.drawable.ic_action_picture);
 		mInputMethodManger.showSoftInput(mReplyContentEdit, 0);
 		mReplyImages.setVisibility(View.GONE);
+		mReplyImagesLayout.setVisibility(View.GONE);
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.popBackStackImmediate();
 		mIsImagesShow = false;
 	}
 }
