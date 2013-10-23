@@ -133,9 +133,7 @@ public class AddFavTask extends AsyncTask<String, Integer, String> {
 		}
 
 		String startStr = "{\"0\":\"", endStr = "\"},\"time\"";
-
 		int begPosition = 0;
-
 		String result = null;
 
 		do {
@@ -154,9 +152,8 @@ public class AddFavTask extends AsyncTask<String, Integer, String> {
 
 		} while (false);
 
-		String msg = result;
-		if (msg != null && !"".equals(msg)) {
-			Toast.makeText(mContext, msg.trim(), Toast.LENGTH_SHORT).show();
+		if (result != null && !"".equals(result)) {
+			Toast.makeText(mContext, result.trim(), Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(mContext,
 					mContext.getResources().getString(R.string.add_fav_fail),
