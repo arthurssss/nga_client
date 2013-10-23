@@ -7,5 +7,11 @@
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:title="@string/action_settings"/>
+    <item
+        android:id="@+id/action_reply"
+        android:icon="@drawable/ic_action_chat"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_settings"/>
 
 </menu>

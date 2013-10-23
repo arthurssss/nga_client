@@ -24,6 +24,7 @@
 
             <fragment
                 android:id="@+id/board_fragment"
+                android:tag="TopicListFragment"
                 android:name="com.arthur.ngaclient.fragment.TopicListFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

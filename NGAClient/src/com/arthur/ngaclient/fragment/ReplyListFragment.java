@@ -9,7 +9,6 @@ import com.arthur.ngaclient.task.TopicReadTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;

@@ -200,7 +200,8 @@ public class TopicListFragment extends Fragment implements
 				.getConfiguration();
 		int ori = configuration.orientation;
 
-		fragmentTransaction.replace(R.id.topiclist_replyview, fragment);
+		fragmentTransaction.replace(R.id.topiclist_replyview, fragment,
+				"ReplyListFragment");
 
 		DisplayMetrics dm = new DisplayMetrics();
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -223,7 +224,13 @@ public class TopicListFragment extends Fragment implements
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		Log.i(TAG, "onCreateOptionsMenu");
-		inflater.inflate(R.menu.topic_list, menu);
+		FragmentManager fragmentManager = getActivity()
+				.getSupportFragmentManager();
+		Fragment f = fragmentManager.findFragmentByTag("ReplyListFragment");
+		if (f == null) {
+			Log.i(TAG, "create");
+			inflater.inflate(R.menu.topic_list, menu);
+		}
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
