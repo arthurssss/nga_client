@@ -36,6 +36,10 @@ public class ReplyActivity extends FragmentActivity {
 
 	private MenuItem mImagesItem = null;
 
+	private String mAction = null;
+	private String mTid = null;
+	private String mFid = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +48,20 @@ public class ReplyActivity extends FragmentActivity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
+
+		mAction = getIntent().getStringExtra("action");
+		mTid = getIntent().getStringExtra("tid");
+		mFid = getIntent().getStringExtra("fid");
+
+		if (mAction != null) {
+			Log.i(TAG, "action = " + mAction);
+		}
+		if (mTid != null) {
+			Log.i(TAG, "tid = " + mTid);
+		}
+		if (mFid != null) {
+			Log.i(TAG, "fid = " + mFid);
+		}
 
 		mInputMethodManger = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		mReplyContentEdit = (EditText) findViewById(R.id.reply_content);

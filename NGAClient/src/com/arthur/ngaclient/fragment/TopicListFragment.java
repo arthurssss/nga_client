@@ -4,6 +4,7 @@ import uk.co.senab.actionbarpulltorefresh.library.DefaultHeaderTransformer;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.activity.ReplyActivity;
 import com.arthur.ngaclient.adapter.TopicListAdapter;
 import com.arthur.ngaclient.bean.TopicData;
 import com.arthur.ngaclient.bean.TopicListData;
@@ -12,6 +13,7 @@ import com.arthur.ngaclient.task.TopicListTask;
 import com.arthur.ngaclient.util.DensityUtil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -232,6 +235,21 @@ public class TopicListFragment extends Fragment implements
 			inflater.inflate(R.menu.topic_list, menu);
 		}
 		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.i(TAG, "onOptionsItemSelected");
+		switch (item.getItemId()) {
+		case R.id.action_newtopic:
+			Intent intent = new Intent();
+			intent.putExtra("action", "new");
+			intent.putExtra("fid", getActivity().getIntent().getStringExtra("fid"));
+			intent.setClass(getActivity(), ReplyActivity.class);
+			startActivity(intent);
+			return true;
+		}
+		return false;
 	}
 
 	@Override

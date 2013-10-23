@@ -1,6 +1,7 @@
 package com.arthur.ngaclient.fragment;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.activity.ReplyActivity;
 import com.arthur.ngaclient.adapter.ReplyListAdapter;
 import com.arthur.ngaclient.bean.ReplyListData;
 import com.arthur.ngaclient.interfaces.IDataLoadedListener;
@@ -9,6 +10,7 @@ import com.arthur.ngaclient.task.TopicReadTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -161,6 +163,15 @@ public class ReplyListFragment extends Fragment implements OnScrollListener {
 			mAddFavTask = new AddFavTask(getActivity());
 			mAddFavTask.execute(String.valueOf(getArguments().getInt("tid")));
 
+			return true;
+		case R.id.action_reply:
+			Intent intent = new Intent();
+			intent.putExtra("action", "reply");
+			intent.putExtra("fid",
+					getActivity().getIntent().getStringExtra("fid"));
+			intent.putExtra("tid", String.valueOf(getArguments().getInt("tid")));
+			intent.setClass(getActivity(), ReplyActivity.class);
+			startActivity(intent);
 			return true;
 		}
 		return false;

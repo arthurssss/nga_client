@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_reply"
+        android:id="@+id/action_newtopic"
         android:icon="@drawable/ic_action_chat"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"

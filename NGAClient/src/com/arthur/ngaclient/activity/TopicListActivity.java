@@ -42,10 +42,6 @@ public class TopicListActivity extends FragmentActivity {
 				actionBar.setDisplayShowHomeEnabled(true);
 			}
 			return true;
-		case R.id.action_reply:
-			Intent intent = new Intent();
-			intent.setClass(this, ReplyActivity.class);
-			startActivity(intent);
 		default:
 			return false;
 		}
