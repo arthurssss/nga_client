@@ -5,6 +5,10 @@
     <string name="action_settings">设置</string>
     <string name="action_search">搜索</string>
     <string name="action_delete">删除</string>
+    <string name="action_newtopic">发表新帖</string>
+    <string name="action_reply">回帖</string>
+    <string name="action_addfav">收藏</string>
+    <string name="action_images">表情</string>
     <string name="title_section1">个人中心</string>
     <string name="title_section2">常用板块</string>
     <string name="title_section3">全部板块</string>

@@ -7,8 +7,8 @@
         android:title="@string/action_settings"/>
     <item
         android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
         android:showAsAction="ifRoom"
-        android:title="@string/action_search"
-        android:actionViewClass="android.widget.SearchView"/>
+        android:title="@string/action_search"/>
 
 </menu>
