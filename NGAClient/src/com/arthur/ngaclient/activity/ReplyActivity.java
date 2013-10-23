@@ -3,6 +3,7 @@ package com.arthur.ngaclient.activity;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyImagesCategoryAdapter;
 import com.arthur.ngaclient.fragment.ReplyImagesFragment;
+import com.arthur.ngaclient.task.ReplyTask;
 
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -129,6 +130,10 @@ public class ReplyActivity extends FragmentActivity {
 					hideImages();
 				}
 			}
+			return true;
+		case R.id.action_send:
+			new ReplyTask().execute();
+			return true;
 		default:
 			return false;
 		}
