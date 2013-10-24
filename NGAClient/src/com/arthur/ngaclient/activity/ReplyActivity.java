@@ -132,7 +132,9 @@ public class ReplyActivity extends FragmentActivity {
 			}
 			return true;
 		case R.id.action_send:
-			new ReplyTask().execute();
+			String content = mReplyContentEdit.getText().toString();
+			String title = mReplyTitleEdit.getText().toString();
+			new ReplyTask(this).execute(title, content, mAction, mFid, mTid);
 			return true;
 		default:
 			return false;
