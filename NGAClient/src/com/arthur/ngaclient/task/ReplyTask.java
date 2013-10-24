@@ -49,17 +49,17 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 		String fid = params[3];
 		String tid = params[4];
 
-		String url = Global.SERVER + "/post.php?";
+		String url = Global.SERVER + "/post.php";
 		String param = "";
 		StringBuffer sb = new StringBuffer();
 
 		try {
-			sb.append("post_subject=");
-			sb.append(URLEncoder.encode(title, "GBK"));
-			sb.append("&post_content=");
-			sb.append(URLEncoder.encode(content, "GBK"));
+
+			sb.append("step=2");
+			sb.append("&pid=");
 			sb.append("&action=");
 			sb.append(action);
+			sb.append("&_ff=");
 			if (fid != null) {
 				sb.append("&fid=");
 				sb.append(fid);
@@ -68,26 +68,16 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 				sb.append("&tid=");
 				sb.append(tid);
 			}
-
-			sb.append("&step=");
-			sb.append(2);
-			sb.append("&action=");
-			sb.append("new");
-			sb.append("&_ff=");
-			sb.append("");
 			sb.append("&attachments=");
-			sb.append("");
 			sb.append("&attachments_check=");
-			sb.append("");
 			sb.append("&force_topic_key=");
-			sb.append("");
-			sb.append("&filter_key=");
-			sb.append(1);
-			sb.append("&checkkey=");
-			sb.append("");
+			sb.append("&filter_key=1");
+			sb.append("post_subject=");
+			sb.append(URLEncoder.encode(title, "GBK"));
+			sb.append("&post_content=");
+			sb.append(URLEncoder.encode(content, "GBK"));
 			sb.append("&mention=");
-			sb.append("");
-			sb.append("&lite=js"); 
+			sb.append("&checkkey=");
 
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
@@ -95,9 +85,9 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 		param = sb.toString();
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.addHeader("User-Agent", NGAClientApplication.USER_AGENT);
-		httpPost.addHeader("Content-Type", "application/x-www-formurlencoded");
+		httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		httpPost.addHeader("Accept-Charset", "GBK");
-		httpPost.addHeader("Accept-Encoding", "gzip,deflate");
+		httpPost.addHeader("Accept-Encoding", "gzip");
 		httpPost.addHeader("Cookie", HttpUtil.getCookie(mContext));
 
 		HttpParams httpParams = new BasicHttpParams();
@@ -130,7 +120,7 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 			httpPost.setEntity(paramStr);
 			HttpResponse response = httpclient.execute(httpPost);
 			Log.d(TAG, "" + response.getStatusLine().getStatusCode());
-//			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
 				InputStream is = response.getEntity().getContent();
 
 				Header[] headers = response.getHeaders("Content-Encoding");
@@ -150,10 +140,8 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 				}
 				String strResult = resultStringBuffer.toString();
 				strResult = getReplyResult(strResult);
-				if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
-					return strResult;
-				}
-//			}
+				return strResult;
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
