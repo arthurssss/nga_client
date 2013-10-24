@@ -120,7 +120,8 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 			httpPost.setEntity(paramStr);
 			HttpResponse response = httpclient.execute(httpPost);
 			Log.d(TAG, "" + response.getStatusLine().getStatusCode());
-			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK) {
+			if (response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_OK
+					|| response.getStatusLine().getStatusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
 				InputStream is = response.getEntity().getContent();
 
 				Header[] headers = response.getHeaders("Content-Encoding");
@@ -156,14 +157,12 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		// String success_results[] = { "发贴完毕 ...", " @提醒每24小时不能超过50个" };
-		// boolean success = false;
-		// for (int i = 0; i < success_results.length; ++i) {
-		// if (result.contains(success_results[i])) {
-		// success = true;
-		// break;
-		// }
-		// }
+		String success_results[] = { "发贴完毕 ...", " @提醒每24小时不能超过50个" };
+		for (int i = 0; i < success_results.length; ++i) {
+			if (result.contains(success_results[i])) {
+				break;
+			}
+		}
 
 		Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
 	}
