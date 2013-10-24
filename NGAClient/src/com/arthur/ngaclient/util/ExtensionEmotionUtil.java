@@ -3,9 +3,16 @@ package com.arthur.ngaclient.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.arthur.ngaclient.R;
+
 public class ExtensionEmotionUtil {
 	public static final String dirs[] = { "baozou", "ali", "dayanmao",
 			"luoxiaohei", "zhaiyin", "yangcongtou", "acniang", "bierde" };
+
+	public static final int resCategory[] = { R.drawable.baozou,
+			R.drawable.ali, R.drawable.dayanmao, R.drawable.luoxiaohei,
+			R.drawable.zhaiyin, R.drawable.yangcongtou, R.drawable.acniang,
+			R.drawable.bierde };
 
 	public static final String res[][] = {
 			{

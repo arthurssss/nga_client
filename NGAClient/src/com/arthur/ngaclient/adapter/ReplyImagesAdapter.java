@@ -1,11 +1,10 @@
 package com.arthur.ngaclient.adapter;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.util.DensityUtil;
 import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -53,8 +52,17 @@ public class ReplyImagesAdapter extends BaseAdapter {
 
 		ImageView iv = (ImageView) convertView;
 		mImageLoader.displayImage(
-				"assets://" + ExtensionEmotionUtil.getFilePath(mCategoryPosition, position),
-				iv, options);
+				"assets://"
+						+ ExtensionEmotionUtil.getFilePath(mCategoryPosition,
+								position), iv, options);
+
+		convertView
+				.setLayoutParams(new android.widget.AbsListView.LayoutParams(
+						DensityUtil.dip2px(mContext, 60), DensityUtil.dip2px(
+								mContext, 60)));
+
+		convertView
+				.setTag(ExtensionEmotionUtil.res[mCategoryPosition][position]);
 		return convertView;
 	}
 

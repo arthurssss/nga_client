@@ -3,6 +3,7 @@ package com.arthur.ngaclient.activity;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyImagesCategoryAdapter;
 import com.arthur.ngaclient.fragment.ReplyImagesFragment;
+import com.arthur.ngaclient.interfaces.IOnSetTextEditImageListener;
 import com.arthur.ngaclient.task.ReplyTask;
 import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 
@@ -86,6 +87,18 @@ public class ReplyActivity extends FragmentActivity {
 				Fragment fragment = new ReplyImagesFragment();
 				Bundle b = new Bundle();
 				b.putString("category", ExtensionEmotionUtil.dirs[position]);
+				b.putSerializable("OnSetTextEditImageListener",
+						new IOnSetTextEditImageListener() {
+
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void OnSetTextEditImage(String imgUri) {
+								mReplyContentEdit.getText().insert(
+										mReplyContentEdit.getSelectionStart(),
+										"[img]" + imgUri + "[/img]");
+							}
+						});
 				fragment.setArguments(b);
 				ft.replace(R.id.reply_images_layout, fragment);
 				ft.addToBackStack(null);
@@ -183,4 +196,5 @@ public class ReplyActivity extends FragmentActivity {
 		fragmentManager.popBackStackImmediate();
 		mIsImagesShow = false;
 	}
+
 }

@@ -1,6 +1,6 @@
 package com.arthur.ngaclient.adapter;
 
-import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 
 import android.content.Context;
 import android.view.View;
@@ -10,23 +10,17 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 public class ReplyImagesCategoryAdapter extends BaseAdapter {
-	// 定义Context
+
 	private Context mContext;
-	// 定义整型数组 即图片源
-	private int[] mImageIds;
 
 	public ReplyImagesCategoryAdapter(Context c) {
 		mContext = c;
-		mImageIds = new int[] { R.drawable.acniang, R.drawable.ali,
-				R.drawable.baozou, R.drawable.bierde, R.drawable.dayanmao,
-				R.drawable.luoxiaohei, R.drawable.yangcongtou,
-				R.drawable.zhaiyin };
 	}
 
 	// 获取图片的个数
 	@Override
 	public int getCount() {
-		return mImageIds.length;
+		return ExtensionEmotionUtil.resCategory.length;
 	}
 
 	// 获取图片在库中的位置
@@ -38,7 +32,7 @@ public class ReplyImagesCategoryAdapter extends BaseAdapter {
 	// 获取图片ID
 	@Override
 	public long getItemId(int position) {
-		return mImageIds[position];
+		return ExtensionEmotionUtil.resCategory[position];
 	}
 
 	@Override
@@ -54,7 +48,7 @@ public class ReplyImagesCategoryAdapter extends BaseAdapter {
 			imageView = (ImageView) convertView;
 		}
 
-		imageView.setImageResource(mImageIds[position]);
+		imageView.setImageResource(ExtensionEmotionUtil.resCategory[position]);
 
 		return imageView;
 	}

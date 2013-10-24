@@ -2,6 +2,7 @@ package com.arthur.ngaclient.fragment;
 
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyImagesAdapter;
+import com.arthur.ngaclient.interfaces.IOnSetTextEditImageListener;
 import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 
 import android.os.Bundle;
@@ -10,12 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
 public class ReplyImagesFragment extends Fragment {
 
 	private static final String TAG = ReplyImagesFragment.class.getSimpleName();
 	private GridView mRootView = null;
+	private IOnSetTextEditImageListener mListener = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,10 +29,12 @@ public class ReplyImagesFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mRootView = (GridView) inflater.inflate(R.layout.fragment_reply_images, container,
-				false);
+		mRootView = (GridView) inflater.inflate(R.layout.fragment_reply_images,
+				container, false);
 		Bundle args = getArguments();
 		String category = args.getString("category");
+		mListener = (IOnSetTextEditImageListener) args
+				.getSerializable("OnSetTextEditImageListener");
 		int categoryPosition = -1;
 		for (int i = 0; i < ExtensionEmotionUtil.dirs.length; i++) {
 			if (ExtensionEmotionUtil.dirs[i].equals(category)) {
@@ -37,7 +43,17 @@ public class ReplyImagesFragment extends Fragment {
 			}
 		}
 		Log.i(TAG, "categoryPosition = " + categoryPosition);
-		mRootView.setAdapter(new ReplyImagesAdapter(getActivity(), categoryPosition));
+		mRootView.setAdapter(new ReplyImagesAdapter(getActivity(),
+				categoryPosition));
+		mRootView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				mListener.OnSetTextEditImage((String) view.getTag());
+			}
+
+		});
 		return mRootView;
 	}
 
