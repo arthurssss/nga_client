@@ -4,10 +4,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ExtensionEmotionUtil {
-	private static final String dirs[] = { "baozou", "ali", "dayanmao",
+	public static final String dirs[] = { "baozou", "ali", "dayanmao",
 			"luoxiaohei", "zhaiyin", "yangcongtou", "acniang", "bierde" };
 
-	private static final String res[][] = {
+	public static final String res[][] = {
 			{
 					"http://img.ngacn.cc/attachments/mon_201205/05/-7_4fa52ecc3d7ac.gif",
 					"http://img.ngacn.cc/attachments/mon_201205/05/-7_4fa52ed6d3dc1.gif",
@@ -551,7 +551,7 @@ public class ExtensionEmotionUtil {
 		return null;
 	}
 
-	private static String getFilePath(int category, int position) {
+	public static String getFilePath(int category, int position) {
 		String httpUri = res[category][position];
 		Pattern pattern = Pattern.compile("([^/]+)$");
 		Matcher matcher = pattern.matcher(httpUri);

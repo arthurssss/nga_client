@@ -70,7 +70,7 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.addHeader("User-Agent", NGAClientApplication.USER_AGENT);
-		httpGet.addHeader("Content-Type", "application/x-www-formurlencoded");
+		httpGet.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		httpGet.addHeader("Accept-Charset", "GBK");
 		httpGet.addHeader("Accept-Encoding", "gzip,deflate");
 		httpGet.addHeader("Cookie", HttpUtil.getCookie(mContext));
@@ -170,9 +170,10 @@ public class TopicListTask extends AsyncTask<String, Integer, Integer> {
 				topicListData.setTime(jsonRoot.getLong("time"));
 				List<TopicData> topicDataList = new ArrayList<TopicData>();
 				for (int i = 0; i < topicListData.get__T__ROWS(); i++) {
-					topicDataList.add((TopicData) JSONObject.toJavaObject(
+					TopicData td = (TopicData) JSONObject.toJavaObject(
 							jsonObject.getJSONObject("__T").getJSONObject(
-									i + ""), TopicData.class));
+									i + ""), TopicData.class);
+					topicDataList.add(td);
 				}
 				topicListData.setTopicList(topicDataList);
 				mTopicListData = topicListData;

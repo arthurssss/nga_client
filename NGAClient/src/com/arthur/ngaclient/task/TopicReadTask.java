@@ -76,7 +76,7 @@ public class TopicReadTask extends AsyncTask<String, Integer, Integer> {
 
 		HttpGet httpGet = new HttpGet(url);
 		httpGet.addHeader("User-Agent", NGAClientApplication.USER_AGENT);
-		httpGet.addHeader("Content-Type", "application/x-www-formurlencoded");
+		httpGet.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		httpGet.addHeader("Accept-Charset", "GBK");
 		httpGet.addHeader("Accept-Encoding", "gzip,deflate");
 		httpGet.addHeader("Cookie", HttpUtil.getCookie(mContext));

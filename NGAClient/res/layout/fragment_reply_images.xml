@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="220dp"
     android:layout_gravity="bottom"
-    android:background="@android:color/black" >
+    android:background="@color/face_bg"
+    android:columnWidth="60dp"
+    android:fadingEdge="none"
+    android:gravity="center"
+    android:numColumns="auto_fit"
+    android:scrollingCache="false"
+    android:stretchMode="columnWidth" >
 
-</GridLayout>
+</GridView>

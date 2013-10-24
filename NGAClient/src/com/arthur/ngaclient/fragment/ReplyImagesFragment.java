@@ -1,6 +1,8 @@
 package com.arthur.ngaclient.fragment;
 
 import com.arthur.ngaclient.R;
+import com.arthur.ngaclient.adapter.ReplyImagesAdapter;
+import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,11 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 public class ReplyImagesFragment extends Fragment {
 
 	private static final String TAG = ReplyImagesFragment.class.getSimpleName();
-	private View mRootView = null;
+	private GridView mRootView = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -22,8 +25,19 @@ public class ReplyImagesFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mRootView = inflater.inflate(R.layout.fragment_reply_images, container,
+		mRootView = (GridView) inflater.inflate(R.layout.fragment_reply_images, container,
 				false);
+		Bundle args = getArguments();
+		String category = args.getString("category");
+		int categoryPosition = -1;
+		for (int i = 0; i < ExtensionEmotionUtil.dirs.length; i++) {
+			if (ExtensionEmotionUtil.dirs[i].equals(category)) {
+				categoryPosition = i;
+				break;
+			}
+		}
+		Log.i(TAG, "categoryPosition = " + categoryPosition);
+		mRootView.setAdapter(new ReplyImagesAdapter(getActivity(), categoryPosition));
 		return mRootView;
 	}
 

@@ -4,6 +4,7 @@ import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyImagesCategoryAdapter;
 import com.arthur.ngaclient.fragment.ReplyImagesFragment;
 import com.arthur.ngaclient.task.ReplyTask;
+import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -83,6 +84,9 @@ public class ReplyActivity extends FragmentActivity {
 				FragmentManager fm = getSupportFragmentManager();
 				FragmentTransaction ft = fm.beginTransaction();
 				Fragment fragment = new ReplyImagesFragment();
+				Bundle b = new Bundle();
+				b.putString("category", ExtensionEmotionUtil.dirs[position]);
+				fragment.setArguments(b);
 				ft.replace(R.id.reply_images_layout, fragment);
 				ft.addToBackStack(null);
 				ft.commit();

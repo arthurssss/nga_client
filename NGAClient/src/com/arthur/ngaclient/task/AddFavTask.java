@@ -54,7 +54,7 @@ public class AddFavTask extends AsyncTask<String, Integer, String> {
 
 		HttpPost httpPost = new HttpPost(url);
 		httpPost.addHeader("User-Agent", NGAClientApplication.USER_AGENT);
-		httpPost.addHeader("Content-Type", "application/x-www-formurlencoded");
+		httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
 		httpPost.addHeader("Accept-Charset", "GBK");
 		httpPost.addHeader("Accept-Encoding", "gzip,deflate");
 		httpPost.addHeader("Cookie", HttpUtil.getCookie(mContext));
