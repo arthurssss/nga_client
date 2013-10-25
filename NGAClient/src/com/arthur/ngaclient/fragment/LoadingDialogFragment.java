@@ -12,12 +12,10 @@ public class LoadingDialogFragment extends DialogFragment {
 			.getSimpleName();
 
 	private static LoadingDialogFragment mFragment;
-
+	
 	public static LoadingDialogFragment newInstance(String msg) {
 		Log.i(TAG, "LoadingDialogFragment");
-		if (mFragment == null) {
-			mFragment = new LoadingDialogFragment();
-		}
+		mFragment = new LoadingDialogFragment();
 		Bundle args = new Bundle();
 		args.putString("msg", msg);
 		mFragment.setArguments(args);
@@ -38,6 +36,7 @@ public class LoadingDialogFragment extends DialogFragment {
 		dialog.setMessage(title);
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
 		return dialog;
 	}
 

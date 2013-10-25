@@ -170,6 +170,8 @@ public class ReplyTask extends AsyncTask<String, Integer, Boolean> {
 		Toast.makeText(mContext, mResultStr, Toast.LENGTH_LONG).show();
 		if (isSuccess) {
 			mListener.onReplySuccess();
+		} else {
+			mListener.onReplyFailed();
 		}
 	}
 

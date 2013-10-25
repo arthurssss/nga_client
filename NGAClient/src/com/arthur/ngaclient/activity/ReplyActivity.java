@@ -2,6 +2,7 @@ package com.arthur.ngaclient.activity;
 
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyImagesCategoryAdapter;
+import com.arthur.ngaclient.fragment.LoadingDialogFragment;
 import com.arthur.ngaclient.fragment.ReplyImagesFragment;
 import com.arthur.ngaclient.interfaces.IOnReplySuccessListener;
 import com.arthur.ngaclient.interfaces.IOnSetTextEditImageListener;
@@ -43,6 +44,8 @@ public class ReplyActivity extends FragmentActivity {
 	private String mAction = null;
 	private String mTid = null;
 	private String mFid = null;
+
+	private LoadingDialogFragment mLoading = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,11 +155,21 @@ public class ReplyActivity extends FragmentActivity {
 		case R.id.action_send:
 			String content = mReplyContentEdit.getText().toString();
 			String title = mReplyTitleEdit.getText().toString();
+			mLoading = LoadingDialogFragment.newInstance(this.getResources()
+					.getString(R.string.loading_reply));
+			mLoading.show(getSupportFragmentManager(), "reply");
 			new ReplyTask(this, new IOnReplySuccessListener() {
 
 				@Override
 				public void onReplySuccess() {
+					Log.i(TAG, "onReplySuccess");
 					ReplyActivity.this.finish();
+				}
+
+				@Override
+				public void onReplyFailed() {
+					Log.i(TAG, "onReplyFailed");
+					 mLoading.dismiss();
 				}
 			}).execute(title, content, mAction, mFid, mTid);
 			return true;
