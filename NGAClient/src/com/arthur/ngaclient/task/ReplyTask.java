@@ -25,6 +25,7 @@ import org.apache.http.protocol.HttpContext;
 
 import com.arthur.ngaclient.NGAClientApplication;
 import com.arthur.ngaclient.bean.Global;
+import com.arthur.ngaclient.interfaces.IOnReplySuccessListener;
 import com.arthur.ngaclient.util.HttpUtil;
 
 import android.content.Context;
@@ -32,17 +33,21 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class ReplyTask extends AsyncTask<String, Integer, String> {
+public class ReplyTask extends AsyncTask<String, Integer, Boolean> {
 
 	private static final String TAG = ReplyTask.class.getSimpleName();
 	private Context mContext = null;
+	private IOnReplySuccessListener mListener = null;
 
-	public ReplyTask(Context context) {
+	private String mResultStr = "";
+
+	public ReplyTask(Context context, IOnReplySuccessListener listener) {
 		mContext = context;
+		mListener = listener;
 	}
 
 	@Override
-	protected String doInBackground(String... params) {
+	protected Boolean doInBackground(String... params) {
 		String title = params[0];
 		String content = params[1];
 		String action = params[2];
@@ -140,8 +145,13 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 					resultStringBuffer.append(data);
 				}
 				String strResult = resultStringBuffer.toString();
-				strResult = getReplyResult(strResult);
-				return strResult;
+				mResultStr = getReplyResult(strResult);
+				String successStr[] = { "发贴完毕 ...", " @提醒每24小时不能超过50个" };
+				if (successStr[0].equals(mResultStr)
+						|| successStr[1].equals(mResultStr)) {
+					return true;
+				}
+				return false;
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -152,19 +162,15 @@ public class ReplyTask extends AsyncTask<String, Integer, String> {
 		} finally {
 			httpclient.getConnectionManager().shutdown();
 		}
-		return "网络错误";
+		return false;
 	}
 
 	@Override
-	protected void onPostExecute(String result) {
-		String success_results[] = { "发贴完毕 ...", " @提醒每24小时不能超过50个" };
-		for (int i = 0; i < success_results.length; ++i) {
-			if (result.contains(success_results[i])) {
-				break;
-			}
+	protected void onPostExecute(Boolean isSuccess) {
+		Toast.makeText(mContext, mResultStr, Toast.LENGTH_LONG).show();
+		if (isSuccess) {
+			mListener.onReplySuccess();
 		}
-
-		Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
 	}
 
 	private String getReplyResult(String html) {

@@ -3,6 +3,7 @@ package com.arthur.ngaclient.activity;
 import com.arthur.ngaclient.R;
 import com.arthur.ngaclient.adapter.ReplyImagesCategoryAdapter;
 import com.arthur.ngaclient.fragment.ReplyImagesFragment;
+import com.arthur.ngaclient.interfaces.IOnReplySuccessListener;
 import com.arthur.ngaclient.interfaces.IOnSetTextEditImageListener;
 import com.arthur.ngaclient.task.ReplyTask;
 import com.arthur.ngaclient.util.ExtensionEmotionUtil;
@@ -151,7 +152,13 @@ public class ReplyActivity extends FragmentActivity {
 		case R.id.action_send:
 			String content = mReplyContentEdit.getText().toString();
 			String title = mReplyTitleEdit.getText().toString();
-			new ReplyTask(this).execute(title, content, mAction, mFid, mTid);
+			new ReplyTask(this, new IOnReplySuccessListener() {
+
+				@Override
+				public void onReplySuccess() {
+					ReplyActivity.this.finish();
+				}
+			}).execute(title, content, mAction, mFid, mTid);
 			return true;
 		default:
 			return false;
