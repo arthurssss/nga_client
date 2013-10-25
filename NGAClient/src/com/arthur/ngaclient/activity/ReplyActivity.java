@@ -34,7 +34,7 @@ public class ReplyActivity extends FragmentActivity {
 
 	private EditText mReplyContentEdit = null;
 	private EditText mReplyTitleEdit = null;
-	private GridView mReplyImages = null;
+	private GridView mReplyCategoryImages = null;
 	private View mReplyImagesLayout = null;
 
 	private MenuItem mImagesItem = null;
@@ -74,9 +74,9 @@ public class ReplyActivity extends FragmentActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.popBackStackImmediate();
 
-		mReplyImages = (GridView) findViewById(R.id.reply_images_grid);
-		mReplyImages.setAdapter(new ReplyImagesCategoryAdapter(this));
-		mReplyImages.setOnItemClickListener(new OnItemClickListener() {
+		mReplyCategoryImages = (GridView) findViewById(R.id.reply_images_grid);
+		mReplyCategoryImages.setAdapter(new ReplyImagesCategoryAdapter(this));
+		mReplyCategoryImages.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -104,7 +104,7 @@ public class ReplyActivity extends FragmentActivity {
 				ft.addToBackStack(null);
 				ft.commit();
 				mReplyImagesLayout.setVisibility(View.VISIBLE);
-				mReplyImages.setVisibility(View.GONE);
+				mReplyCategoryImages.setVisibility(View.GONE);
 			}
 
 		});
@@ -170,7 +170,16 @@ public class ReplyActivity extends FragmentActivity {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			if (!fragmentManager.popBackStackImmediate()) {
-				onBackPressed();
+				if (mReplyCategoryImages.getVisibility() == View.VISIBLE) {
+					mReplyCategoryImages.setVisibility(View.GONE);
+					mImagesItem.setIcon(R.drawable.ic_action_picture);
+					mIsImagesShow = false;
+				} else {
+					onBackPressed();
+				}
+			} else {
+				mImagesItem.setIcon(R.drawable.ic_action_picture);
+				mIsImagesShow = false;
 			}
 		}
 		return true;
@@ -180,7 +189,7 @@ public class ReplyActivity extends FragmentActivity {
 		mImagesItem.setIcon(R.drawable.ic_action_keyboard);
 		mInputMethodManger.hideSoftInputFromWindow(
 				mReplyContentEdit.getWindowToken(), 0);
-		mReplyImages.setVisibility(View.VISIBLE);
+		mReplyCategoryImages.setVisibility(View.VISIBLE);
 		mReplyImagesLayout.setVisibility(View.GONE);
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.popBackStackImmediate();
@@ -190,7 +199,7 @@ public class ReplyActivity extends FragmentActivity {
 	private void hideImages() {
 		mImagesItem.setIcon(R.drawable.ic_action_picture);
 		mInputMethodManger.showSoftInput(mReplyContentEdit, 0);
-		mReplyImages.setVisibility(View.GONE);
+		mReplyCategoryImages.setVisibility(View.GONE);
 		mReplyImagesLayout.setVisibility(View.GONE);
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.popBackStackImmediate();
