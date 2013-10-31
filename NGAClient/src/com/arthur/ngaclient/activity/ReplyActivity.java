@@ -169,7 +169,7 @@ public class ReplyActivity extends FragmentActivity {
 				@Override
 				public void onReplyFailed() {
 					Log.i(TAG, "onReplyFailed");
-					 mLoading.dismiss();
+					mLoading.dismiss();
 				}
 			}).execute(title, content, mAction, mFid, mTid);
 			return true;
@@ -201,8 +201,9 @@ public class ReplyActivity extends FragmentActivity {
 				mImagesItem.setIcon(R.drawable.ic_action_picture);
 				mIsImagesShow = false;
 			}
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	private void showImages() {
