@@ -10,6 +10,7 @@ import com.arthur.ngaclient.task.ReplyTask;
 import com.arthur.ngaclient.util.ExtensionEmotionUtil;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -173,9 +174,30 @@ public class ReplyActivity extends FragmentActivity {
 				}
 			}).execute(title, content, mAction, mFid, mTid);
 			return true;
+		case R.id.action_upload:
+			Intent intent = new Intent();
+			intent.setType("image/*");
+			intent.setAction(Intent.ACTION_GET_CONTENT);
+			startActivityForResult(intent, 1);
+			return true;
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_CANCELED || data == null) {
+			return;
+		}
+		switch (requestCode) {
+		case 1:
+			Log.i(TAG, " select file :" + data.getDataString());
+			break;
+		default:
+			;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
