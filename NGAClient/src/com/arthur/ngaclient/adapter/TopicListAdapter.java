@@ -133,7 +133,8 @@ public class TopicListAdapter extends BaseAdapter {
 				}
 			}
 
-			SpannableString ss = new SpannableString(Html.fromHtml(topicData.getSubject()));
+			SpannableString ss = new SpannableString(Html.fromHtml(topicData
+					.getSubject()));
 
 			Pattern p = Pattern.compile("\\[.+?\\]");
 			Matcher m = p.matcher(topicData.getSubject());
@@ -152,21 +153,17 @@ public class TopicListAdapter extends BaseAdapter {
 					topicData.getLastpost(), mTopicListData.getTime()));
 
 			float fontSize = 30;
-			if (topicData.getReplies() > 9) {
-				if (topicData.getReplies() > 99) {
-					if (topicData.getReplies() > 999) {
-						if (topicData.getReplies() > 9999) {
-							fontSize = 14;
-						} else {
-							fontSize = 17;
-						}
-					} else {
-						fontSize = 20;
-					}
-				} else {
-					fontSize = 25;
-				}
+
+			if (topicData.getReplies() > 9999) {
+				fontSize = 14;
+			} else if (topicData.getReplies() > 999) {
+				fontSize = 17;
+			} else if (topicData.getReplies() > 99) {
+				fontSize = 20;
+			} else if (topicData.getReplies() > 9) {
+				fontSize = 25;
 			}
+
 			holder.tvReplyCount.setTextSize(fontSize);
 			if (position % 2 == 0) {
 				holder.tvReplyCount.setBackgroundResource(R.color.shit1_2);

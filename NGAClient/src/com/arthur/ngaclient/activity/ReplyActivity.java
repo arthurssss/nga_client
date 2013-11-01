@@ -50,6 +50,7 @@ public class ReplyActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.i(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_reply);
 
@@ -187,6 +188,7 @@ public class ReplyActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i(TAG, "onActivityResult");
 		if (resultCode == RESULT_CANCELED || data == null) {
 			return;
 		}
